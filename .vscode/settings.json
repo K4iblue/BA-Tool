@@ -1,0 +1,5 @@
+{
+	"python.linting.pylintEnabled": true,
+	"python.linting.enabled": true,
+	"python.linting.pylintArgs": ["--disable=C0111", "--max-line-length=200"]
+}
