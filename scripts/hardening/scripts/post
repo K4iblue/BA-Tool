@@ -1,0 +1,18 @@
+function f_post {
+  if [[ $LXC == "1" ]]; then
+    return
+  fi
+
+  echo "[$SCRIPT_COUNT] Post processing"
+
+  $APT install --no-install-recommends fwupd secureboot-db
+
+  if [[ $VERBOSE == "Y" ]]; then
+    update-grub
+    ((SCRIPT_COUNT++))
+  else
+    update-grub 2>/dev/null
+  fi
+
+  find /boot/ -type f -name '*.cfg' -exec chmod 0400 {} \;
+}

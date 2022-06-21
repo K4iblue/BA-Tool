@@ -1,0 +1,404 @@
+image::logo/horizontal.png[Ubuntu Hardening]
+
+= Hardening Ubuntu. Systemd edition.
+:icons: font
+
+A quick way to make a Ubuntu server a bit more secure.
+
+Tested on `Ubuntu 20.04 Focal Fossa` and `Ubuntu 22.04 Jammy Jellyfish`.
+
+Systemd required.
+
+If you're just interested in the security focused systemd configuration, it's
+available as a link:systemd.adoc[separate document].
+
+If you're interested in testing your host settings, you'll find the
+link:README.adoc#tests[instructions here].
+
+NOTE: This is a constant work in progress. Make sure you understand what it
+does. Read the code and do not run this script without first testing in a
+non-operational environment.
+
+When possible, use the newly installed and configured system as a reference,
+or golden, image. Use that image as a baseline installation media and ensure
+that any future installation comply with benchmarks and policies using a
+configuration management tool, e.g https://www.ansible.com/[Ansible] or
+https://puppet.com/[Puppet].
+
+== Packer template and Ansible playbook
+A https://www.packer.io/[Packer] template is available in the link:packer/[Packer directory].
+
+An Ansible playbook is available in the https://github.com/konstruktoid/ansible-role-hardening[konstruktoid/ansible-role-hardening]
+repository.
+
+== Howto
+. Start the server installation.
+. Pick language and keyboard layout.
+. Select "Ubuntu Server (minimized)".
+. Configure network connections.
+. Partition the system, see below for recommendations.
+. Do not install the OpenSSH server, "Featured Server Snaps", or any other packages.
+. Finish the installation and reboot.
+. Log in.
+. If wanted, set a Grub2 password with `grub-mkpasswd-pbkdf2`. See https://help.ubuntu.com/community/Grub2/Passwords[https://help.ubuntu.com/community/Grub2/Passwords]
+for more information.
+. Install necessary packages: `sudo apt-get -y install git net-tools procps --no-install-recommends`.
+. Download the script: `git clone https://github.com/konstruktoid/hardening.git`.
+. Change the configuration options in the `ubuntu.cfg` file.
+. Run the script: `sudo bash ubuntu.sh`.
+. Reboot.
+
+=== Recommended partitions and options
+[source,shell]
+----
+/boot (rw)
+/home (rw,nosuid,nodev)
+/var/log (rw,nosuid,nodev,noexec)
+/var/log/audit (rw,nosuid,nodev,noexec)
+/var/tmp (rw,nosuid,nodev,noexec)
+----
+
+Note that `/tmp` will be added automatically by the script.
+
+== Configuration options
+[source,shell]
+----
+FW_ADMIN='127.0.0.1' // <1>
+SSH_GRPS='sudo' // <2>
+SSH_PORT='22' // <3>
+SYSCTL_CONF='./misc/sysctl.conf' // <4>
+AUDITD_MODE='1' // <5>
+AUDITD_RULES='./misc/audit-base.rules ./misc/audit-aggressive.rules ./misc/audit-docker.rules' // <6>
+LOGROTATE_CONF='./misc/logrotate.conf' // <7>
+NTPSERVERPOOL='0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org pool.ntp.org' // <8>
+TIMEDATECTL='' // <9>
+VERBOSE='N' // <10>
+AUTOFILL='N' // <11>
+ADMINEMAIL="root@localhost" // <12>
+KEEP_SNAPD='Y' // <13>
+CHANGEME='' // <14>
+
+# Configuration files
+ADDUSER='/etc/adduser.conf'
+AUDITDCONF='/etc/audit/auditd.conf'
+AUDITRULES='/etc/audit/rules.d/hardening.rules'
+COMMONPASSWD='/etc/pam.d/common-password'
+COMMONACCOUNT='/etc/pam.d/common-account'
+COMMONAUTH='/etc/pam.d/common-auth'
+COREDUMPCONF='/etc/systemd/coredump.conf'
+DEFAULTGRUB='/etc/default/grub.d'
+DISABLEFS='/etc/modprobe.d/disablefs.conf'
+DISABLEMOD='/etc/modprobe.d/disablemod.conf'
+DISABLENET='/etc/modprobe.d/disablenet.conf'
+JOURNALDCONF='/etc/systemd/journald.conf'
+LIMITSCONF='/etc/security/limits.conf'
+LOGINDCONF='/etc/systemd/logind.conf'
+LOGINDEFS='/etc/login.defs'
+LOGROTATE='/etc/logrotate.conf'
+PAMLOGIN='/etc/pam.d/login'
+PSADCONF='/etc/psad/psad.conf'
+PSADDL='/etc/psad/auto_dl'
+RESOLVEDCONF='/etc/systemd/resolved.conf'
+RKHUNTERCONF='/etc/default/rkhunter'
+RSYSLOGCONF='/etc/rsyslog.conf'
+SECURITYACCESS='/etc/security/access.conf'
+SSHFILE='/etc/ssh/ssh_config'
+SSHDFILE='/etc/ssh/sshd_config'
+SYSCTL='/etc/sysctl.conf'
+SYSTEMCONF='/etc/systemd/system.conf'
+TIMESYNCD='/etc/systemd/timesyncd.conf'
+UFWDEFAULT='/etc/default/ufw'
+USERADD='/etc/default/useradd'
+USERCONF='/etc/systemd/user.conf'
+
+----
+<1> The IP addresses that will be able to connect with SSH, separated by spaces.
+<2> Which group the users have to be member of in order to acess via SSH, separated by spaces.
+<3> Configure SSH port.
+<4> Stricter sysctl settings.
+<5> Auditd failure mode. 0=silent 1=printk 2=panic.
+<6> Auditd rules.
+<7> Logrotate settings.
+<8> NTP server pool.
+<9> Add a specific time zone or use the system default by leaving it empty.
+<10> If you want all the details or not.
+<11> Let the script guess the `FW_ADMIN` and `SSH_GRPS` settings.
+<12> Add a valid email address, so PSAD can send notifications.
+<13> If `'Y'` then the `snapd` package will be held to prevent removal.
+<14> Add something just to verify that you actually glanced the code.
+
+== Functions
+
+=== Function list
+
+==== pre
+Setup script, sets APT flags and permission checks.
+
+==== firewall
+Enable `ufw`, use `/etc/sysctl.conf`, prepare to `psad`, and allow port 22 from `$FW_ADMIN`.
+
+==== disablenet
+Disable `dccp` `sctp` `rds` `tipc` protocols.
+
+==== disablemnt
+Disable `cramfs` `freevxfs` `jffs2` `hfs` `hfsplus` `udf` file systems.
+
+==== systemdconf
+Disable coredumps and crash shells, set `DefaultLimitNOFILE` and
+`DefaultLimitNPROC` to 1024.
+
+==== journalctl
+Compress logs, forward to syslog and make log storage persistent. Ensure rsyslog
+writes logs with stricter permissions.
+
+==== timesyncd
+Add four NTP-servers with a latency < 50ms from `$NTPSERVERPOOL`.
+
+==== fstab
+Configure `/tmp/` and `/var/tmp/`. Remove floppy drivers from `/etc/fstab`
+and add `hidepid=2` to `/proc`.
+
+==== prelink
+Undo prelinking, and remove `prelink` package.
+
+==== aptget
+Configure `dpkg` and `apt-get`. `apt-get` update and upgrade.
+
+==== hosts
+`/etc/hosts.allow` and `/etc/hosts.deny` restrictions.
+
+==== logindefs
+Modify `/etc/login.defs`, e.g. `UMASK`, password age limits and
+`SHA_CRYPT_MAX_ROUNDS`.
+
+==== sysctl
+Update `$SYSCTL` with `$SYSCTL_CONF`.
+
+==== limits
+Set hard and soft limits.
+
+==== adduser
+Configure `useradd` and `adduser` to set `/bin/false` as default shell,
+home directory permissions to `0750` and lock users 30 days after password
+expires.
+
+==== rootaccess
+Limit `/etc/securetty` to `console`, and `root` from 127.0.0.1 in
+`/etc/security/access.conf`.
+
+==== packages
+Installs `acct` `aide-common` `apparmor-profiles` `apparmor-utils` `auditd`
+`audispd-plugins` `debsums` `gnupg2` `haveged`
+`libpam-apparmor` `libpam-pwquality` `libpam-tmpdir` `needrestart`
+`openssh-server` `postfix` `rkhunter` `sysstat` `systemd-coredump` `tcpd`
+`psad` `update-notifier-common` `vlock`.
+
+Removes `apport*` `autofs` `avahi*` `beep` `git` `pastebinit`
+`popularity-contest` `rsh*` `rsync` `talk*` `telnet*` `tftp*` `whoopsie`
+`xinetd` `yp-tools` `ypbind`.
+
+==== sshdconfig
+Configure the `OpenSSH` daemon. The configuration changes will be placed in
+the directory defined by the `Include` option if present, otherwise the default
+`sshd_config` will be modified.
+
+==== password
+Configure `pam_pwquality.so` and `pam_tally2.so`.
+
+==== cron
+Allow `root` to use `cron`. Mask `atd`.
+
+==== ctraltdel
+Disable Ctrl-alt-delete.
+
+==== auditd
+Configure `auditd`, use `$AUDITD_RULES` and set failure mode `$AUDITD_MODE`.
+
+==== disablemod
+Disable `bluetooth` `bnep` `btusb` `cpia2` `firewire-core` `floppy` `n_hdlc`
+`net-pf-31` `pcspkr` `soundcore` `thunderbolt` `usb-midi` `usb-storage`
+`uvcvideo` `v4l2_common` kernel modules.
+
+Note that disabling the `usb-storage` will disable any usage of USB storage
+devices, if such devices are needed `USBGuard` should be configured accordingly.
+
+==== aide
+Configure `aide`.
+
+==== rhosts
+Remove `hosts.equiv` and `.rhosts`.
+
+==== users
+Remove `games` `gnats` `irc` `list` `news` `sync` `uucp` users.
+
+==== suid
+Remove `suid` bits from the executables listed in
+link:misc/suid.list[this document].
+
+==== umask
+Set `bash` and `/etc/profile` umask.
+
+==== apparmor
+Enforce present `apparmor` profiles.
+
+==== path
+Set `root` path to `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin`,
+and user path to `/usr/local/bin:/usr/bin:/bin`.
+
+==== logindconf
+Configure `systemd/logind.conf` and use `KillUserProcesses`.
+
+==== resolvedconf
+Configure `systemd/resolved.conf`.
+
+==== rkhunter
+Configure `rkhunter`.
+
+==== issue
+Update `/etc/issue` `/etc/issue.net` `/etc/motd`.
+
+==== apport
+Disable `apport`, `ubuntu-report` and `popularity-contest`.
+
+==== lockroot
+Lock the `root` user account.
+
+==== coredump
+Disable coredumps with `systemd/coredump.conf`.
+
+==== postfix
+Disable the `VRFY` command, configure `smtpd_banner`, `smtpd_client_restrictions`
+and `inet_interfaces`.
+
+==== motdnews
+Disable `motd-news`.
+
+==== usbguard
+Install and configure `usbguard`.
+
+==== compilers
+Restrict compiler access.
+
+==== kernel
+Set `lockdown=confidentiality` if `/sys/kernel/security/lockdown` is present.
+
+==== sudo
+Configure `sudo` with `use_pty`, `logfile`, `!visiblepw`, `!pwfeedback`,
+`passwd_timeout` and `timestamp_timeout`.
+
+Restrict `su` to the `sudo` group.
+
+==== psad
+Configure `psad`.
+
+==== systemddelta
+If verbose, show `systemd-delta`.
+
+==== post
+Ensure `secureboot-db` is installed, update grub and ensure strict permissions
+on boot files.
+
+==== reboot
+Print if a reboot is required.
+
+=== Function execution order
+[source,shell]
+----
+f_pre
+f_kernel
+f_firewall
+f_disablenet
+f_disablefs
+f_disablemod
+f_systemdconf
+f_resolvedconf
+f_logindconf
+f_journalctl
+f_timesyncd
+f_fstab
+f_prelink
+f_aptget_configure
+f_aptget
+f_hosts
+f_issue
+f_sudo
+f_logindefs
+f_sysctl
+f_limitsconf
+f_adduser
+f_rootaccess
+f_package_install
+f_psad
+f_coredump
+f_usbguard
+f_postfix
+f_apport
+f_motdnews
+f_rkhunter
+f_sshconfig
+f_sshdconfig
+f_password
+f_cron
+f_ctrlaltdel
+f_auditd
+f_aide
+f_rhosts
+f_users
+f_lockroot
+f_package_remove
+f_suid
+f_restrictcompilers
+f_umask
+f_path
+f_aa_enforce
+f_aide_post
+f_aide_timer
+f_aptget_noexec
+f_aptget_clean
+f_systemddelta
+f_post
+f_checkreboot
+----
+
+== Tests
+There are approximately 760 https://github.com/bats-core/bats-core[Bats tests]
+for most of the above settings available in the link:tests/[tests directory].
+
+[source,shell]
+----
+sudo apt-get -y install bats
+git clone https://github.com/konstruktoid/hardening.git
+cd hardening/tests/
+sudo bats .
+----
+
+=== Test automation using Vagrant
+Running `bash ./runTests.sh` will use https://www.vagrantup.com/[Vagrant] to run
+all above tests, https://github.com/CISOfy/Lynis[Lynis] and
+https://www.open-scap.org/[OpenSCAP] with a
+https://www.cisecurity.org/benchmark/ubuntu_linux[CIS Ubuntu benchmark] on all
+supported Ubuntu versions.
+
+The script will generate a file named `TESTRESULTS.adoc` and CIS report in
+HTML-format.
+
+=== Testing a host
+Running `bash ./runHostTests.sh`, located in the link:tests/[tests directory],
+will generate a `TESTRESULTS-<HOSTNAME>.adoc` report.
+
+== Recommended reading
+https://public.cyber.mil/stigs/downloads/?_dl_facet_stigs=operating-systems%2Cunix-linux[Canonical Ubuntu 20.04 LTS STIG - Ver 1, Rel 3] +
+https://www.cisecurity.org/benchmark/distribution_independent_linux/[CIS Distribution Independent Linux Benchmark] +
+https://www.cisecurity.org/benchmark/ubuntu_linux/[CIS Ubuntu Linux Benchmark] +
+https://www.ncsc.gov.uk/collection/end-user-device-security/platform-specific-guidance/ubuntu-18-04-lts[EUD Security Guidance: Ubuntu 18.04 LTS] +
+https://wiki.ubuntu.com/Security/Features +
+https://help.ubuntu.com/community/StricterDefaults +
+
+== Contributing
+Do you want to contribute? That's great! Contributions are always welcome,
+no matter how large or small. If you found something odd, feel free to
+https://github.com/konstruktoid/hardening/issues/[submit a new issue],
+improve the code by https://github.com/konstruktoid/hardening/pulls[creating a pull request],
+or by https://github.com/sponsors/konstruktoid[sponsoring this project].
+
+Logo by https://github.com/reallinfo[reallinfo].

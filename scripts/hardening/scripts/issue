@@ -1,0 +1,18 @@
+function f_issue {
+  echo "[$SCRIPT_COUNT] /etc/issue"
+
+  local TEXT
+
+  for f in /etc/issue /etc/issue.net /etc/motd; do
+    TEXT="\\nBy accessing this system, you consent to the following conditions:
+- This system is for authorized use only.
+- Any or all uses of this system and all files on this system may be monitored.
+- Communications using, or data stored on, this system are not private.
+"
+    echo -e "$TEXT" > $f
+  done
+
+  chmod a-x /etc/update-motd.d/*
+
+  ((SCRIPT_COUNT++))
+}
