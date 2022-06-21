@@ -1,1 +1,1 @@
-# ba-tool
+# Tool zur automatisierten Erstellung von gehärteten virtuellen Systemen mit Konformitat für kritische Infrastrukturen
