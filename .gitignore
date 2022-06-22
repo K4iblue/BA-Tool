@@ -1,5 +1,8 @@
 # VSC
 .vscode/
 
+# Python
+.__pycache__/
+
 # Draw IO
 *.bkp
