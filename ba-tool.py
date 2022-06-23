@@ -8,10 +8,11 @@ def main():
     print('-------------- Menu --------------')
     print('0. Exit program \n' +
           '1. Härtung durchführen \n' +
-          '2. Automatische Updates \n' +
-          '3. Standardprogramme installieren \n' +
-          '4. Docker: Image erstellen\n' +
-          '5. Docker: Image starten \n')
+          '2. Härtung Überprüfen \n' +
+          '3. Automatische Updates \n' +
+          '4. Standardprogramme installieren \n' +
+          '5. Docker: Image erstellen\n' +
+          '6. Docker: Image starten \n')
     print('--- Please enter a number (0-5) ---')
 
     case_number = int(input())
@@ -26,18 +27,20 @@ def main():
             #print('Case 1')
             main()
         case 2:
-            #image_name = input('welches Image soll gestartet werden: ').lower()
-            #start_docker_container(image_name)
             print('Case 2')
             main()
         case 3:
-            #start_docker_container(create_docker_image())
             print('Case 3')
             main()
         case 4:
             print('Case 4')
+            main()
         case 5:
             print('Case 5')
+            main()
+        case 6:
+            print('Case 6')
+            main()
         case _:
             print('Please enter a valid number (0-5) !')
             main()
