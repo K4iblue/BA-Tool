@@ -1,4 +1,4 @@
-#from . import hardening
+from . import hardening
 #from . import docker
 #from . import maintenance
 from . import helper_functions as hf
@@ -8,43 +8,24 @@ from . import helper_functions as hf
 # Main Menu
 def main_menu():
     print('----------- Main Menu ----------- \n' +
-          '0. Exit program \n' +
-          '1. Härtung durchführen \n' +
-          '2. Härtung Überprüfen \n' +
-          '3. Automatische Updates \n' +
-          '4. Standardprogramme installieren \n' +
-          '5. Docker: Image erstellen\n' +
-          '6. Docker: Image starten \n' +
-          '----- Please enter a number (0-6) -----')
+          '0. Exit Programm \n' +
+          '1. Härtung \n' +
+          '2. Docker \n' +
+          '3. Systempflege \n' +
+          '----- Please enter a number (0-3) -----')
 
-    # Get Number from user in given range
-    case_number = hf.get_int(0,7)
+    # Get a Number from the user in given range
+    case_number = hf.get_int(0,4)
 
     match case_number:
         case 0:
             quit()
         case 1:
-            # create_configfile()
-            #start_hardening_script()
-            #print('Case 1')
-            main_menu()
+            hardening_submenu()
         case 2:
-            print('Case 2')
-            main_menu()
+            docker_submenu()
         case 3:
-            print('Case 3')
-            main_menu()
-        case 4:
-            print('Case 4')
-            main_menu()
-        case 5:
-            print('Case 5')
-            main_menu()
-        case 6:
-            print('Case 6')
-            main_menu()
-        case _:
-            main_menu()
+            maintenance_submenu()
 
 # Hardening Menu
 def hardening_submenu():
@@ -54,54 +35,66 @@ def hardening_submenu():
             '2. Härtung Überprüfen \n' +
             '----- Please enter a number (0-2) -----')
 
-    # Get Number from user in given range
+    # Get a Number from the user in given range
     case_number = hf.get_int(0,3)
     
     match case_number:
-        case 1:
-            print('Case 1')
-        case 2:
-            print('Case 3')
-        case _:
-            print('Default Case')
+        case 0:
             main_menu()
+        case 1:
+            hardening.create_configfile()
+        case 2:
+            print('Case 2')
 
 # Docker Menu
 def docker_submenu():
     print('----------- Docker Menu ----------- \n' +
             '0. Main Menu \n' +
-            '1. Härtung durchführen \n' +
-            '2. Härtung Überprüfen \n' +
-            '----- Please enter a number (0-2) -----')
+            '1. Docker Container erstellen \n' +
+            '2. Docker Container starten \n' +
+            '3. Docker Container stoppen \n' +
+            '4. Docker Container löschen \n' +
+            '5. Docker Container auflisten \n' +
+            '6. Docker Image löschen \n' +
+            '7. Docker Images auflisten \n' +
+            '----- Please enter a number (0-7) -----')
 
-    # Get Number from user in given range
-    case_number = hf.get_int(0,3)
+    # Get a Number from the user in given range
+    case_number = hf.get_int(0,8)
     
     match case_number:
+        case 0:
+            main_menu()
         case 1:
             print('Case 1')
         case 2:
+            print('Case 2')
+        case 3:
             print('Case 3')
-        case _:
-            print('Default Case')
-            main_menu()
+        case 4:
+            print('Case 4')
+        case 5:
+            print('Case 5')
+        case 6:
+            print('Case 6')
+        case 7:
+            print('Case 7')
 
 # Maintenance Menu
 def maintenance_submenu():
-    print('----------- Maintenance Menu -----------' +
+    print('----------- Maintenance Menu ----------- \n' +
             '0. Main Menu \n' +
-            '1. Härtung durchführen \n' +
-            '2. Härtung Überprüfen \n' +
+            '1. Automatische Updates de-/aktivieren \n' +
+            '2. Standardprogramme installieren \n' +
             '----- Please enter a number (0-2) -----')
 
-    # Get Number from user in given range
+    # Get a Number from the user in given range
     case_number = hf.get_int(0,3)
 
     match case_number:
+        case 0:
+            main_menu()
         case 1:
             print('Case 1')
         case 2:
-            print('Case 3')
-        case _:
-            print('Default Case')
-            main_menu()
+            print('Case 2')
