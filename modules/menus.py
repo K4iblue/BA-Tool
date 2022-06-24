@@ -1,12 +1,13 @@
 #from . import hardening
 #from . import docker
 #from . import maintenance
+from . import helper_functions as hf
 
 # Main and submenus
 
 # Main Menu
 def main_menu():
-    print('-------------- Main Menu -------------- \n' +
+    print('----------- Main Menu ----------- \n' +
           '0. Exit program \n' +
           '1. Härtung durchführen \n' +
           '2. Härtung Überprüfen \n' +
@@ -16,10 +17,8 @@ def main_menu():
           '6. Docker: Image starten \n' +
           '----- Please enter a number (0-6) -----')
 
-    case_number = int(input())
-    while case_number not in range(0,7):
-        print("Please enter a valid number!")
-        case_number = int(input())
+    # Get Number from user in given range
+    case_number = hf.get_int(0,7)
 
     match case_number:
         case 0:
@@ -55,10 +54,8 @@ def hardening_submenu():
             '2. Härtung Überprüfen \n' +
             '----- Please enter a number (0-2) -----')
 
-    case_number = int(input())
-    while case_number not in range (0,3):
-        print("Please enter a valid number!")
-        case_number = int(input())
+    # Get Number from user in given range
+    case_number = hf.get_int(0,3)
     
     match case_number:
         case 1:
@@ -71,8 +68,40 @@ def hardening_submenu():
 
 # Docker Menu
 def docker_submenu():
-    print('Docker Menu')
+    print('----------- Docker Menu ----------- \n' +
+            '0. Main Menu \n' +
+            '1. Härtung durchführen \n' +
+            '2. Härtung Überprüfen \n' +
+            '----- Please enter a number (0-2) -----')
+
+    # Get Number from user in given range
+    case_number = hf.get_int(0,3)
+    
+    match case_number:
+        case 1:
+            print('Case 1')
+        case 2:
+            print('Case 3')
+        case _:
+            print('Default Case')
+            main_menu()
 
 # Maintenance Menu
 def maintenance_submenu():
-    print('Maintenance Menu')
+    print('----------- Maintenance Menu -----------' +
+            '0. Main Menu \n' +
+            '1. Härtung durchführen \n' +
+            '2. Härtung Überprüfen \n' +
+            '----- Please enter a number (0-2) -----')
+
+    # Get Number from user in given range
+    case_number = hf.get_int(0,3)
+
+    match case_number:
+        case 1:
+            print('Case 1')
+        case 2:
+            print('Case 3')
+        case _:
+            print('Default Case')
+            main_menu()

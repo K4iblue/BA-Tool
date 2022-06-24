@@ -25,3 +25,20 @@ def get_ips():
                 print(n + ' is not a valid IP Adress. Please enter a valid IP Adress!')
                 ip_valid = 0
     return ips
+
+# Function to get a number from the user in a given range
+def get_int(x,y):
+    while True:
+        try:
+            number = int(input())
+            while number not in range(x,y):
+                try:
+                    print('Please enter a valid number!')
+                    number = int(input())
+                except ValueError:
+                    print('Please enter a valid number!')
+        except ValueError:
+            print('Please enter a valid number!')
+            continue
+        break
+    return number
