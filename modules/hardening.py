@@ -1,56 +1,16 @@
 import subprocess
 import os
 import sys
-import ipaddress
 
+# Import helper functions
+from . import helper_functions as hf
 
-def main():
-    print('-------------- Menu --------------')
-    print('0. Exit program \n' +
-          '1. Härtung durchführen \n' +
-          '2. Härtung Überprüfen \n' +
-          '3. Automatische Updates \n' +
-          '4. Standardprogramme installieren \n' +
-          '5. Docker: Image erstellen\n' +
-          '6. Docker: Image starten \n')
-    print('--- Please enter a number (0-5) ---')
-
-    case_number = int(input())
-    print('\n')
-
-    match case_number:
-        case 0:
-            quit()
-        case 1:
-            create_configfile()
-            #start_hardening()
-            #print('Case 1')
-            main()
-        case 2:
-            print('Case 2')
-            main()
-        case 3:
-            print('Case 3')
-            main()
-        case 4:
-            print('Case 4')
-            main()
-        case 5:
-            print('Case 5')
-            main()
-        case 6:
-            print('Case 6')
-            main()
-        case _:
-            print('Please enter a valid number (0-5) !')
-            main()
-
-
+# Create configfile for hardening script
 def create_configfile():
     # 1. The IP addresses that will be able to connect with SSH, separated by spaces // Default: '127.0.0.1'
     print('Welche IP Adressen sollen SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
     print('Default: 127.0.0.1')
-    ssh_ips_list = get_ips()
+    ssh_ips_list = hf.get_ips()
     # List to string, with spaces in between
     ssh_ips = ' '.join(ssh_ips_list)
 
@@ -89,7 +49,7 @@ def create_configfile():
     # 8. NTP server pool // Default: '0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org pool.ntp.org'
     print('Sind NTP Server vorhanden? Mehrere IP Addressen durch ein Komma trennen!')
     print('Default: 0.ubuntu.pool.ntp.org, 1.ubuntu.pool.ntp.org, 2.ubuntu.pool.ntp.org, 3.ubuntu.pool.ntp.org, pool.ntp.org')
-    ntp_ips_list = get_ips()
+    ntp_ips_list = hf.get_ips()
     # List to string, with spaces in between
     ntp_ips = ' '.join(ntp_ips_list)
 
@@ -148,65 +108,10 @@ def create_configfile():
     with open (path, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
-
-def start_hardening():
+# Start hardening script
+def start_hardening_script():
     # Install necessary packages
     subprocess.run(['sudo', 'apt-get', '-y', 'install', 'git', 'net-tools', 'procps', '--no-install-recommend'], shell=True, check=True)
 
     # Run Hardening Script
     subprocess.run(['sudo', 'bash', 'scripts/hardening/ubuntu.sh'], shell=True, check=True)
-
-
-def create_docker_image():
-    # Get path of script and dockerfile
-    path = os.path.join(sys.path[0])
-
-    # User input for docker image name
-    print('--- Enter Docker Image Name ---')
-    image_name = input('Image Name: ').lower()
-
-    # Get ImageID from console and convert to string
-    # ImageId = subprocess.check_output(['docker', 'images', '-q', ImageName])
-    # ImageIdString = str(ImageId).replace(''','').replace('\\n','')
-
-    # Create image from Dockerfile
-    subprocess.run(['docker', 'build', path, '-t', image_name.replace('"', '')], shell=True, check=True)
-
-    # return image name for later use
-    return image_name
-
-
-def start_docker_container(image_name):
-    # Start Container from image
-    subprocess.run(['docker', 'run', image_name], shell=True, check=True)
-
-
-# Function to validate IP addresses
-def ip_validation(address):
-    try:
-        ipaddress.ip_address(address)
-        return True
-    except ValueError:
-        return False
-
-
-# Function to get a list of IP addresses from the user
-def get_ips():
-    ip_valid = 0
-    while ip_valid == 0:
-        ips = input('IP-Adresse(n): ')
-        # Remove spaces
-        ips = ips.strip().replace(' ', '')
-         # Create list from string
-        ips = ips.split(',')
-        # Validate IPs, if all IPs are correct break out of while loop
-        ip_valid = 1
-        for n in ips:
-            if ip_validation(n) is False:
-                print(n + ' is not a valid IP Adress. Please enter a valid IP Adress!')
-                ip_valid = 0
-    return ips
-
-
-if __name__ == '__main__':
-    main()
