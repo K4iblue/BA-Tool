@@ -2,7 +2,8 @@
 .vscode/
 
 # Python
-.__pycache__/
+__pycache__/
+modules/__pycache__/
 
 # Draw IO
 *.bkp
