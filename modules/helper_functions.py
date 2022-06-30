@@ -26,6 +26,7 @@ def get_ips():
                 ip_valid = 0
     return ips
 
+
 # Function to get a number from the user in a given range
 def get_int(x,y):
     while True:
