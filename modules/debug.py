@@ -10,10 +10,10 @@ def debug():
 
     # User input: DHCP needed?
     print('Wird DHCP benötigt?')
-    dhcp_needed = input('(yes/no): ').upper()
+    dhcp_needed = input('(yes/no): ').lower()
     # Only 'yes' and 'no' allowed
     while not dhcp_needed == 'yes' or 'no':
-        dhcp_needed = input('(yes/no): ').upper()
+        dhcp_needed = input('(yes/no): ').lower()
 
     # User input: Default gateway/route 
     print('Wie lautet die IP des Default gateways?')
