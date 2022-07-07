@@ -9,15 +9,12 @@ def debug():
     interface_name = str(interface_name.stdout).replace('b','').replace('\\n','').strip("'")
 
     # User input: DHCP needed?
-    print('Wird DHCP benötigt?')
-    dhcp_needed = input('(y/n): ').upper()
-    # Only 'y' and 'n' allowed
-    while not dhcp_needed == 'Y' or 'N':
-        dhcp_needed = input('(y/n): ').upper()
-    if dhcp_needed == 'Y':
-        dhcp_needed = "yes"
-    else:
-        dhcp_needed = "no"
+    #print('Wird DHCP benötigt?')
+    #dhcp_needed = input('(y/n): ').upper()
+    ## Only 'y' and 'n' allowed
+    #while not dhcp_needed == 'y' or 'n':
+    #    dhcp_needed = input('(y/n): ').upper()
+    dhcp_needed = "No"
 
     # User input: Default gateway/route 
     print('Wie lautet die IP des Default gateways?')
