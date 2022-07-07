@@ -41,7 +41,7 @@ def debug():
     # Get filenames in netplan directory
     netplan_path = '/etc/netplan/'
     files = os.listdir(netplan_path)
-    #netplan_file = netplan_path + files[0].strip("'")
+    netplan_file = netplan_path + files[0].strip("'")
     print('###### DEBUG: ' + files[0])
 
     # Read from template file
@@ -66,7 +66,7 @@ def debug():
     #subprocess.run(['sudo', 'cp', netplan_file, backup_file], shell=True, check=True)
 
     # Replace netplan with template
-    #subprocess.run(['sudo', 'cat', template_file, '>|', netplan_file], shell=True, check=True)
+    subprocess.run(['sudo', 'cat', template_file, '>', netplan_file], shell=True, check=True)
 
     # Apply new netplan config
     #subprocess.run(['sudo', 'netplan', 'try'], shell=True, check=True)
