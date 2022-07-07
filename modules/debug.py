@@ -4,10 +4,16 @@ import sys
 from . import helper_functions as hf
 
 def debug():
-    print("DEBUG TEST")
     # Get interface name
     interface_name = subprocess.run("ip -o -4 route show to default | awk '{print $5}'", capture_output=True, shell=True, check=True)
     interface_name = str(interface_name.stdout).replace('b','').replace('\\n','').strip("'")
+
+    # User input: DHCP needed?
+    print('Wird DHCP benötigt?')
+    dhcp_needed = input('(yes/no): ').upper()
+    # Only 'yes' and 'no' allowed
+    while not dhcp_needed == 'yes' or 'no':
+        dhcp_needed = input('(yes/no): ').upper()
 
     # User input: Default gateway/route 
     print('Wie lautet die IP des Default gateways?')
@@ -24,11 +30,18 @@ def debug():
     # Create empty a empty list and fill it with the config values
     config_list = []
     config_list += [interface_name]
+    config_list += [dhcp_needed]
     config_list += [dgw_ips]
     config_list += [dns_ips]
 
     # Get path to template file
     template_backup_path = os.path.join(sys.path[0]) + '/scripts/netplan/template_netplan_backup.yaml'
+
+    # Get filenames in netplan directory
+    netplan_path = '/etc/netplan/'
+    files = os.listdir(netplan_path)
+    #netplan_file = netplan_path + files[0].strip("'")
+    print('###### DEBUG: ' + files[0])
 
     # Read from template file
     with open (template_backup_path, 'r', encoding='UTF-8') as file:
@@ -42,24 +55,17 @@ def debug():
         count = count + 1
 
     # Create new template file and write config_list into it
-    template_file = os.path.join(sys.path[0]) + '/scripts/netplan/template_netplan.yaml'
+    template_file = os.path.join(sys.path[0]) + '/scripts/netplan/' + files[0]
     with open (template_file, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
-    # Get files in netplan directory
-    netplan_path = '/etc/netplan/'
-    files = os.listdir(netplan_path)
-    netplan_file = netplan_path + files[0].strip("'")
-
-    print(netplan_file)
-    print(template_file)
     # Backup netplan file
     #backup_file = netplan_file + '_backup'
     #backup_file = backup_file.strip("'")
-    #subprocess.run(['cp', netplan_file, backup_file], shell=True, check=True)
+    #subprocess.run(['sudo', 'cp', netplan_file, backup_file], shell=True, check=True)
 
     # Replace netplan with template
-    subprocess.run(['sudo', 'cat', template_file, '>|', netplan_file], shell=True, check=True)
+    #subprocess.run(['sudo', 'cat', template_file, '>|', netplan_file], shell=True, check=True)
 
     # Apply new netplan config
     #subprocess.run(['sudo', 'netplan', 'try'], shell=True, check=True)

@@ -5,9 +5,10 @@ network:
     $1$:                                               # Interface Name
       #addresses:                                      # Static Addresses for Interface
       #  - xxx.xxx.xxx.xxx/xx
-      gateway4: $2$                                   # Default Gateway
+      Dhcp4: $2$
+      gateway4: $3$                                   # Default Gateway
       nameservers:                                     # DNS Server
-          addresses: [$3$]
+          addresses: [$4$]
       routes:                                          # Default Route -> Default Gateway
         - to: default                     
-        via: $2$
+        via: $3$
