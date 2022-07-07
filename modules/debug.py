@@ -12,7 +12,7 @@ def debug():
     print('Wird DHCP benötigt?')
     dhcp_needed = input('(y/n): ').upper()
     # Only 'y' and 'n' allowed
-    while not dhcp_needed == 'y' or 'n':
+    while not dhcp_needed == 'Y' or 'N':
         dhcp_needed = input('(y/n): ').upper()
     if dhcp_needed == 'Y':
         dhcp_needed = "yes"
