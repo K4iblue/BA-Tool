@@ -1,0 +1,13 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    $1$:                                               # Interface Name
+      #addresses:                                      # Static Addresses for Interface
+      #  - xxx.xxx.xxx.xxx/xx
+      gateway4: $2$                                   # Default Gateway
+      nameservers:                                     # DNS Server
+          addresses: [$3$]
+      routes:                                          # Default Route -> Default Gateway
+        - to: default                     
+        via: $2$

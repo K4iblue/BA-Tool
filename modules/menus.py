@@ -1,6 +1,7 @@
 from . import hardening
 #from . import docker
 #from . import maintenance
+from . import debug as de
 from . import helper_functions as hf
 
 # Main and submenus
@@ -12,10 +13,11 @@ def main_menu():
           '1. Härtung \n' +
           '2. Docker \n' +
           '3. Systempflege \n' +
-          '----- Please enter a number (0-3) -----')
+          '4. DEBUG \n' +
+          '----- Please enter a number (0-4) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,4)
+    case_number = hf.get_int(0,5)
 
     match case_number:
         case 0:
@@ -26,6 +28,8 @@ def main_menu():
             docker_submenu()
         case 3:
             maintenance_submenu()
+        case 4:
+            debug_submenu()
 
 # Hardening Menu
 def hardening_submenu():
@@ -98,3 +102,19 @@ def maintenance_submenu():
             print('Case 1')
         case 2:
             print('Case 2')
+
+# DEBUG Menu
+def debug_submenu():
+    print('----------- Debug Menu ----------- \n' +
+            '0. Main Menu \n' +
+            '1. DEBUG\n' +
+            '----- Please enter a number (0-1) -----')
+
+    # Get a Number from the user in given range
+    case_number = hf.get_int(0,2)
+
+    match case_number:
+        case 0:
+            main_menu()
+        case 1:
+            de.debug()

@@ -5,6 +5,36 @@ import sys
 # Import helper functions
 from . import helper_functions as hf
 
+# Execute system hardening
+def system_hardening():
+    print('Test')
+    # Grober Ablauf:
+    # Software installieren die gebraucht wird
+        # nslookup: apt-get install dnsutils
+        # ping: sudo apt install iputils-ping
+
+    # Abfragen:
+    # Default Gateway / Default Route
+    # DNS Server
+    # NTP Server: https://timetoolsltd.com/ntp/how-to-install-and-configure-ntp-on-linux/
+    # Syslog Server
+    # SNMP v3: https://www.thegeekdiary.com/centos-rhel-6-install-and-configure-snmpv3/
+    # Ports für Firewall
+
+    # Firewall anpassen
+    # Configfile erstellen (entsprechende Abfragen komm hier)
+    # Härtungsskript starten
+    # Härtung erfolgreich? (vielleicht Tests definieren)
+    # Autmatische Updates aktivieren? (Ansonsten hinweis aus Punkt -> Systempflege)
+
+    # Main Menu
+    return
+
+# Hardening start
+def hardening_check_programs():
+    # Check ob Programme schon installiert sind, dann überspringe die komplette Funktion
+    print('')
+
 # Create configfile for hardening script
 def create_configfile():
     # 1. The IP addresses that will be able to connect with SSH, separated by spaces // Default: '127.0.0.1'
@@ -115,3 +145,16 @@ def start_hardening_script():
 
     # Run Hardening Script
     subprocess.run(['sudo', 'bash', 'scripts/hardening/ubuntu.sh'], shell=True, check=True)
+
+# Netplan configuration (DNS, Default Gateway/ Route)
+def config_netplan():
+    print("1")
+    # DNS Server anpassen: /run/systemd/resolve/stub-resolv.conf
+    # nameserver ip ip ip ip
+    # IPs mit Leerzeichen trennen
+    #print(dns_ips)
+
+ #sed -i '/^nameserver/d' /etc/resolv.conf
+
+
+# cat /first/file/same_name > /second/file/same_name
