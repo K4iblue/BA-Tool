@@ -74,10 +74,12 @@ def debug():
     #subprocess.run(['sudo', 'chmod', '644', netplan_file], shell=True, check=True)
 
     # https://serverfault.com/questions/1032595/how-to-get-netplan-to-set-the-dns-server-in-etc-resolv-conf-based-on-info-comin    
-    subprocess.run(['sudo', 'unlink', '/etc/resolv.conf'], shell=True, check=True)
+    #subprocess.run(['sudo', 'unlink', '/etc/resolv.conf'], shell=True, check=True)
+    os.system('sudo unlink /etc/resolv.conf')
     #sudo unlink /etc/resolv.conf
     #sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-    subprocess.run(['sudo', 'ln', 'sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], shell=True, check=True)
-    
+    #subprocess.run(['sudo', 'ln', 'sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], shell=True, check=True)
+    os.system('sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf')
+
     # Apply new netplan config
     subprocess.run(['sudo', 'netplan', '--debug', 'try'], shell=True, check=True)
