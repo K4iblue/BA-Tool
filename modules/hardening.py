@@ -99,7 +99,7 @@ def create_configfile():
     print('Wird snapd benötigt?')
     snapd_removal = input('(y/n): ').upper()
     # Only 'y' and 'n' allowed
-    while not snapd_removal == 'Y' or 'N':
+    while snapd_removal not in ['Y','N']:
         snapd_removal = input('(y/n): ').upper()
 
     # 14. Add something just to verify that you actually glanced the code // Default: ''

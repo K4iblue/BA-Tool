@@ -4,11 +4,10 @@ network:
   ethernets:
     $1$:
       dhcp4: $2$
-      #addresses: [$$]
-      addresses: [192.168.231.129/24]
+      addresses: [$3$]
       nameservers:
-          addresses: [$3$]
+          addresses: [$4$]
       routes:
       - to: default                     
-        via: $4$
+        via: $5$
         metric: 100
