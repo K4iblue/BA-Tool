@@ -62,7 +62,7 @@ def debug():
 
     ### Needs fixing:
     # Rechte anpassen                   666 (Alle lesen und schreiben)
-    os.chmod(netplan_file, 0o666)
+    os.chmod(netplan_file, 0o777)
     #subprocess.run(['sudo', 'chmod', '666', netplan_file], shell=True, check=True)
     # # Replace netplan with template
     #os.system()
