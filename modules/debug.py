@@ -33,8 +33,8 @@ def debug():
     config_list = []
     config_list += [interface_name]
     config_list += [dhcp_needed]
-    config_list += [dgw_ips]
     config_list += [dns_ips]
+    config_list += [dgw_ips]
 
     # Get path to template file
     template_backup_path = os.path.join(sys.path[0]) + '/scripts/netplan/template_netplan_backup.yaml'
