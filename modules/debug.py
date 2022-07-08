@@ -62,11 +62,13 @@ def debug():
 
     ### Needs fixing:
     # Rechte anpassen                   666 (Alle lesen und schreiben)
-    subprocess.run(['sudo', 'chmod', '666', netplan_file], shell=True, check=True)
+    os.chmod(netplan_file, 0o666)
+    #subprocess.run(['sudo', 'chmod', '666', netplan_file], shell=True, check=True)
     # # Replace netplan with template
     subprocess.run(['sudo', 'cat', template_file, '>', netplan_file], shell=True, check=True)
     # Rechte wieder zurück anpassen     644 (Alle lesen, nur Owner schreiben)
-    subprocess.run(['sudo', 'chmod', '644', netplan_file], shell=True, check=True)
+    os.chmod(netplan_file, 0o644)
+    #subprocess.run(['sudo', 'chmod', '644', netplan_file], shell=True, check=True)
 
     
     
