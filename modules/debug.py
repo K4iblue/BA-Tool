@@ -66,7 +66,7 @@ def debug():
     #subprocess.run(['sudo', 'chmod', '666', netplan_file], shell=True, check=True)
     # # Replace netplan with template
     #os.system()
-    subprocess.run(['cat', template_file, '>', netplan_file], shell=True, check=True)
+    subprocess.run(['sudo', 'cat', template_file, '>', netplan_file], shell=True, check=True)
     # Rechte wieder zurück anpassen     644 (Alle lesen, nur Owner schreiben)
     os.chmod(netplan_file, 0o644)
     #subprocess.run(['sudo', 'chmod', '644', netplan_file], shell=True, check=True)
