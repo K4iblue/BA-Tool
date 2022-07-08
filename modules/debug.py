@@ -42,7 +42,7 @@ def debug():
     netplan_path = '/etc/netplan/'
     files = os.listdir(netplan_path)
     netplan_file = netplan_path + files[0].strip("'")
-    print('###### DEBUG: ' + files[0])
+    print('###### DEBUG: ' + files[0])      # DEBUG
 
     # Read from template file
     with open (template_backup_path, 'r', encoding='UTF-8') as file:
@@ -60,13 +60,16 @@ def debug():
     with open (template_file, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
-    # Backup netplan file
-    #backup_file = netplan_file + '_backup'
-    #backup_file = backup_file.strip("'")
-    #subprocess.run(['sudo', 'cp', netplan_file, backup_file], shell=True, check=True)
-
-    # Replace netplan with template
+    ### Needs fixing:
+    # Rechte anpassen                   666 (Alle lesen und schreiben)
+    subprocess.run(['sudo', 'chmod', '666', netplan_file], shell=True, check=True)
+    # # Replace netplan with template
     subprocess.run(['sudo', 'cat', template_file, '>', netplan_file], shell=True, check=True)
+    # Rechte wieder zurück anpassen     644 (Alle lesen, nur Owner schreiben)
+    subprocess.run(['sudo', 'chmod', '644', netplan_file], shell=True, check=True)
+
+    
+    
 
     # Apply new netplan config
     #subprocess.run(['sudo', 'netplan', 'try'], shell=True, check=True)
