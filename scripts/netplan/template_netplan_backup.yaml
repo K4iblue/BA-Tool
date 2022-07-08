@@ -5,7 +5,7 @@ network:
     $1$:
       dhcp4: $2$
       #addresses: [$$]
-      aaddresses: [192.168.231.129/24]
+      addresses: [192.168.231.129/24]
       nameservers:
           addresses: [$3$]
       routes:
