@@ -81,5 +81,6 @@ def debug():
     #subprocess.run(['sudo', 'ln', 'sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], shell=True, check=True)
     os.system('sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf')
 
+    os.system('sudo netplan --debug try')
     # Apply new netplan config
-    subprocess.run(['sudo', 'netplan', '--debug', 'try'], shell=True, check=True)
+    #subprocess.run(['sudo', 'netplan', '--debug', 'try'], shell=True, check=True)
