@@ -14,7 +14,7 @@ def debug():
     ## Only 'y' and 'n' allowed
     #while not dhcp_needed == 'y' or 'n':
     #    dhcp_needed = input('(y/n): ').upper()
-    dhcp_needed = "true"
+    dhcp_needed = "false"
     # dhcp true oder false !
 
     # User input: Default gateway/route 
@@ -33,6 +33,7 @@ def debug():
     config_list = []
     config_list += [interface_name]
     config_list += [dhcp_needed]
+    #config_list += [static_ips] # Fehlt noch
     config_list += [dns_ips]
     config_list += [dgw_ips]
 
@@ -72,8 +73,11 @@ def debug():
     os.chmod(netplan_file, 0o644)
     #subprocess.run(['sudo', 'chmod', '644', netplan_file], shell=True, check=True)
 
+    # https://serverfault.com/questions/1032595/how-to-get-netplan-to-set-the-dns-server-in-etc-resolv-conf-based-on-info-comin    
+    subprocess.run(['sudo', 'unlink', '/etc/resolv.conf'], shell=True, check=True)
+    #sudo unlink /etc/resolv.conf
+    #sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+    subprocess.run(['sudo', 'ln', 'sf', '/run/systemd/resolve/resolv.conf', '/etc/resolv.conf'], shell=True, check=True)
     
-    
-
     # Apply new netplan config
-    #subprocess.run(['sudo', 'netplan', 'try'], shell=True, check=True)
+    subprocess.run(['sudo', 'netplan', '--debug', 'try'], shell=True, check=True)
