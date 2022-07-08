@@ -14,7 +14,8 @@ def debug():
     ## Only 'y' and 'n' allowed
     #while not dhcp_needed == 'y' or 'n':
     #    dhcp_needed = input('(y/n): ').upper()
-    dhcp_needed = "No"
+    dhcp_needed = "true"
+    # dhcp true oder false !
 
     # User input: Default gateway/route 
     print('Wie lautet die IP des Default gateways?')
