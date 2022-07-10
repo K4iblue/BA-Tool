@@ -15,12 +15,17 @@ def system_hardening():
 
     # Abfragen:
     # Default Gateway / Default Route
-    # DNS Server
+    # DNS Server IP
+    # Statische IP fürs Interface
+    # DHCP benötigt + Server IP
+    config_netplan()
+
     # NTP Server: https://timetoolsltd.com/ntp/how-to-install-and-configure-ntp-on-linux/
-    # Syslog Server
+    create_configfile()
+
+    # Syslog Server (UDP port 514)
     # SNMP v3: https://www.thegeekdiary.com/centos-rhel-6-install-and-configure-snmpv3/
     # Ports für Firewall
-
     # Firewall anpassen
     # Configfile erstellen (entsprechende Abfragen komm hier)
     # Härtungsskript starten
@@ -97,7 +102,7 @@ def create_configfile():
 
     # 13. If 'Y' then the snapd package will be held to prevent removal // Default: 'Y'
     print('Wird snapd benötigt?')
-    snapd_removal = input('(y/n): ').upper()
+    snapd_removal = ''
     # Only 'y' and 'n' allowed
     while snapd_removal not in ['Y','N']:
         snapd_removal = input('(y/n): ').upper()
@@ -154,12 +159,10 @@ def config_netplan():
 
     # 2. DHCP needed ?
     print('Wird DHCP benötigt?')
-    dhcp_needed = input('(y/n): ').upper()
-    dhcp_needed = dhcp_needed.upper()
+    dhcp_needed = ''
     # Only 'y' and 'n' allowed
     while dhcp_needed not in ['Y','N']:
-        dhcp_needed = input('(y/n): ')
-        dhcp_needed = dhcp_needed.upper()
+        dhcp_needed = input('(y/n): ').upper()
     
     if dhcp_needed == 'Y':
         dhcp_needed = 'true'
