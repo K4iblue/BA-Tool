@@ -207,7 +207,6 @@ def config_netplan():
     netplan_path = '/etc/netplan/'
     files = os.listdir(netplan_path)
     netplan_file = netplan_path + files[0].strip("'")
-    print('###### DEBUG: ' + files[0])      # DEBUG
 
     # Read from template file
     with open (template_backup_path, 'r', encoding='UTF-8') as file:
