@@ -163,11 +163,8 @@ def config_netplan():
     # Only 'y' and 'n' allowed
     while dhcp_needed not in ['Y','N']:
         dhcp_needed = input('(y/n): ').upper()
-    
-    if dhcp_needed == 'Y':
-        dhcp_needed = 'true'
-    else:
-        dhcp_needed = 'false'
+
+    dhcp_needed = 'true' if dhcp_needed == 'Y' else 'false'
 
     # 3. Static IP, with subnetprefix (IPv4: range 1-32)
     print('Wie lautet die Statische IP des Interfaces?')
