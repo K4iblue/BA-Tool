@@ -118,3 +118,4 @@ def debug_submenu():
             main_menu()
         case 1:
             de.debug()
+            main_menu()
