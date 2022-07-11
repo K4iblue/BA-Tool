@@ -201,7 +201,7 @@ def config_netplan():
     config_list += [dgw_ips]        # 5. Default gateway
 
     # Get path to template file
-    template_backup_path = os.path.join(sys.path[0]) + '/scripts/netplan/template_netplan_backup.yaml'
+    template_backup_path = os.path.join(sys.path[0]) + '/scripts/netplan/template_netplan_template.yaml'
 
     # Get filenames in netplan directory
     netplan_path = '/etc/netplan/'
