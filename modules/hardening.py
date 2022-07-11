@@ -243,6 +243,44 @@ def config_netplan():
     # os.system('sudo netplan --debug try')     # For debugging use only 
     os.system('sudo netplan apply')
 
-
+# Syslog configuration
 def config_syslog():
-    print('Test')
+    print('Wird Syslog benötigt?')
+    syslog_needed = ''
+    # Only 'y' and 'n' allowed
+    while syslog_needed not in ['Y','N']:
+        syslog_needed = input('(y/n): ').upper()
+    
+    syslog_needed = True if syslog_needed == 'Y' else False
+
+    if syslog_needed is True:
+        # Get Syslog Server IP
+        print('Wie lautet die IP des Syslog Servers?')
+        syslog_server_ip_list = hf.get_ips()
+        # List to string, with spaces in between
+        syslog_server_ip = ' '.join(syslog_server_ip_list)
+    else:
+        return
+
+    # Create empty a empty list and fill it with the syslog server IP
+    config_list = []
+    config_list += [syslog_server_ip]
+
+    # Get path to template file
+    syslog_template = os.path.join(sys.path[0]) + '/config/templates/syslog.template'
+
+    # Read from template file
+    with open (syslog_template, 'r', encoding='UTF-8') as file:
+        filedata = file.read()
+    
+    # Replace variable with config value from config_list
+    count = 1
+    for n in config_list:
+        to_replace = '$'+str(count)+'$'
+        filedata = filedata.replace(to_replace, n)
+        count = count + 1
+    
+    # Write to file in current config folder
+    syslog_current_config = os.path.join(sys.path[0]) + '/config/current_config/syslog.cfg'
+    with open (syslog_current_config, 'w', encoding='UTF-8') as file:
+        file.write(filedata)

@@ -4,4 +4,4 @@
 #from . import helper_functions as hf
 
 def debug():
-    print('DEBUG')
+    print('### DEBUG ###')
