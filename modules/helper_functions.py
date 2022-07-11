@@ -22,7 +22,7 @@ def get_ips():
         ip_valid = 1
         for n in ips:
             if ip_validation(n) is False:
-                print(n + ' is not a valid IP Adress. Please enter a valid IP Adress!')
+                print(n + ' ist keine gültige IP-Adresse. Bitte eine gültigt IP-Adresse eingeben!')
                 ip_valid = 0
     return ips
 
