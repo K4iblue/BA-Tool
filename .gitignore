@@ -7,3 +7,6 @@ modules/__pycache__/
 
 # Draw IO
 *.bkp
+
+# Current config folder
+config/current_config/
