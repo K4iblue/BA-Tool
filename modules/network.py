@@ -186,3 +186,6 @@ def config_snmp():
             file.write(filedata)
     else:
         return
+
+def firewall_generator():
+    print('TEST')
