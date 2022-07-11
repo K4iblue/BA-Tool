@@ -127,7 +127,7 @@ def create_configfile():
     config_list += [snapd_removal]
     config_list += [change_me]
 
-    path = os.path.join(sys.path[0]) + '\\scripts\\hardening\\ubuntu.cfg'
+    path = os.path.join(sys.path[0]) + '/scripts/hardening/ubuntu.cfg'
     # Read from file
     with open (path, 'r', encoding='UTF-8') as file:
         filedata = file.read()
@@ -201,7 +201,7 @@ def config_netplan():
     config_list += [dgw_ips]        # 5. Default gateway
 
     # Get path to template file
-    template_backup_path = os.path.join(sys.path[0]) + '/scripts/netplan/template_netplan_template.yaml'
+    netplan_template = os.path.join(sys.path[0]) + '/config/templates/netplan.template'
 
     # Get filenames in netplan directory
     netplan_path = '/etc/netplan/'
@@ -209,7 +209,7 @@ def config_netplan():
     netplan_file = netplan_path + files[0].strip("'")
 
     # Read from template file
-    with open (template_backup_path, 'r', encoding='UTF-8') as file:
+    with open (netplan_template, 'r', encoding='UTF-8') as file:
         filedata = file.read()
     
     # Replace variable with config value from config_list
@@ -219,16 +219,16 @@ def config_netplan():
         filedata = filedata.replace(to_replace, n)
         count = count + 1
 
-    # Create new template file and write config_list into it
-    template_file = os.path.join(sys.path[0]) + '/scripts/netplan/' + files[0]
-    with open (template_file, 'w', encoding='UTF-8') as file:
+    # Write to file in current config folder
+    netplan_current_config = os.path.join(sys.path[0]) + '/config/current_config/' + files[0]
+    with open (netplan_current_config, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
     # Change file permissions to "666" so everyone can read and write
     os.chmod(netplan_file, 0o666)
 
     # # Replace netplan with template file
-    os.system('cat ' + template_file + ' > ' + netplan_file)
+    os.system('cat ' + netplan_current_config + ' > ' + netplan_file)
 
     # Change file permissions to "644" so everyone can read, but only owner can write
     os.chmod(netplan_file, 0o644)
@@ -242,3 +242,7 @@ def config_netplan():
     # Apply new netplan config
     # os.system('sudo netplan --debug try')     # For debugging use only 
     os.system('sudo netplan apply')
+
+
+def config_syslog():
+    print('Test')
