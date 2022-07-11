@@ -24,7 +24,11 @@ def system_hardening():
     create_configfile()
 
     # Syslog Server (UDP port 514)
+    config_syslog()
+
     # SNMP v3: https://www.thegeekdiary.com/centos-rhel-6-install-and-configure-snmpv3/
+
+
     # Ports für Firewall
     # Firewall anpassen
     # Configfile erstellen (entsprechende Abfragen komm hier)
@@ -110,7 +114,7 @@ def create_configfile():
     # 14. Add something just to verify that you actually glanced the code // Default: ''
     change_me = 'OK'
 
-    # Create empty a empty list and fill it with the config values
+    # Create a empty list and fill it with the config values
     config_list = []
     config_list += [ssh_ips]
     config_list += [user_groups]
@@ -192,7 +196,7 @@ def config_netplan():
     # List to string, with spaces in between
     dgw_ips = ' '.join(dgw_ips_list)
 
-    # Create empty a empty list and fill it with the config values
+    # Create a empty list and fill it with the config values
     config_list = []
     config_list += [interface_name] # 1. Interface
     config_list += [dhcp_needed]    # 2. DHCP true/false
@@ -262,7 +266,7 @@ def config_syslog():
     else:
         return
 
-    # Create empty a empty list and fill it with the syslog server IP
+    # Create a empty list and fill it with the syslog server IP
     config_list = []
     config_list += [syslog_server_ip]
 
