@@ -9,4 +9,4 @@ modules/__pycache__/
 *.bkp
 
 # Current config folder
-config/current_config/*
+#config/current_config/*
