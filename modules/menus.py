@@ -1,5 +1,5 @@
 from . import hardening
-#from . import network
+from . import network as nw
 #from . import docker
 #from . import maintenance
 from . import debug as de
@@ -109,14 +109,28 @@ def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
             '0. Main Menu \n' +
             '1. DEBUG\n' +
-            '----- Please enter a number (0-1) -----')
+            '2. Netplan config\n' +
+            '2. Syslog config\n' +
+            '3. SNMP config\n' +
+            '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,2)
+    case_number = hf.get_int(0,99)
 
     match case_number:
         case 0:
             main_menu()
         case 1:
             de.debug()
-            main_menu()
+            debug_submenu()
+        case 2:
+            nw.config_netplan()
+            debug_submenu()
+        case 3:
+            nw.config_syslog()
+            debug_submenu()
+        case 4:
+            nw.config_snmp()
+            debug_submenu()
+        case _:
+            debug_submenu()
