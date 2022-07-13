@@ -89,5 +89,5 @@ rouser authPrivUser authpriv -V systemonly
 includeDir /etc/snmp/snmpd.conf.d
 
 # Min password length 8 characters
-createUser $USER$ SHA $PASSWORD$ AES $ENCRYPTION_KEY$
+createUser $USER$ SHA-256 $PASSWORD$ AES $ENCRYPTION_KEY$
 rouser $USER$ authPriv
