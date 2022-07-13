@@ -100,6 +100,7 @@ def config_netplan():
     os.system('sudo netplan apply')
 
 # Syslog configuration
+# /etc/rsyslog.conf
 def config_syslog():
     print('Wird Syslog benötigt?')
     syslog_needed = ''
@@ -115,33 +116,47 @@ def config_syslog():
         syslog_server_ip_list = hf.get_ips()
         # List to string, with spaces in between
         syslog_server_ip = ' '.join(syslog_server_ip_list)
+
+        # Create a empty list and fill it with the syslog server IP
+        config_list = []
+        config_list += [syslog_server_ip]
+
+        # Get path to template file
+        syslog_template = os.path.join(sys.path[0]) + '/config/templates/syslog.template'
+
+        # Read from template file
+        with open (syslog_template, 'r', encoding='UTF-8') as file:
+            filedata = file.read()
+    
+        # Replace variable with config value from config_list
+        count = 1
+        for n in config_list:
+            to_replace = '$'+str(count)+'$'
+            filedata = filedata.replace(to_replace, n)
+            count = count + 1
+    
+        # Write to file in current config folder
+        syslog_current_config = os.path.join(sys.path[0]) + '/config/current_config/syslog.cfg'
+        with open (syslog_current_config, 'w', encoding='UTF-8') as file:
+            file.write(filedata)
+
+        syslog_file = '/etc/rsyslog.conf'
+        # Change file permissions to "666" so everyone can read and write
+        os.chmod(syslog_file, 0o666)
+
+        # Replace syslog file with template file
+        os.system('cat ' + syslog_current_config + ' > ' + syslog_file)
+
+        # Change file permissions to "644" so everyone can read, but only owner can write
+        os.chmod(syslog_file, 0o644)
+
+        # Restart syslog service
+        os.system('systemctl restart rsyslog')
     else:
         return
 
-    # Create a empty list and fill it with the syslog server IP
-    config_list = []
-    config_list += [syslog_server_ip]
-
-    # Get path to template file
-    syslog_template = os.path.join(sys.path[0]) + '/config/templates/syslog.template'
-
-    # Read from template file
-    with open (syslog_template, 'r', encoding='UTF-8') as file:
-        filedata = file.read()
-    
-    # Replace variable with config value from config_list
-    count = 1
-    for n in config_list:
-        to_replace = '$'+str(count)+'$'
-        filedata = filedata.replace(to_replace, n)
-        count = count + 1
-    
-    # Write to file in current config folder
-    syslog_current_config = os.path.join(sys.path[0]) + '/config/current_config/syslog.cfg'
-    with open (syslog_current_config, 'w', encoding='UTF-8') as file:
-        file.write(filedata)
-
 # SNMP configuration
+# /etc/snmp/snmpd.conf
 def config_snmp():
     print('Wird SNMPv3 benötigt?')
     snmp_needed = ''
@@ -184,6 +199,20 @@ def config_snmp():
         snmp_current_config = os.path.join(sys.path[0]) + '/config/current_config/snmp.cfg'
         with open (snmp_current_config, 'w', encoding='UTF-8') as file:
             file.write(filedata)
+
+        # Activate current config
+        snmp_file = '/etc/snmp/snmpd.conf'
+        # Change file permissions to "666" so everyone can read and write
+        os.chmod(snmp_file, 0o666)
+
+        # Replace snmp file with template file
+        os.system('cat ' + snmp_current_config + ' > ' + snmp_file)
+
+        # Change file permissions to "644" so everyone can read, but only owner can write
+        os.chmod(snmp_file, 0o644)
+
+        # Restart SNMP Service
+        os.system('systemctl restart snmpd')
     else:
         return
 
