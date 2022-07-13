@@ -110,8 +110,8 @@ def debug_submenu():
             '0. Main Menu \n' +
             '1. DEBUG\n' +
             '2. Netplan config\n' +
-            '2. Syslog config\n' +
-            '3. SNMP config\n' +
+            '3. Syslog config\n' +
+            '4. SNMP config\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
