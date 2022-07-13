@@ -8,6 +8,7 @@ from string import ascii_letters
 from . import helper_functions as hf
 
 # Netplan configuration (DHCP, Static IP, DNS, Default Gateway)
+# /etc/resolv.conf
 def config_netplan():
     # 1. Get interface name
     interface_name = subprocess.run("ip -o -4 route show to default | awk '{print $5}'", capture_output=True, shell=True, check=True)
