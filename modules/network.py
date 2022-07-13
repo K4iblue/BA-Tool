@@ -8,7 +8,8 @@ from string import ascii_letters
 from . import helper_functions as hf
 
 # Netplan configuration (DHCP, Static IP, DNS, Default Gateway)
-# /etc/resolv.conf
+# Netplan: /etc/netplan/
+# DNS: /etc/resolv.conf
 def config_netplan():
     # 1. Get interface name
     interface_name = subprocess.run("ip -o -4 route show to default | awk '{print $5}'", capture_output=True, shell=True, check=True)
@@ -78,7 +79,7 @@ def config_netplan():
 
     # Write to file in current config folder
     netplan_current_config = os.path.join(sys.path[0]) + '/config/current_config/' + files[0]
-    with open (netplan_current_config, 'w', encoding='UTF-8') as file:
+    with open (netplan_current_config, 'w+', encoding='UTF-8') as file:
         file.write(filedata)
 
     # Change file permissions to "666" so everyone can read and write
@@ -138,7 +139,7 @@ def config_syslog():
     
         # Write to file in current config folder
         syslog_current_config = os.path.join(sys.path[0]) + '/config/current_config/syslog.cfg'
-        with open (syslog_current_config, 'w', encoding='UTF-8') as file:
+        with open (syslog_current_config, 'w+', encoding='UTF-8') as file:
             file.write(filedata)
 
         syslog_file = '/etc/rsyslog.conf'
@@ -198,7 +199,7 @@ def config_snmp():
     
         # Write to file in current config folder
         snmp_current_config = os.path.join(sys.path[0]) + '/config/current_config/snmp.cfg'
-        with open (snmp_current_config, 'w', encoding='UTF-8') as file:
+        with open (snmp_current_config, 'w+', encoding='UTF-8') as file:
             file.write(filedata)
 
         # Activate current config
