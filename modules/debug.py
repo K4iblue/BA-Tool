@@ -4,17 +4,8 @@
 #from . import helper_functions as hf
 from .easyufw import easyufw as ufw
 
-#def debug_firewall():
-#    print('SSH')
-#    debug(22)
-#    print('DNS')
-#    debug(53,'udp', '192.168.1.2')
-#    print('HTTP')
-#    debug(port=80,ip='192.168.1.0/24')
-
-# A thin wrapper over the thin wrapper that is ufw
+# EasyUFW => A thin wrapper over the thin wrapper that is ufw
 # Usage:
-#   import easyufw as ufw
 #   ufw.disable()        # disable firewall
 #   ufw.enable()         # enable firewall
 #   ufw.allow()          # default allow -- allow all
@@ -29,88 +20,70 @@ from .easyufw import easyufw as ufw
 #   ufw.reset()          # restore defaults
 #   ufw.status()         # return status string (default verbose=True)
 #   ufw.run("allow 22") # directly run command as if from command line
-#def debug(port, protocol='', ip='', direction=''):
-def debug():
-    # DEBUGGING IP
-    ip = '8.8.8.8'
-    port = 53
 
+def debug(port, protocol='', sender_ip='', target_ip=''):
     # Start UFW if disabled and print status 
     ufw.enable()         # enable firewall
-    print(ufw.status())
+    print(ufw.status())  # DEBUG
 
-    # UFW default deny everything, but allow SSH (Port 22)
+    # UFW default => deny everything even ping!
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
+    # but allow SSH (Port 22)
     print('SSH (Port: 22) freigeben')
     ufw.allow(22)
+    print(ufw.status()) # DEBUG
 
-    #print('DNS (Port: 53) für ' + str(ip) + ' freigeben')
-    #ufw.run('allow from ' + str(ip) + ' to any port ' + str(port))
-    print('DNS (Port: 53) für freigeben')
-    ufw.run('allow out ' + str(port))
+    # Allow SSH only from specific IP-address
+    # ufw.run('allow from ' + str(ip) + ' to any port ' str(port))
 
-    print(ufw.status())
-    #print('DEBUG: Firewall function call')
-#
-    ## Start UFW if disabled
-    #ufw.enable()
-#
-    ## 1x IP: ufw allow from 203.0.113.103 proto tcp to any port 22
-    ## Range: ufw allow from 203.0.113.0/24 proto tcp to any port 22
-    ## Für alle IPs
-    #if ip == '':
-    #    print('Port ' + str(port) + '/' + str(protocol) + ' wird freigegeben')
-    #    if protocol == '':
-    #        ufw.allow(port)
-    #    else:
-    #        ufw.allow(port, protocol)
-    ## Nur bestimmte IPs
-    #else:
-    #    print('Port ' + str(port) + '/' + str(protocol) + ' wird freigegeben für ' + str(ip))
-    #    if protocol == '':
-    #        print('Test 1')
-    #        ufw.run('allow from' + str(ip) + 'to any' + str(port))
-    #    else:
-    #        print('Test 2')
-    #        ufw.run('allow proto' + str(protocol) + 'from any')
-    #        ufw.run('allow from' + str(ip) + 'to any' + str(port) + 'proto' + )
-    #
-    ## Alles außer IP übergeben
-    #if ip == '':
-    #    # Nur Port und Richtung übergeben
-    #    if protocol == '':
-    #        # Nur Port übergeben
-    #        if direction == '':
-    #            ufw.run('allow ' + str(port))
-    #        else:
-    #            ufw.run('allow ' + str(direction) + ' any' + )
-    #    else:
-    ## Alles übergeben
-    #else:
-#
-#
-    #print(ufw.status())
+    # Define outgoing rules only !!!
+    # sudo ufw allow out from <sender.ip> to <target.ip> port <port>
 
+    # No IP-address give
+    if sender_ip == '' and target_ip == '':
+        # No protocol given
+        if protocol == '':
+            ufw.allow(port)
+        # Protocol given
+        else:
+            ufw.allow(port, protocol)
 
-    #os.system('sudo ufw enable')
+    # only sender IP given 
+    elif sender_ip == '':
+        # No protocol given
+        if protocol == '':
+            ufw.run('ufw allow out from ' + sender_ip + ' to any port ' + port)
+        # Protocol given
+        else:
+            ufw.run('ufw allow out from ' + sender_ip + ' to any proto ' + protocol + ' port ' + port)
+
+    # only target IP given
+    elif target_ip == '':
+        # No protocol given
+        if protocol == '':
+            ufw.run('ufw allow out from ' + sender_ip + ' to ' + target_ip + ' port ' + port)
+        # Protocol given
+        else:
+            ufw.run('ufw allow out from ' + sender_ip + ' to ' + target_ip + ' proto ' + protocol + ' port ' + port)
 
     
-    #ufw.allow(port int, protocol str ['tcp','udp'])
 
-    #os.system('sudo ufw allow'+port)
-    #os.system('sudo ufw allow out'+port)
-    #os.system('sudo ufw deny'+port)
-    #os.system('sudo ufw deny out'+port)
+    #ufw.run('allow out from 1.1.1.1 to any port')
+   
+   # Working DNS
+   # sudo ufw allow out to 8.8.8.8 port 53
+   # sudo ufw allow in from 8.8.8.8 port 53
 
-#debug(22,'tcp', '192.168.1.1')
-#debug(54,'udp', '192.168.1.2')
-#debug(port=80,ip='192.168.1.3')
+   # Working SSH
+   # sudo ufw allow from 192.168.231.1 proto tcp to any port 22
 
 
-# Default UFW Regeln, Logging und erweiterter Status
-# sudo ufw logging on
-# sudo ufw status verbose
-# sudo ufw default deny incoming
-# sudo ufw default allow outgoing
-# sudo ufw allow from 192.168.178.49 port 22
+#############################################################################
+# Working SSH from one IP and receiving DNS answer from 8.8.8.8
+
+# Mit TCP als protocol
+# sudo ufw allow from 192.168.231.1 proto tcp to any port 22
+
+# Ohne Protocol
+# sudo ufw allow from 8.8.8.8 to any port 53
