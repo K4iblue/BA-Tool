@@ -24,12 +24,18 @@ def debug(port, protocol='', ip=''):
     # Für alle IPs
     if ip == '':
         print('Port ' + str(port) + '/' + str(protocol) + ' wird freigegeben')
-        ufw.allow(port, protocol)
+        if protocol == '':
+            ufw.allow(port)
+        else:
+            ufw.allow(port, protocol)
     # Nur bestimmte IPs
     else:
         print('Port ' + str(port) + '/' + str(protocol) + ' wird freigegeben für ' + str(ip))
-        ufw.run('allow' + str(port) + '/' + str(protocol) + 'from' + str(ip))
-    
+        if protocol == '':
+            ufw.run('allow' + str(port) + 'from' + str(ip))
+        else:
+            ufw.run('allow' + str(port) + '/' + str(protocol) + 'from' + str(ip))
+        
     ufw.status()
 
 
