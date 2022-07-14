@@ -32,7 +32,7 @@ from .easyufw import easyufw as ufw
 #def debug(port, protocol='', ip='', direction=''):
 def debug():
     # DEBUGGING IP
-    ip = '1.1.1.1'
+    ip = '8.8.8.8'
     port = 53
 
     # Start UFW if disabled and print status 
