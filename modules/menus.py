@@ -121,7 +121,7 @@ def debug_submenu():
         case 0:
             main_menu()
         case 1:
-            de.debug()
+            de.debug_firewall()
             debug_submenu()
         case 2:
             nw.config_netplan()

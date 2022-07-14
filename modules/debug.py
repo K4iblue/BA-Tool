@@ -4,6 +4,15 @@
 #from . import helper_functions as hf
 from .easyufw import easyufw as ufw
 
+def debug_firewall():
+    print('SSH')
+    debug(22)
+    print('DNS')
+    debug(53,'udp', '192.168.1.2')
+    print('HTTP')
+    debug(port=80,ip='192.168.1.0/24')
+
+
 def debug(port, protocol='udp', ip=''):
     print('DEBUG: Firewall function call')
 
