@@ -36,7 +36,7 @@ def debug(port, protocol='', ip=''):
             ufw.run('allow from' + str(ip) + 'to any' + str(port))
         else:
             print('Test 2')
-            ufw.run('allow from' + str(ip) + 'proto' + str(protocol) + 'to any' + str(port))
+            ufw.run('allow from' + str(ip) + 'to any' + str(port) + 'proto' + str(protocol))
         
     print(ufw.status())
 
