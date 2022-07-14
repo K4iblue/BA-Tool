@@ -32,9 +32,9 @@ def debug(port, protocol='', ip=''):
     else:
         print('Port ' + str(port) + '/' + str(protocol) + ' wird freigegeben für ' + str(ip))
         if protocol == '':
-            ufw.run('allow' + str(port) + 'from' + str(ip))
+            ufw.run('allow from' + str(ip) + 'to any' + str(port))
         else:
-            ufw.run('allow' + str(port) + '/' + str(protocol) + 'from' + str(ip))
+            ufw.run('allow from' + str(ip) + 'proto' + str(protocol) + 'to any' + str(port))
         
     print(ufw.status())
 
