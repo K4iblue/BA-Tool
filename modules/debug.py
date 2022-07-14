@@ -45,10 +45,10 @@ def debug():
     print('SSH (Port: 22) freigeben')
     ufw.allow(22)
 
-    print('DNS (Port: 53) für 1.1.1.1 freigeben, ausgehend')
-    ufw.run('allow from ' + str(ip) + ' to any port ' + str(port))
-    print('DNS (Port: 53) für 1.1.1.1 freigeben, eingehend')
-    ufw.run('allow to ' + str(ip) + ' to any port ' + str(port))
+    #print('DNS (Port: 53) für ' + str(ip) + ' freigeben')
+    #ufw.run('allow from ' + str(ip) + ' to any port ' + str(port))
+    print('DNS (Port: 53) für freigeben')
+    ufw.run('allow out ' + str(port))
 
     print(ufw.status())
     #print('DEBUG: Firewall function call')
