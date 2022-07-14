@@ -31,6 +31,9 @@ from .easyufw import easyufw as ufw
 #   ufw.run("allow 22") # directly run command as if from command line
 #def debug(port, protocol='', ip='', direction=''):
 def debug():
+    # DEBUGGING IP
+    ip = '1.1.1.1'
+    port = 53
 
     # Start UFW if disabled and print status 
     ufw.enable()         # enable firewall
@@ -39,9 +42,13 @@ def debug():
     # UFW default deny everything, but allow SSH (Port 22)
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
+    print('SSH (Port: 22) freigeben')
     ufw.allow(22)
 
+    print('DNS (Port: 53) für 1.1.1.1 freigeben')
+    ufw.run('allow from ' + str(ip) + ' to any port ' + str(port))
 
+    print(ufw.status())
     #print('DEBUG: Firewall function call')
 #
     ## Start UFW if disabled
