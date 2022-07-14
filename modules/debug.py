@@ -36,7 +36,7 @@ def debug(port, protocol='', ip=''):
         else:
             ufw.run('allow' + str(port) + '/' + str(protocol) + 'from' + str(ip))
         
-    ufw.status()
+    print(ufw.status())
 
 
     #os.system('sudo ufw enable')
