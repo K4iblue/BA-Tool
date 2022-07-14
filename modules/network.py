@@ -220,3 +220,8 @@ def config_snmp():
 
 def firewall_generator():
     print('TEST')
+
+# NTP configuration
+# /etc/systemd/timesyncd.conf
+def config_ntp():
+    print('NTP Test')
