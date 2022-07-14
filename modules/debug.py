@@ -13,7 +13,7 @@ def debug_firewall():
     debug(port=80,ip='192.168.1.0/24')
 
 
-def debug(port, protocol='udp', ip=''):
+def debug(port, protocol='', ip=''):
     print('DEBUG: Firewall function call')
 
     # Start UFW if disabled
@@ -28,7 +28,7 @@ def debug(port, protocol='udp', ip=''):
     # Nur bestimmte IPs
     else:
         print('Port ' + str(port) + '/' + str(protocol) + ' wird freigegeben für ' + str(ip))
-        ufw.run('allow' + port + '/' + protocol + 'from' + ip)
+        ufw.run('allow' + str(port) + '/' + str(protocol) + 'from' + str(ip))
     
     ufw.status()
 
