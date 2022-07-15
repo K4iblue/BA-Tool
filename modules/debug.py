@@ -29,6 +29,7 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
     # Get interface name
     interface = subprocess.run("ip -o -4 route show to default | awk '{print $5}'", capture_output=True, shell=True, check=True)
     interface = str(interface.stdout).replace('b','').replace('\\n','').strip("'")
+    print('DEBUG: ' + interface)
 
     # Incoming: "sudo ufw allow in from <ip> to any proto <protocol> port <port>"
     # DNS Beispiel: "sudo ufw allow in on ens33 to 8.8.8.8 port 53"
