@@ -3,6 +3,7 @@ import os
 import sys
 import random
 from string import ascii_letters
+from .easyufw import easyufw as ufw
 
 # Import helper functions
 from . import helper_functions as hf
@@ -225,3 +226,31 @@ def firewall_generator():
 # /etc/systemd/timesyncd.conf
 def config_ntp():
     print('NTP Test')
+
+# EasyUFW => A thin wrapper over the thin wrapper that is ufw
+# Usage:
+#   ufw.disable()        # disable firewall
+#   ufw.enable()         # enable firewall
+#   ufw.allow()          # default allow -- allow all
+#   ufw.allow(22)        # allow port 22, any protocol
+#   ufw.allow(22,'tcp')  # allow port 22, tcp protocol
+#   ufw.allow('22/tcp')  # allow port 22, tcp protocol
+#   ufw.allow(53,'udp')  # allow port 53, udp protocol
+#   ufw.allow(53,'udp')  # allow port 53, udp protocol
+#   ufw.deny()           # default deny -- deny all
+#   ufw.deny(22,'tcp')   # deny port 22, tcp protocol
+#   ufw.delete(22)       # delete rules referencing port 22
+#   ufw.reset()          # restore defaults
+#   ufw.status()         # return status string (default verbose=True)
+#   ufw.run("allow 22") # directly run command as if from command line
+
+# UFW Default Setup, enable, deny everything
+def ufw_initial_setup():
+    print('DEBUG: Enable UFW')
+    ufw.enable()
+    print('DEBUG: Deny all incoming and outgoing traffic')
+    ufw.run('default deny incoming')
+    ufw.run('default deny outgoing')
+    #print('DEBUG: Allow SSH from IP 192.168.231.1')
+    #ufw_rule_generator(port=22,target_ip='192.168.231.1')
+    #print(ufw.status())
