@@ -233,8 +233,9 @@ def ufw_initial_setup():
     # Disable and reset UFW
     print('DEBUG: Disable and reset UFW')
     print('DEBUG: Enable UFW')
-    #os.system('sudo ufw --force disable')
-    os.system('sudo ufw --force reset && sudo ufw enable')    
+    os.system('sudo ufw --force reset')
+    os.system('sudo ufw --force disable')
+    os.system('sudo ufw enable')
     
     # Enable UFW
     #ufw.enable()
