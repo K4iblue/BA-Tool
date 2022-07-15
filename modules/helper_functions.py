@@ -1,6 +1,7 @@
 import ipaddress
+import socket
 
-# Function to validate IP addresses
+# Validate IP addresses
 def ip_validation(address):
     try:
         ipaddress.ip_address(address)
@@ -9,7 +10,7 @@ def ip_validation(address):
         return False
 
 
-# Function to get a list of IP addresses from the user
+# Get a list of IP addresses from the user
 def get_ips():
     ip_valid = 0
     while ip_valid == 0:
@@ -27,7 +28,7 @@ def get_ips():
     return ips
 
 
-# Function to get a number from the user in a given range
+# Get a number from the user in a given range
 def get_int(x,y):
     while True:
         try:
@@ -43,3 +44,9 @@ def get_int(x,y):
             continue
         break
     return number
+
+
+# Translates Hostname to IP
+def host_to_ip_translator(hostname):
+    hostname_ip = socket.gethostbyname(str(hostname))
+    return str(hostname_ip)
