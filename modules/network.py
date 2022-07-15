@@ -247,11 +247,11 @@ def ufw_initial_setup():
     ufw.run('default deny outgoing')
     
     # Allow SSH on IP 192.168.231.1
-    print('DEBUG: Allow SSH from IP 192.168.231.1')
-    ufw_rule_generator(port=22,target_ip='192.168.231.1')
+    #print('DEBUG: Allow SSH from IP 192.168.231.1')
+    #ufw_rule_generator(port=22,target_ip='192.168.231.1')
     
     # Show UFW Status
-    print(ufw.status())
+    #print(ufw.status())
 
 
 # UFW Rule Generator 
