@@ -233,18 +233,13 @@ def ufw_initial_setup():
     # Disable, reset and Enable UFW again
     print('DEBUG: Disable and reset UFW')
     print('DEBUG: Enable UFW')
-    os.system('sudo ufw disable')
-    os.system('sudo ufw reset')
-    os.system('sudo ufw reload')
-    os.system('sudo ufw enable')
-    
-    
-    # 
-    #ufw.enable()
+    os.system('sudo ufw --force disable')
+    os.system('sudo ufw --force reset')
+    os.system('sudo ufw --force enable')
 
     # Enable UFW logging
-    print('DEBUG: Enable UFW logging')
-    os.system('sudo ufw logging medium')
+    #print('DEBUG: Enable UFW logging')
+    #os.system('sudo ufw logging medium')
     
     # Deny everything
     print('DEBUG: Deny all incoming and outgoing traffic')
