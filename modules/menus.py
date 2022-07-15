@@ -112,6 +112,8 @@ def debug_submenu():
             '2. Netplan config\n' +
             '3. Syslog config\n' +
             '4. SNMP config\n' +
+            '5. Debug UFW Initial Setup\n' +
+            '6. Debug UFW Generator\n' + 
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -131,6 +133,20 @@ def debug_submenu():
             debug_submenu()
         case 4:
             nw.config_snmp()
+            debug_submenu()
+        case 5:
+            #de.ufw_initial_setup()
+            debug_submenu()
+        case 6:
+            print('Port=22, Target IP="", Protocol=""')
+            de.ufw_rule_generator(port=22)
+
+            print('Port=53, Target IP=8.8.8.8, Protocol=""')
+            de.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
+            
+            #print('Port=53, Target IP=8.8.8.8, Protocol=""')
+            #de.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
+
             debug_submenu()
         case _:
             debug_submenu()
