@@ -234,7 +234,7 @@ def ufw_initial_setup():
     print('DEBUG: Disable and reset UFW')
     print('DEBUG: Enable UFW')
     os.system('sudo ufw --force disable')
-    os.system('sudo ufw --force reset')
+    subprocess.run('sudo ufw --force reset', shell=True, check=True)
     os.system('sudo ufw --force enable')
 
     # Enable UFW logging with medium severity
