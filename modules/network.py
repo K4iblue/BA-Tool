@@ -235,7 +235,7 @@ def ufw_initial_setup():
     print('UFW Enable')
     ufw.enable()
     print('UFW Logging Low')
-    ufw.run('logging off')
+    ufw.run('logging low')
 
     # reset and restart UFW
     #print('DEBUG: Reset UFW')
