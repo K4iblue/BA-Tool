@@ -340,6 +340,7 @@ def get_repo_list():
     # Create empty list
     url_list = []
 
+    # Add translated IPs to new list
     count = 0
     for n in repo_list:
         url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
@@ -371,4 +372,13 @@ def get_ntp_list():
     ntp_list_string = ntp_list[0]
     ntp_list = ntp_list_string.split(' ')
     
-    return ntp_list
+    # Create empty list
+    url_list = []
+
+    # Add translated IPs to new list
+    count = 0
+    for n in ntp_list:
+        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
+        count += 1
+
+    return url_list
