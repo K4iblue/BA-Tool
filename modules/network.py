@@ -230,6 +230,8 @@ def config_ntp():
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
+    print('Vor Setup')
+    print(ufw.status())
     print('UFW Reset')
     ufw.reset()
     print('UFW Enable')
@@ -262,6 +264,8 @@ def ufw_initial_setup():
     
     # Show UFW Status
     #print(ufw.status())
+    print('Nach Setup')
+    print(ufw.status())
 
 
 # UFW Rule Generator 
