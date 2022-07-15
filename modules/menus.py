@@ -144,7 +144,7 @@ def debug_submenu():
             nw.ufw_rule_generator (port=443, target_ip='', protocol='')
             debug_submenu()
         case 7:
-            nw.get_repo_list()
+            nw.ufw_rules_add_lists(nw.get_repo_list())
             debug_submenu()
         case _:
             debug_submenu()

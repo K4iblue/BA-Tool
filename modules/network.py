@@ -347,3 +347,7 @@ def get_repo_list():
 def fqdn_to_ip_translator(hostname):
     hostname_ip = socket.gethostbyname(str(hostname))
     return str(hostname_ip)
+
+def ufw_rules_add_lists(port='', ip_list='', protocol=''):
+    for n in ip_list:
+        ufw_rule_generator(port, n, protocol)
