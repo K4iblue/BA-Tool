@@ -236,6 +236,7 @@ def ufw_initial_setup():
     os.system('sudo ufw --force reset')
     os.system('sudo ufw --force disable')
     os.system('sudo ufw enable')
+    os.system('sudo ufw logging medium')
     
     # Enable UFW
     #ufw.enable()
