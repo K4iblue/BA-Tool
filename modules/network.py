@@ -230,6 +230,13 @@ def config_ntp():
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
+    print('UFW Reset')
+    ufw.reset()
+    print('UFW Enable')
+    ufw.enable()
+    print('UFW Logging Low')
+    ufw.run('logging off')
+
     # reset and restart UFW
     #print('DEBUG: Reset UFW')
     #os.system('ufw --force reset')
