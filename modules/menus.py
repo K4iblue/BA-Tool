@@ -4,6 +4,7 @@ from . import network as nw
 #from . import maintenance
 from . import debug as de
 from . import helper_functions as hf
+from .easyufw import easyufw as ufw
 
 # Main and submenus
 
@@ -116,6 +117,11 @@ def debug_submenu():
             '6. Debug UFW Generator\n' + 
             '7. Debug UFW add APT repos\n' +
             '8. Debug UFW add NTP server\n' +
+            '9. UFW -> Disable\n' +
+            '10. UFW -> Reset\n' +
+            '11. UFW -> Enable\n' +
+            '12. UFW -> Logging OFF\n' +
+            '13. UFW -> Logging Low\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -150,5 +156,15 @@ def debug_submenu():
         case 8:
             nw.ufw_rules_add_lists(123, nw.get_ntp_list())
             debug_submenu()
+        case 9:
+            ufw.disable()
+        case 10:
+            ufw.reset()
+        case 11:
+            ufw.enable()
+        case 12:
+            ufw.run('logging off')
+        case 13:
+            ufw.run('logging low')
         case _:
             debug_submenu()

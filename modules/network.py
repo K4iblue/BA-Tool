@@ -231,18 +231,18 @@ def config_ntp():
 # UFW Default Setup
 def ufw_initial_setup():
     # reset and restart UFW
-    print('DEBUG: Reset UFW')
-    os.system('ufw --force reset')
+    #print('DEBUG: Reset UFW')
+    #os.system('ufw --force reset')
 
-    print('DEBUG: Disable')
-    ufw.disable()
+    #print('DEBUG: Disable')
+    #ufw.disable()
     
-    print('DEBUG: Enable UFW')
-    ufw.enable()
+    #print('DEBUG: Enable UFW')
+    #ufw.enable()
 
     # Enable UFW logging with low severity
-    print('DEBUG: Enable UFW logging')
-    ufw.run('logging low')
+    #print('DEBUG: Enable UFW logging')
+    #ufw.run('logging low')
     
     # Deny everything
     print('DEBUG: Deny all incoming and outgoing traffic')
