@@ -250,7 +250,7 @@ def ufw_initial_setup():
     print('DEBUG: Enable UFW')
     ufw.enable()
     # Enable UFW logging
-    print('DEBUG: UFW logging')
+    print('DEBUG: Enable UFW logging')
     ufw.run('logging on')
     # Deny everything
     print('DEBUG: Deny all incoming and outgoing traffic')
