@@ -227,13 +227,12 @@ def config_snmp():
 def config_ntp():
     print('NTP Test')
 
-# EasyUFW => A thin wrapper over the thin wrapper that is ufw
-
+# Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
     # Disable and reset UFW
     print('DEBUG: Disable and reset UFW')
-    ufw.run('reset')
+    ufw.reset()
     ufw.disable()
 
     # Enable UFW
