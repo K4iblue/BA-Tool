@@ -4,10 +4,8 @@ import sys
 import random
 import socket
 from string import ascii_letters
-from .easyufw import easyufw as ufw
 from urllib.parse import urlparse
-
-# Import helper functions
+from .easyufw import easyufw as ufw
 from . import helper_functions as hf
 
 # Netplan configuration (DHCP, Static IP, DNS, Default Gateway)
@@ -104,6 +102,7 @@ def config_netplan():
     # os.system('sudo netplan --debug try')     # For debugging use only 
     os.system('sudo netplan apply')
 
+
 # Syslog configuration
 # /etc/rsyslog.conf
 def config_syslog():
@@ -159,6 +158,7 @@ def config_syslog():
         os.system('systemctl restart rsyslog')
     else:
         return
+
 
 # SNMP configuration
 # /etc/snmp/snmpd.conf
@@ -221,8 +221,6 @@ def config_snmp():
     else:
         return
 
-def firewall_generator():
-    print('TEST')
 
 # NTP configuration
 # /etc/systemd/timesyncd.conf
@@ -245,7 +243,6 @@ def config_ntp():
     #   ufw.reset()          # restore defaults
     #   ufw.status()         # return status string (default verbose=True)
     #   ufw.run("allow 22") # directly run command as if from command line
-
 # UFW Default Setup
 def ufw_initial_setup():
     # Enable UFW
@@ -325,6 +322,13 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
             ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
 
 
+# UFW Rule Generator (for lists of IPs)
+def ufw_rules_add_lists(port='', ip_list='', protocol=''):
+    for n in ip_list:
+        ufw_rule_generator(port, n, protocol)
+
+
+# Get a list of all added "apt-get" Repositories
 def get_repo_list():
     # Get Repos
     repo_list = subprocess.run("apt-cache policy |grep http |awk '{print $2}' |sort -u", capture_output=True, shell=True, check=True)
@@ -343,11 +347,28 @@ def get_repo_list():
 
     return url_list
 
+
 # Translates Hostname to IP
 def fqdn_to_ip_translator(hostname):
     hostname_ip = socket.gethostbyname(str(hostname))
     return str(hostname_ip)
 
-def ufw_rules_add_lists(port='', ip_list='', protocol=''):
-    for n in ip_list:
-        ufw_rule_generator(port, n, protocol)
+
+#Get a list of all added NTP Servers
+def get_ntp_list():
+    # Get ntp server list
+    ntp_list = subprocess.run("grep -v '^\s*$\|^\s*\# NTP=' '/etc/systemd/timesyncd.conf' |awk '!/^ *#/ &&  NF'", capture_output=True, shell=True, check=True)
+    #ntp_list = str(ntp_list.stdout).replace("'",'').replace('NTP=','').split("\\n")
+
+    # String to list
+    ntp_list = str(ntp_list.stdout).replace("'",'').replace('NTP=','').split("\\n")
+
+    # Pop first element and remove empty entries
+    ntp_list.pop(0)
+    ntp_list = list(filter(None, ntp_list))
+
+    # List to string, split string again at whitespaces
+    ntp_list_string = ntp_list[0]
+    ntp_list = ntp_list_string.split(' ')
+    
+    return ntp_list

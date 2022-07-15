@@ -115,6 +115,7 @@ def debug_submenu():
             '5. Debug UFW Initial Setup\n' +
             '6. Debug UFW Generator\n' + 
             '7. Debug UFW add APT repos\n' +
+            '8. Debug UFW add NTP server\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -145,6 +146,9 @@ def debug_submenu():
             debug_submenu()
         case 7:
             nw.ufw_rules_add_lists(80,nw.get_repo_list(),'tcp')
+            debug_submenu()
+        case 8:
+            nw.ufw_rules_add_lists(123, nw.get_ntp_list())
             debug_submenu()
         case _:
             debug_submenu()
