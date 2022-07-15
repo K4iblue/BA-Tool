@@ -158,13 +158,18 @@ def debug_submenu():
             debug_submenu()
         case 9:
             ufw.disable()
+            debug_submenu()
         case 10:
             ufw.reset()
+            debug_submenu()
         case 11:
             ufw.enable()
+            debug_submenu()
         case 12:
             ufw.run('logging off')
+            debug_submenu()
         case 13:
             ufw.run('logging low')
+            debug_submenu()
         case _:
             debug_submenu()
