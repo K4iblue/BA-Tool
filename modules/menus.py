@@ -138,15 +138,9 @@ def debug_submenu():
             nw.ufw_initial_setup()
             debug_submenu()
         case 6:
-            #print('Port=22, Target IP="192.168.231.1", Protocol=""')
             nw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
-
-            #print('Port=53, Target IP=8.8.8.8, Protocol=""')
             nw.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
             nw.ufw_rule_generator (port=443, target_ip='', protocol='')
-            #print('Port=53, Target IP=8.8.8.8, Protocol=""')
-            #de.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
-
             debug_submenu()
         case _:
             debug_submenu()
