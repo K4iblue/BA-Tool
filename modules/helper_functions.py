@@ -1,5 +1,4 @@
 import ipaddress
-import socket
 
 # Validate IP addresses
 def ip_validation(address):
@@ -44,9 +43,3 @@ def get_int(x,y):
             continue
         break
     return number
-
-
-# Translates Hostname to IP
-def host_to_ip_translator(hostname):
-    hostname_ip = socket.gethostbyname(str(hostname))
-    return str(hostname_ip)

@@ -2,8 +2,10 @@ import subprocess
 import os
 import sys
 import random
+import socket
 from string import ascii_letters
 from .easyufw import easyufw as ufw
+from urllib.parse import urlparse
 
 # Import helper functions
 from . import helper_functions as hf
@@ -228,21 +230,21 @@ def config_ntp():
     print('NTP Test')
 
 # EasyUFW => A thin wrapper over the thin wrapper that is ufw
-# Usage:
-#   ufw.disable()        # disable firewall
-#   ufw.enable()         # enable firewall
-#   ufw.allow()          # default allow -- allow all
-#   ufw.allow(22)        # allow port 22, any protocol
-#   ufw.allow(22,'tcp')  # allow port 22, tcp protocol
-#   ufw.allow('22/tcp')  # allow port 22, tcp protocol
-#   ufw.allow(53,'udp')  # allow port 53, udp protocol
-#   ufw.allow(53,'udp')  # allow port 53, udp protocol
-#   ufw.deny()           # default deny -- deny all
-#   ufw.deny(22,'tcp')   # deny port 22, tcp protocol
-#   ufw.delete(22)       # delete rules referencing port 22
-#   ufw.reset()          # restore defaults
-#   ufw.status()         # return status string (default verbose=True)
-#   ufw.run("allow 22") # directly run command as if from command line
+    # Usage:
+    #   ufw.disable()        # disable firewall
+    #   ufw.enable()         # enable firewall
+    #   ufw.allow()          # default allow -- allow all
+    #   ufw.allow(22)        # allow port 22, any protocol
+    #   ufw.allow(22,'tcp')  # allow port 22, tcp protocol
+    #   ufw.allow('22/tcp')  # allow port 22, tcp protocol
+    #   ufw.allow(53,'udp')  # allow port 53, udp protocol
+    #   ufw.allow(53,'udp')  # allow port 53, udp protocol
+    #   ufw.deny()           # default deny -- deny all
+    #   ufw.deny(22,'tcp')   # deny port 22, tcp protocol
+    #   ufw.delete(22)       # delete rules referencing port 22
+    #   ufw.reset()          # restore defaults
+    #   ufw.status()         # return status string (default verbose=True)
+    #   ufw.run("allow 22") # directly run command as if from command line
 
 # UFW Default Setup
 def ufw_initial_setup():
@@ -321,3 +323,27 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
         else:
             # Allow out to given IP to given port + protocol
             ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
+
+
+def get_repo_list():
+    # Get Repos
+    repo_list = subprocess.run("apt-cache policy |grep http |awk '{print $2}' |sort -u", capture_output=True, shell=True, check=True)
+    repo_list = str(repo_list.stdout).replace('b','',1).strip("'").split("\\n")
+
+    # Remove empty entries
+    repo_list = list(filter(None, repo_list))
+
+    # Create empty list
+    url_list = []
+
+    count = 0
+    for n in repo_list:
+        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
+        count += 1
+
+    return url_list
+
+# Translates Hostname to IP
+def fqdn_to_ip_translator(hostname):
+    hostname_ip = socket.gethostbyname(str(hostname))
+    return str(hostname_ip)
