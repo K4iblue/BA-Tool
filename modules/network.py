@@ -228,23 +228,14 @@ def config_ntp():
     print('NTP Test')
 
 # EasyUFW => A thin wrapper over the thin wrapper that is ufw
-    # Usage:
-    #   ufw.disable()        # disable firewall
-    #   ufw.enable()         # enable firewall
-    #   ufw.allow()          # default allow -- allow all
-    #   ufw.allow(22)        # allow port 22, any protocol
-    #   ufw.allow(22,'tcp')  # allow port 22, tcp protocol
-    #   ufw.allow('22/tcp')  # allow port 22, tcp protocol
-    #   ufw.allow(53,'udp')  # allow port 53, udp protocol
-    #   ufw.allow(53,'udp')  # allow port 53, udp protocol
-    #   ufw.deny()           # default deny -- deny all
-    #   ufw.deny(22,'tcp')   # deny port 22, tcp protocol
-    #   ufw.delete(22)       # delete rules referencing port 22
-    #   ufw.reset()          # restore defaults
-    #   ufw.status()         # return status string (default verbose=True)
-    #   ufw.run("allow 22") # directly run command as if from command line
+
 # UFW Default Setup
 def ufw_initial_setup():
+    # Disable and reset UFW
+    print('DEBUG: Disable and reset UFW')
+    ufw.disable()
+    ufw.run('reset')
+
     # Enable UFW
     print('DEBUG: Enable UFW')
     ufw.enable()
@@ -343,23 +334,20 @@ def get_repo_list():
     # Add translated IPs to new list
     count = 0
     for n in repo_list:
-        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
-        count += 1
+        if hf.ip_validation(n) is False:
+            url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
+            count += 1
+        else:
+            url_list.append(n)
+            count += 1
 
     return url_list
-
-
-# Translates Hostname to IP
-def fqdn_to_ip_translator(hostname):
-    hostname_ip = socket.gethostbyname(str(hostname))
-    return str(hostname_ip)
 
 
 #Get a list of all added NTP Servers
 def get_ntp_list():
     # Get ntp server list
     ntp_list = subprocess.run("grep -v '^\s*$\|^\s*\# NTP=' '/etc/systemd/timesyncd.conf' |awk '!/^ *#/ &&  NF'", capture_output=True, shell=True, check=True)
-    #ntp_list = str(ntp_list.stdout).replace("'",'').replace('NTP=','').split("\\n")
 
     # String to list
     ntp_list = str(ntp_list.stdout).replace("'",'').replace('NTP=','').split("\\n")
@@ -386,3 +374,9 @@ def get_ntp_list():
             count += 1
 
     return url_list
+
+
+# Translates Hostname to IP
+def fqdn_to_ip_translator(hostname):
+    hostname_ip = socket.gethostbyname(str(hostname))
+    return str(hostname_ip)
