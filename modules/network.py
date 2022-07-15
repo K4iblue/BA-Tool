@@ -232,12 +232,12 @@ def config_ntp():
 def ufw_initial_setup():
     # Disable and reset UFW
     print('DEBUG: Disable and reset UFW')
-    os.system('sudo ufw --force disable')
-    os.system('sudo ufw --force reset')    
+    print('DEBUG: Enable UFW')
+    #os.system('sudo ufw --force disable')
+    os.system('sudo ufw --force reset && sudo ufw enable')    
     
     # Enable UFW
-    print('DEBUG: Enable UFW')
-    ufw.enable()
+    #ufw.enable()
 
     # Enable UFW logging
     #print('DEBUG: Enable UFW logging')
