@@ -230,17 +230,19 @@ def config_ntp():
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
-    # Disable, reset and Enable UFW again
-    print('DEBUG: Disable and reset UFW')
-    print('DEBUG: Enable UFW')
-    os.system('sudo ufw --force reset')
-    os.system('sudo ufw reload')
-    #subprocess.run('sudo ufw reset', shell=True, check=True)
-    os.system('sudo ufw --force enable')
+    # reset and restart UFW
+    print('DEBUG: Reset UFW')
+    os.system('ufw --force reset')
 
-    # Enable UFW logging with medium severity
+    print('DEBUG: Disable')
+    ufw.disable()
+    
+    print('DEBUG: Enable UFW')
+    ufw.enable()
+
+    # Enable UFW logging with low severity
     print('DEBUG: Enable UFW logging')
-    ufw.run('logging medium')
+    ufw.run('logging low')
     
     # Deny everything
     print('DEBUG: Deny all incoming and outgoing traffic')
