@@ -114,6 +114,7 @@ def debug_submenu():
             '4. SNMP config\n' +
             '5. Debug UFW Initial Setup\n' +
             '6. Debug UFW Generator\n' + 
+            '7. Hostname to DNS resolver\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -142,5 +143,7 @@ def debug_submenu():
             nw.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
             nw.ufw_rule_generator (port=443, target_ip='', protocol='')
             debug_submenu()
+        case 7:
+            de.debug()
         case _:
             debug_submenu()

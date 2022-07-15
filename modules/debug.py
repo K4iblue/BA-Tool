@@ -3,6 +3,10 @@
 #import sys
 #from . import helper_functions as hf
 #from .easyufw import easyufw as ufw
+import socket
 
 def debug():
-    print('DEBUG')
+    test = socket.gethostbyname('de.archive.ubuntu.com')
+    test2 = socket.gethostbyname('download.docker.com')
+    print(test)
+    print(test2)
