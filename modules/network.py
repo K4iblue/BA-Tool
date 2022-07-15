@@ -233,23 +233,27 @@ def ufw_initial_setup():
     # Disable and reset UFW
     print('DEBUG: Disable and reset UFW')
     os.system('sudo ufw --force disable')
-    os.system('sudo ufw --force reset')
+    os.system('sudo ufw --force reset')    
     
+    # Enable UFW
+    print('DEBUG: Enable UFW')
+    ufw.enable()
+
     # Enable UFW logging
     print('DEBUG: Enable UFW logging')
     ufw.run('logging on')
+    
     # Deny everything
     print('DEBUG: Deny all incoming and outgoing traffic')
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
+    
     # Allow SSH on IP 192.168.231.1
     print('DEBUG: Allow SSH from IP 192.168.231.1')
     ufw_rule_generator(port=22,target_ip='192.168.231.1')
-    # Enable UFW
-    print('DEBUG: Enable UFW')
-    ufw.enable()
+    
     # Show UFW Status
-    #print(ufw.status())
+    print(ufw.status())
 
 
 # UFW Rule Generator 
