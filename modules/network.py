@@ -244,13 +244,80 @@ def config_ntp():
 #   ufw.status()         # return status string (default verbose=True)
 #   ufw.run("allow 22") # directly run command as if from command line
 
-# UFW Default Setup, enable, deny everything
+# UFW Default Setup
 def ufw_initial_setup():
+    # Enable UFW
     print('DEBUG: Enable UFW')
     ufw.enable()
+    # Enable UFW logging
+    print('DEBUG: UFW logging')
+    ufw.run('logging on')
+    # Deny everything
     print('DEBUG: Deny all incoming and outgoing traffic')
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
-    #print('DEBUG: Allow SSH from IP 192.168.231.1')
-    #ufw_rule_generator(port=22,target_ip='192.168.231.1')
-    #print(ufw.status())
+    # Allow SSH on IP 192.168.231.1
+    print('DEBUG: Allow SSH from IP 192.168.231.1')
+    ufw_rule_generator(port=22,target_ip='192.168.231.1')
+    # Show UFW Status
+    print(ufw.status())
+
+
+# UFW Rule Generator 
+def ufw_rule_generator (port='', target_ip='', protocol=''):
+    # Get interface name
+    interface = subprocess.run("ip -o -4 route show to default | awk '{print $5}'", capture_output=True, shell=True, check=True)
+    interface = str(interface.stdout).replace('b','').split('\\n', 1)[0].strip("'") # Get only the first Interface entry
+
+    # DEBUG
+    print('DEBUG: Port=' + str(port) + '|| IP=' + str(target_ip) + '|| Protocol=' + str(protocol) + '|| Interface=' + str(interface))
+
+    # Create Incoming Rules:
+    # Syntax: "sudo ufw allow in from <ip> to any proto <protocol> port <port>"
+    # DNS example: "sudo ufw allow in on ens33 to 8.8.8.8 port 53"
+    # No IP-address given, not recommended!
+    if target_ip == '':
+        print('DEBUG: No IP-address given, not recommended!')
+        # No protocol given
+        if protocol == '':
+            # Allow in from anywhere to given port
+            ufw.run('allow in to any port ' + str(port))
+        # Protocol given
+        else:
+            # Allow in from anywhere to given port + protocol
+            ufw.run('allow in to any proto ' + str(protocol) + ' port ' + str(port))
+    # IP-address given
+    else:
+        # No protocol given
+        if protocol == '':
+            # Allow in from given IP to given port
+            ufw.run('allow in from ' + str(target_ip) + ' to any port ' + str(port))
+        # Protocol given
+        else:
+            # Allow in from given IP to given port + protocol
+            ufw.run('allow in from ' + str(target_ip) + ' to any proto ' + str(protocol) + ' port ' + str(port))
+
+    # Create Outgoing Rules:
+    # Syntax: "sudo ufw allow out on <interface> to <ip> proto <protocol> port <port>"
+    # DNS example: "sudo ufw allow out on ens33 to 8.8.8.8 port 53"
+    # No IP-address given, not recommended!
+    if target_ip == '':
+        print('DEBUG: No IP-address given, not recommended!')
+        # No protocol given
+        if protocol == '':
+            # Allow out to anywhere to given port
+            ufw.run('allow out on ' + str(interface) + ' to any port ' + str(port))
+        # Protocol given
+        else:
+            # Allow out to anywhere to given port + protocol
+            ufw.run('allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port))
+    # IP-address given
+    else:
+        # No protocol given
+        if protocol == '':
+            # Allow out to given IP to given port
+            ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port))
+        # Protocol given
+        else:
+            # Allow out to given IP to given port + protocol
+            ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
