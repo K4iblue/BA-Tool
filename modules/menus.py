@@ -135,7 +135,7 @@ def debug_submenu():
             nw.config_snmp()
             debug_submenu()
         case 5:
-            #de.ufw_initial_setup()
+            de.ufw_initial_setup()
             debug_submenu()
         case 6:
             print('Port=22, Target IP="", Protocol=""')

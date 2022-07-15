@@ -88,3 +88,14 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
             # Allow out to given IP to given port + protocol
             ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
             print('8')
+
+# UFW Default Setup, enable, deny everything allow SSH
+def ufw_initial_setup():
+    print('DEBUG: Enable UFW')
+    ufw.enable()
+    print('DEBUG: Deny all incoming and outgoing traffic')
+    ufw.run('default deny incoming')
+    ufw.run('default deny outgoing')
+    print('DEBUG: Allow SSH from IP 192.168.231.1')
+    ufw_rule_generator(port=22,target_ip='192.168.231.1')
+    print(ufw.status())
