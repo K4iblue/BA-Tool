@@ -350,4 +350,5 @@ def fqdn_to_ip_translator(hostname):
 
 def ufw_rules_add_lists(port='', ip_list='', protocol=''):
     for n in ip_list:
+        print(n)
         ufw_rule_generator(port, n, protocol)
