@@ -334,12 +334,8 @@ def get_repo_list():
     # Add translated IPs to new list
     count = 0
     for n in repo_list:
-        if hf.ip_validation(n) is False:
-            url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
-            count += 1
-        else:
-            url_list.append(n)
-            count += 1
+        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
+        count += 1
 
     return url_list
 
