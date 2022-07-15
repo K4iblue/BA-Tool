@@ -272,7 +272,7 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
     interface = str(interface.stdout).replace('b','').split('\\n', 1)[0].strip("'") # Get only the first Interface entry
 
     # DEBUG
-    print('DEBUG: Port=' + str(port) + '|| IP=' + str(target_ip) + '|| Protocol=' + str(protocol) + '|| Interface=' + str(interface))
+    print('DEBUG: Port=' + str(port) + ' || IP=' + str(target_ip) + ' || Protocol=' + str(protocol) + ' || Interface=' + str(interface))
 
     # Create Incoming Rules:
     # Syntax: "sudo ufw allow in from <ip> to any proto <protocol> port <port>"
@@ -350,5 +350,4 @@ def fqdn_to_ip_translator(hostname):
 
 def ufw_rules_add_lists(port='', ip_list='', protocol=''):
     for n in ip_list:
-        print(n)
         ufw_rule_generator(port, n, protocol)
