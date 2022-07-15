@@ -378,6 +378,7 @@ def get_ntp_list():
     # Add translated IPs to new list
     count = 0
     for n in ntp_list:
+        print(n)
         url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
         count += 1
 
