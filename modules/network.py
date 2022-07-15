@@ -379,7 +379,7 @@ def get_ntp_list():
     count = 0
     for n in ntp_list:
         print(n)
-        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
+        url_list.append(fqdn_to_ip_translator(n))
         count += 1
 
     return url_list
