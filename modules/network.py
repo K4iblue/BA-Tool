@@ -232,8 +232,9 @@ def config_ntp():
 def ufw_initial_setup():
     # Disable and reset UFW
     print('DEBUG: Disable and reset UFW, please enter "y" if asked')
-    os.system("sudo ufw reset")
     ufw.disable()
+    os.system("sudo ufw reset")
+    
 
     # Enable UFW
     print('DEBUG: Enable UFW')
