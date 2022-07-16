@@ -325,14 +325,9 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
 def ufw_reset_rules():
     # Get all rules
     all_rules = pyufw.get_rules()
-    #print(all_rules)
-    #dict_len = len(all_rules)
     for n in all_rules:
-        count = 1
-        print(all_rules.get(n))
-        #pyufw.delete(all_rules.get(n))
-        #print('Debug Count = ' + str(count))
-        count += 1
+        pyufw.delete(all_rules.get(n))
+        print('DEBUG || Delete rule = ' + all_rules.get(n))
         
         #for key in config_dict:
         #    to_replace = '$'+key+'$'
