@@ -233,8 +233,9 @@ def config_ntp():
 def ufw_initial_setup():
     print('Vor Setup')
     print(ufw.status())
-    print('UFW Reset')
-    fw2.reset()
+    print('UFW Reset (Delete all rules')
+    #fw2.reset()
+    fw2.delete('*')
     print('UFW Enable')
     ufw.enable()
     print('UFW Logging Low')
