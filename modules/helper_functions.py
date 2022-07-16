@@ -1,4 +1,5 @@
 import ipaddress
+import subprocess
 
 # Validate IP addresses
 def ip_validation(address):
@@ -43,3 +44,6 @@ def get_int(x,y):
             continue
         break
     return number
+
+def start_ufw_reset_script():
+    subprocess.run(['sudo', 'bash', 'scripts/scripts/ufw_reset.sh'], shell=True, check=True)

@@ -233,7 +233,7 @@ def ufw_initial_setup():
     print('Vor Setup')
     print(ufw.status())
     print('UFW Reset')
-    ufw.reset()
+    hf.start_ufw_reset_script()
     print('UFW Enable')
     ufw.enable()
     print('UFW Logging Low')
