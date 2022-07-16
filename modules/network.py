@@ -329,7 +329,8 @@ def ufw_reset_rules():
     #dict_len = len(all_rules)
     for n in all_rules.items():
         count = 1
-        pyufw.delete(str(n))
+        print(n)
+        #pyufw.delete(str(n))
         print('Debug Count = ' + str(count))
         count += 1
         
