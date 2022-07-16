@@ -122,6 +122,7 @@ def debug_submenu():
             '11. UFW -> Enable\n' +
             '12. UFW -> Logging OFF\n' +
             '13. UFW -> Logging Low\n' +
+            '14. UFW -> Delete all Rules\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -144,8 +145,8 @@ def debug_submenu():
             debug_submenu()
         case 5:
             # Delete rules
-            print('Debug: Delete all Rules')
-            nw.ufw_delete_rules()
+            #print('Debug: Delete all Rules')
+            #nw.ufw_delete_rules()
             
             print('Debug: Default Setup')
             nw.ufw_set_default_settings()
@@ -177,5 +178,7 @@ def debug_submenu():
         case 13:
             ufw.run('logging low')
             debug_submenu()
+        case 14:
+            nw.ufw_delete_rules()
         case _:
             debug_submenu()

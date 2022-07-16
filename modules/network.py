@@ -312,8 +312,8 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
 # UFW delete all Rules
 def ufw_delete_rules():
     # Disable UFW
-    print('DEBUG: UFW Disable')
-    pyufw.disable()
+    #print('DEBUG: UFW Disable')
+    #pyufw.disable()
 
     # Get all rules
     all_rules = pyufw.get_rules()
