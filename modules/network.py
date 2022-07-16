@@ -3,9 +3,9 @@ import os
 import sys
 import random
 import socket
-import time
 from string import ascii_letters
 from urllib.parse import urlparse
+from .pyufw import pyufw
 from .easyufw import easyufw as ufw
 from . import helper_functions as hf
 
@@ -228,6 +228,7 @@ def config_snmp():
 def config_ntp():
     print('NTP Test')
 
+
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
@@ -319,6 +320,17 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
     for n in ip_list:
         ufw_rule_generator(port, n, protocol)
 
+
+# UFW delete all Rules
+def ufw_reset_rules():
+    # Get all rules
+    all_rules = pyufw.get_rules()
+    dict_len = len(all_rules)
+    for count in range(dict_len+1):
+        count += 1
+        ufw.delete(1)
+        print('Debug Count = ' + count)
+        
 
 # Get a list of all added "apt-get" Repositories
 def get_repo_list():

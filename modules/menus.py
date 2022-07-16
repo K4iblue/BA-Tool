@@ -143,7 +143,7 @@ def debug_submenu():
             nw.config_snmp()
             debug_submenu()
         case 5:
-            ufw.reset()
+            nw.ufw_reset_rules()
             nw.ufw_initial_setup()
             debug_submenu()
         case 6:
