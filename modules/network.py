@@ -329,7 +329,7 @@ def ufw_reset_rules():
     for count in range(dict_len+1):
         count += 1
         ufw.delete(1)
-        print('Debug Count = ' + count)
+        print('Debug Count = ' + str(count))
         
 
 # Get a list of all added "apt-get" Repositories
