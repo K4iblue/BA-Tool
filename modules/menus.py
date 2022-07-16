@@ -180,5 +180,6 @@ def debug_submenu():
             debug_submenu()
         case 14:
             nw.ufw_delete_rules()
+            debug_submenu()
         case _:
             debug_submenu()
