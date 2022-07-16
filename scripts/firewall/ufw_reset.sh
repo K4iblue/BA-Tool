@@ -1,4 +1,8 @@
 #!/bin/bash
 
 # Reset UFW
-sudo ufw reset
+sudo ufw --force reset
+
+sudo ufw --force disable
+
+#sudo ufw --force enable

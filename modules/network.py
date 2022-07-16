@@ -232,12 +232,19 @@ def config_ntp():
 def ufw_initial_setup():
     print('Vor Setup')
     print(ufw.status())
-    print('UFW Reset')
+    
+    print('UFW Reset and Disable')
     hf.start_ufw_reset_script()
-    print('UFW Enable')
-    ufw.enable()
+    
+    print('DEBUG: Deny all incoming and outgoing traffic')
+    ufw.run('default deny incoming')
+    ufw.run('default deny outgoing')
+
     print('UFW Logging Low')
     ufw.run('logging low')
+    
+    print('UFW Enable')
+    ufw.enable()
 
     # reset and restart UFW
     #print('DEBUG: Reset UFW')
@@ -252,12 +259,7 @@ def ufw_initial_setup():
     # Enable UFW logging with low severity
     #print('DEBUG: Enable UFW logging')
     #ufw.run('logging low')
-    
-    # Deny everything
-    print('DEBUG: Deny all incoming and outgoing traffic')
-    ufw.run('default deny incoming')
-    ufw.run('default deny outgoing')
-    
+   
     # Allow SSH on IP 192.168.231.1
     print('DEBUG: Allow SSH from IP 192.168.231.1')
     ufw_rule_generator(port=22,target_ip='192.168.231.1')
