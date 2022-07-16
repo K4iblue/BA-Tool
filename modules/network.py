@@ -246,7 +246,7 @@ def ufw_initial_setup():
     
     print('UFW Enable')
     ufw.reset()
-    time.sleep(1)
+    ufw.run('reload')
     ufw.enable()
     
     #print('UFW Logging Low')
