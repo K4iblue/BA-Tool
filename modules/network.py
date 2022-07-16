@@ -232,8 +232,8 @@ def config_ntp():
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
-    print('Vor Setup')
-    print(ufw.status())
+    #print('Vor Setup')
+    #print(ufw.status())
     
     # Default settings
     #print('DEBUG: Deny all incoming and outgoing traffic')
@@ -251,8 +251,8 @@ def ufw_initial_setup():
     pyufw.enable()
     
     # Show UFW Status
-    print('Nach Setup')
-    print(ufw.status())
+    #print('Nach Setup')
+    #print(ufw.status())
 
 
 # UFW Rule Generator 
