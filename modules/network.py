@@ -329,9 +329,9 @@ def ufw_reset_rules():
     #dict_len = len(all_rules)
     for n in all_rules:
         count = 1
-        #print(n)
-        pyufw.delete(all_rules.get(n))
-        print('Debug Count = ' + str(count))
+        print(all_rules.get(n))
+        #pyufw.delete(all_rules.get(n))
+        #print('Debug Count = ' + str(count))
         count += 1
         
         #for key in config_dict:
