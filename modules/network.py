@@ -240,8 +240,8 @@ def ufw_initial_setup():
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
 
-    print('UFW Logging Low')
-    ufw.run('logging low')
+    #print('UFW Logging Low')
+    #ufw.run('logging low')
     
     print('UFW Enable')
     ufw.enable()
