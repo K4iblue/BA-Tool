@@ -3,6 +3,7 @@ import os
 import sys
 import random
 import socket
+import time
 from string import ascii_letters
 from urllib.parse import urlparse
 from .easyufw import easyufw as ufw
@@ -230,33 +231,35 @@ def config_ntp():
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW Default Setup
 def ufw_initial_setup():
-    print('Vor Setup')
-    print(ufw.status())
+    #print('Vor Setup')
+    #print(ufw.status())
     
-    print('UFW Disable')
-    ufw.disable()
+    #print('UFW Disable')
+    #ufw.disable()
 
-    print('UFW Reset')
-    hf.start_ufw_reset_script()
+    #print('UFW Reset')
+    #hf.start_ufw_reset_script()
     
-    print('DEBUG: Deny all incoming and outgoing traffic')
-    ufw.run('default deny incoming')
-    ufw.run('default deny outgoing')
+    #print('DEBUG: Deny all incoming and outgoing traffic')
+    #ufw.run('default deny incoming')
+    #ufw.run('default deny outgoing')
     
     print('UFW Enable')
+    ufw.reset()
+    time.sleep(1)
     ufw.enable()
     
     #print('UFW Logging Low')
     #ufw.run('logging low')
    
     # Allow SSH on IP 192.168.231.1
-    print('DEBUG: Allow SSH from IP 192.168.231.1')
-    ufw_rule_generator(port=22,target_ip='192.168.231.1')
+    #print('DEBUG: Allow SSH from IP 192.168.231.1')
+    #ufw_rule_generator(port=22,target_ip='192.168.231.1')
     
     # Show UFW Status
     #print(ufw.status())
-    print('Nach Setup')
-    print(ufw.status())
+    #print('Nach Setup')
+    #print(ufw.status())
 
 
 # UFW Rule Generator 
