@@ -1,3 +1,4 @@
+import os
 from . import hardening
 from . import network as nw
 #from . import docker
@@ -164,19 +165,19 @@ def debug_submenu():
             nw.ufw_rules_add_lists(123, nw.get_ntp_list())
             debug_submenu()
         case 9:
-            ufw.disable()
+            os.system('sudo ufw --force disable')
             debug_submenu()
         case 10:
-            ufw.reset()
+            os.system('sudo ufw --force reset')
             debug_submenu()
         case 11:
-            ufw.enable()
+            os.system('sudo ufw --force enable')
             debug_submenu()
         case 12:
-            ufw.run('logging off')
+            os.system('sudo ufw logging off')
             debug_submenu()
         case 13:
-            ufw.run('logging low')
+            os.system('sudo ufw logging low')
             debug_submenu()
         case 14:
             nw.ufw_delete_rules()
