@@ -273,7 +273,9 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
         # No protocol given
         if protocol == '':
             # Allow in from given IP to given port
-            subprocess.run(['sudo ufw allow in from ', str(target_ip), ' to any port ', str(port)], capture_output=True, shell=True, check=True)
+            ### DEBUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+            subprocess.run(('sudo ufw allow in from ' + str(target_ip) + ' to any port ' + str(port)), capture_output=True, shell=True, check=True)
+            'subprocess.run(['sudo ufw allow in from ', str(target_ip), ' to any port ', str(port)], capture_output=True, shell=True, check=True)
             #os.system('sudo ufw allow in from ' + str(target_ip) + ' to any port ' + str(port))
         # Protocol given
         else:
