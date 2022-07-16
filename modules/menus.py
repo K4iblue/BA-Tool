@@ -1,6 +1,7 @@
 import os
 from . import hardening
-from . import network as nw
+from . import network as net
+from . import firewall as fw
 #from . import docker
 #from . import maintenance
 from . import debug as de
@@ -134,30 +135,30 @@ def debug_submenu():
             de.debug()
             debug_submenu()
         case 2:
-            nw.config_netplan()
+            net.config_netplan()
             debug_submenu()
         case 3:
-            nw.config_syslog()
+            net.config_syslog()
             debug_submenu()
         case 4:
-            nw.config_snmp()
+            net.config_snmp()
             debug_submenu()
         case 5:
             print('DEBUG: Delete all Rules')
-            nw.ufw_delete_rules()
+            fw.ufw_delete_rules()
             print('DEBUG: Set Default Settings')
-            nw.ufw_set_default_settings()
+            fw.ufw_set_default_settings()
             debug_submenu()
         case 6:
-            nw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
-            nw.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
-            nw.ufw_rule_generator (port=443, target_ip='', protocol='')
+            fw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
+            fw.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
+            fw.ufw_rule_generator (port=443, target_ip='', protocol='')
             debug_submenu()
         case 7:
-            nw.ufw_rules_add_lists(80,nw.get_repo_list(),'tcp')
+            fw.ufw_rules_add_lists(80,net.get_repo_list(),'tcp')
             debug_submenu()
         case 8:
-            nw.ufw_rules_add_lists(123, nw.get_ntp_list())
+            fw.ufw_rules_add_lists(123, net.get_ntp_list())
             debug_submenu()
         case 9:
             os.system('sudo ufw --force disable')
@@ -175,7 +176,7 @@ def debug_submenu():
             os.system('sudo ufw logging low')
             debug_submenu()
         case 14:
-            nw.ufw_delete_rules()
+            fw.ufw_delete_rules()
             debug_submenu()
         case _:
             debug_submenu()
