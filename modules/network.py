@@ -327,13 +327,16 @@ def ufw_reset_rules():
     all_rules = pyufw.get_rules()
     #print(all_rules)
     #dict_len = len(all_rules)
-    for n in all_rules.items():
+    for n in all_rules:
         count = 1
         #print(n)
-        pyufw.delete(n)
+        pyufw.delete(all_rules.get(n))
         print('Debug Count = ' + str(count))
         count += 1
         
+        #for key in config_dict:
+        #    to_replace = '$'+key+'$'
+        #    filedata = filedata.replace(to_replace, config_dict.get(key))
 
 # Get a list of all added "apt-get" Repositories
 def get_repo_list():
