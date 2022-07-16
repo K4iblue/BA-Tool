@@ -233,14 +233,15 @@ def config_ntp():
 # UFW set default settings and enable
 def ufw_set_default_settings():
     # Enable UFW
-    print('DEBUG: UFW Enable')
-    pyufw.enable()
+    #print('DEBUG: UFW Enable')
+    os.system('sudo ufw enable')
+    #pyufw.enable()
     
     # Default settings
     print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
-    ufw.run('default allow incoming')
-    ufw.run('default allow outgoing')
-    ufw.run('logging low')
+    ufw.run('default deny incoming')
+    ufw.run('default deny outgoing')
+    ufw.run('logging medium')
 
 
 # UFW Rule Generator 
