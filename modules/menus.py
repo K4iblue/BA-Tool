@@ -144,9 +144,7 @@ def debug_submenu():
             net.config_snmp()
             debug_submenu()
         case 5:
-            print('DEBUG: Delete all Rules')
             fw.ufw_delete_rules()
-            print('DEBUG: Set Default Settings')
             fw.ufw_set_default_settings()
             debug_submenu()
         case 6:
