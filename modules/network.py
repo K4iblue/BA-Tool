@@ -5,6 +5,7 @@ import random
 import socket
 from string import ascii_letters
 from urllib.parse import urlparse
+import pyufw as fw2
 from .easyufw import easyufw as ufw
 from . import helper_functions as hf
 
@@ -233,7 +234,7 @@ def ufw_initial_setup():
     print('Vor Setup')
     print(ufw.status())
     print('UFW Reset')
-    ufw.reset()
+    fw2.reset()
     print('UFW Enable')
     ufw.enable()
     print('UFW Logging Low')
