@@ -46,4 +46,4 @@ def get_int(x,y):
     return number
 
 def start_ufw_reset_script():
-    subprocess.run(['sudo', 'bash', 'scripts/scripts/ufw_reset.sh'], shell=True, check=True)
+    subprocess.run(['sudo', 'bash', 'scripts/firewall/ufw_reset.sh'], shell=True, check=True)
