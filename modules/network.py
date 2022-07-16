@@ -325,12 +325,13 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
 def ufw_reset_rules():
     # Get all rules
     all_rules = pyufw.get_rules()
-    print(all_rules)
-    dict_len = len(all_rules)
-    for count in range(dict_len):
-        count += 1
-        pyufw.delete(1)
+    #print(all_rules)
+    #dict_len = len(all_rules)
+    for n in all_rules.items():
+        count = 1
+        pyufw.delete(str(n))
         print('Debug Count = ' + str(count))
+        count += 1
         
 
 # Get a list of all added "apt-get" Repositories
