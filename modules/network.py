@@ -5,6 +5,7 @@ import random
 import socket
 from string import ascii_letters
 from urllib.parse import urlparse
+from .ezufw import ezufw as fw3
 from .pyufw import pyufw as fw2
 from .easyufw import easyufw as ufw
 from . import helper_functions as hf
