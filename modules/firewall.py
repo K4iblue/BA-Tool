@@ -23,14 +23,14 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
     interface = str(interface.stdout).replace('b','').split('\\n', 1)[0].strip("'") # Get only the first Interface entry
 
     # DEBUG
-    print('DEBUG: Port=' + str(port) + ' || IP=' + str(target_ip) + ' || Protocol=' + str(protocol) + ' || Interface=' + str(interface))
+    #print('DEBUG: Port=' + str(port) + ' || IP=' + str(target_ip) + ' || Protocol=' + str(protocol) + ' || Interface=' + str(interface))
 
     # Create Incoming Rules:
     # Syntax: "sudo ufw allow in from <ip> to any proto <protocol> port <port>"
     # DNS example: "sudo ufw allow in on ens33 to 8.8.8.8 port 53"
     # No IP-address given, not recommended!
     if target_ip == '':
-        print('DEBUG: No IP-address given, not recommended!')
+        #print('DEBUG: No IP-address given, not recommended!')
         # No protocol given
         if protocol == '':
             # Allow in from anywhere to given port
@@ -55,7 +55,7 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
     # DNS example: "sudo ufw allow out on ens33 to 8.8.8.8 port 53"
     # No IP-address given, not recommended!
     if target_ip == '':
-        print('DEBUG: No IP-address given, not recommended!')
+        #print('DEBUG: No IP-address given, not recommended!')
         # No protocol given
         if protocol == '':
             # Allow out to anywhere to given port
@@ -90,4 +90,4 @@ def ufw_delete_rules():
     # Delete rules individually
     for n in all_rules:
         subprocess.run(('sudo ufw delete ' + all_rules.get(n)), capture_output=True, shell=True, check=True)
-        print('DEBUG || Delete rule = ' + all_rules.get(n))
+        #print('DEBUG: || Delete rule = ' + all_rules.get(n))
