@@ -5,7 +5,7 @@ import random
 import socket
 from string import ascii_letters
 from urllib.parse import urlparse
-import pyufw as fw2
+from .pyufw import pyufw as fw2
 from .easyufw import easyufw as ufw
 from . import helper_functions as hf
 
