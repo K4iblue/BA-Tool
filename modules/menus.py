@@ -5,7 +5,6 @@ from . import network as nw
 #from . import maintenance
 from . import debug as de
 from . import helper_functions as hf
-from .easyufw import easyufw as ufw
 
 # Main and submenus
 
@@ -109,26 +108,25 @@ def maintenance_submenu():
 # DEBUG Menu
 def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
-            '0. Main Menu \n' +
-            '1. DEBUG\n' +
-            '2. Netplan config\n' +
-            '3. Syslog config\n' +
-            '4. SNMP config\n' +
-            '5. Debug UFW Initial Setup\n' +
-            '6. Debug UFW Generator\n' + 
-            '7. Debug UFW add APT repos\n' +
-            '8. Debug UFW add NTP server\n' +
-            '9. UFW -> Disable\n' +
-            '10. UFW -> Reset\n' +
-            '11. UFW -> Enable\n' +
-            '12. UFW -> Logging OFF\n' +
-            '13. UFW -> Logging Low\n' +
-            '14. UFW -> Delete all Rules\n' +
+            '0. \tMain Menu \n' +
+            '1. \tDEBUG\n' +
+            '2. \tNetplan config\n' +
+            '3. \tSyslog config\n' +
+            '4. \tSNMP config\n' +
+            '5. \tDebug UFW Delete Rules and Default Setup\n' +
+            '6. \tDebug UFW Generator\n' + 
+            '7. \tDebug UFW add APT repos\n' +
+            '8. \tDebug UFW add NTP server\n' +
+            '9. \tUFW -> Disable\n' +
+            '10. \tUFW -> Reset\n' +
+            '11. \tUFW -> Enable\n' +
+            '12. \tUFW -> Logging OFF\n' +
+            '13. \tUFW -> Logging Low\n' +
+            '14. \tUFW -> Delete all Rules\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,99)
-
     match case_number:
         case 0:
             main_menu()
@@ -145,13 +143,10 @@ def debug_submenu():
             nw.config_snmp()
             debug_submenu()
         case 5:
-            # Delete rules
-            #print('Debug: Delete all Rules')
-            #nw.ufw_delete_rules()
-            
-            print('Debug: Default Setup')
+            print('DEBUG: Delete all Rules')
+            nw.ufw_delete_rules()
+            print('DEBUG: Set Default Settings')
             nw.ufw_set_default_settings()
-            
             debug_submenu()
         case 6:
             nw.ufw_rule_generator(port=22, target_ip='192.168.231.1')

@@ -6,7 +6,6 @@ import socket
 from string import ascii_letters
 from urllib.parse import urlparse
 from .pyufw import pyufw
-from .easyufw import easyufw as ufw
 from . import helper_functions as hf
 
 # Netplan configuration (DHCP, Static IP, DNS, Default Gateway)
@@ -229,23 +228,19 @@ def config_ntp():
     print('NTP Test')
 
 
-# Using EasyUFW => A even thinner wrapper for UFW
 # UFW set default settings and enable
 def ufw_set_default_settings():
     # Enable UFW
-    #print('DEBUG: UFW Enable')
     os.system('sudo ufw --force enable')
-
-    #pyufw.enable()
     
-    # Default settings
+    # Set Default settings
     print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
-    #ufw.run('default deny incoming')
-    #ufw.run('default deny outgoing')
-    #ufw.run('logging medium')
     os.system('sudo ufw default deny incoming')
     os.system('sudo ufw default deny outgoing')
     os.system('sudo ufw logging medium')
+
+    # DEBUG: Add SSH IP
+    ufw_rule_generator(port=22, target_ip='192.168.231.1')
 
 
 # UFW Rule Generator 
@@ -267,24 +262,20 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
         if protocol == '':
             # Allow in from anywhere to given port
             os.system('sudo ufw allow in to any port ' + str(port))
-            #ufw.run('allow in to any port ' + str(port))
         # Protocol given
         else:
             # Allow in from anywhere to given port + protocol
             os.system('sudo ufw allow in to any proto ' + str(protocol) + ' port ' + str(port))
-            #ufw.run('allow in to any proto ' + str(protocol) + ' port ' + str(port))
     # IP-address given
     else:
         # No protocol given
         if protocol == '':
             # Allow in from given IP to given port
             os.system('sudo ufw allow in from ' + str(target_ip) + ' to any port ' + str(port))
-            #ufw.run('allow in from ' + str(target_ip) + ' to any port ' + str(port))
         # Protocol given
         else:
             # Allow in from given IP to given port + protocol
             os.system(('sudo ufw allow in from ' + str(target_ip) + ' to any proto ' + str(protocol) + ' port ' + str(port)))
-            #ufw.run('allow in from ' + str(target_ip) + ' to any proto ' + str(protocol) + ' port ' + str(port))
 
     # Create Outgoing Rules:
     # Syntax: "sudo ufw allow out on <interface> to <ip> proto <protocol> port <port>"
@@ -296,24 +287,20 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
         if protocol == '':
             # Allow out to anywhere to given port
             os.system(('sudo ufw allow out on ' + str(interface) + ' to any port ' + str(port)))
-            #ufw.run('allow out on ' + str(interface) + ' to any port ' + str(port))
         # Protocol given
         else:
             # Allow out to anywhere to given port + protocol
             os.system('sudo ufw allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port))
-            #ufw.run('allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port))
     # IP-address given
     else:
         # No protocol given
         if protocol == '':
             # Allow out to given IP to given port
             os.system('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port))
-            #ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port))
         # Protocol given
         else:
             # Allow out to given IP to given port + protocol
             os.system('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
-            #ufw.run('allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
 
 
 # UFW Rule Generator (for lists of IPs)
@@ -324,17 +311,12 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
 
 # UFW delete all Rules
 def ufw_delete_rules():
-    # Disable UFW
-    #print('DEBUG: UFW Disable')
-    #pyufw.disable()
-
     # Get all rules
     all_rules = pyufw.get_rules()
     
     # Delete rules individually
     for n in all_rules:
         os.system('sudo ufw delete ' + all_rules.get(n))
-        #pyufw.delete(all_rules.get(n))
         print('DEBUG || Delete rule = ' + all_rules.get(n))
 
 
