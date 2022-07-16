@@ -238,9 +238,9 @@ def ufw_set_default_settings():
     
     # Default settings
     print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
-    ufw.run('default deny incoming')
-    ufw.run('default deny outgoing')
-    ufw.run('logging medium')
+    ufw.run('default allow incoming')
+    ufw.run('default allow outgoing')
+    ufw.run('logging low')
 
 
 # UFW Rule Generator 
