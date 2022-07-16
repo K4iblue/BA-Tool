@@ -5,8 +5,6 @@ import random
 import socket
 from string import ascii_letters
 from urllib.parse import urlparse
-from .ezufw import ezufw as fw3
-#from .pyufw import pyufw as fw2
 from .easyufw import easyufw as ufw
 from . import helper_functions as hf
 
@@ -234,13 +232,12 @@ def config_ntp():
 def ufw_initial_setup():
     print('Vor Setup')
     print(ufw.status())
-    print('UFW Reset (Delete all rules')
-    fw3.reset(default_policies=True, force=True)
-    #fw3.delete('*')
+    print('UFW Reset')
+    ufw.reset()
     print('UFW Enable')
     ufw.enable()
-    #print('UFW Logging Low')
-    #ufw.run('logging low')
+    print('UFW Logging Low')
+    ufw.run('logging low')
 
     # reset and restart UFW
     #print('DEBUG: Reset UFW')
