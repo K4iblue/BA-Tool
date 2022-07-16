@@ -261,26 +261,21 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
         # No protocol given
         if protocol == '':
             # Allow in from anywhere to given port
-            #os.system('sudo ufw allow in to any port ' + str(port))
-            subprocess.run(('sudo ufw allow in to any port ' + str(port)), capture_output=False, shell=True, check=True)
+            subprocess.run(('sudo ufw allow in to any port ' + str(port)), capture_output=True, shell=True, check=True)
         # Protocol given
         else:
             # Allow in from anywhere to given port + protocol
-            subprocess.run(('sudo ufw allow in to any proto ' + str(protocol) + ' port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow in to any proto ' + str(protocol) + ' port ' + str(port))
+            subprocess.run(('sudo ufw allow in to any proto ' + str(protocol) + ' port ' + str(port)), capture_output=True, shell=True, check=True)
     # IP-address given
     else:
         # No protocol given
         if protocol == '':
             # Allow in from given IP to given port
-            ### DEBUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
-            subprocess.run(('sudo ufw allow in from ' + str(target_ip) + ' to any port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow in from ' + str(target_ip) + ' to any port ' + str(port))
+            subprocess.run(('sudo ufw allow in from ' + str(target_ip) + ' to any port ' + str(port)), capture_output=True, shell=True, check=True)
         # Protocol given
         else:
             # Allow in from given IP to given port + protocol
-            subprocess.run(('sudo ufw allow in from ' + str(target_ip) + ' to any proto ' + str(protocol) + ' port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow in from ' + str(target_ip) + ' to any proto ' + str(protocol) + ' port ' + str(port))
+            subprocess.run(('sudo ufw allow in from ' + str(target_ip) + ' to any proto ' + str(protocol) + ' port ' + str(port)), capture_output=True, shell=True, check=True)
 
     # Create Outgoing Rules:
     # Syntax: "sudo ufw allow out on <interface> to <ip> proto <protocol> port <port>"
@@ -291,25 +286,21 @@ def ufw_rule_generator (port='', target_ip='', protocol=''):
         # No protocol given
         if protocol == '':
             # Allow out to anywhere to given port
-            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to any port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow out on ' + str(interface) + ' to any port ' + str(port))
+            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to any port ' + str(port)), capture_output=True, shell=True, check=True)
         # Protocol given
         else:
             # Allow out to anywhere to given port + protocol
-            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port))
+            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port)), capture_output=True, shell=True, check=True)
     # IP-address given
     else:
         # No protocol given
         if protocol == '':
             # Allow out to given IP to given port
-            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port))
+            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port)), capture_output=True, shell=True, check=True)
         # Protocol given
         else:
             # Allow out to given IP to given port + protocol
-            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port)), capture_output=False, shell=True, check=True)
-            #os.system('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port))
+            subprocess.run(('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port)), capture_output=True, shell=True, check=True)
 
 
 # UFW Rule Generator (for lists of IPs)
