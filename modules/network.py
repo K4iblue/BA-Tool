@@ -231,16 +231,16 @@ def config_ntp():
 
 # Using EasyUFW => A even thinner wrapper for UFW
 # UFW set default settings and enable
-def ufw_set_default_settings():   
+def ufw_set_default_settings():
+    # Enable UFW
+    print('DEBUG: UFW Enable')
+    pyufw.enable()
+    
     # Default settings
     print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
     ufw.run('logging medium')
-
-    # Enable UFW
-    print('DEBUG: UFW Enable')
-    pyufw.enable()
 
 
 # UFW Rule Generator 
