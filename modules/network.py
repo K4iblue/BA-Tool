@@ -236,11 +236,11 @@ def ufw_initial_setup():
     print(ufw.status())
     
     # Default settings
-    print('DEBUG: Deny all incoming and outgoing traffic')
-    ufw.run('default deny incoming')
-    ufw.run('default deny outgoing')
-    print('UFW Logging Medium')
-    ufw.run('logging medium')
+    #print('DEBUG: Deny all incoming and outgoing traffic')
+    #ufw.run('default deny incoming')
+    #ufw.run('default deny outgoing')
+    #print('UFW Logging Medium')
+    #ufw.run('logging medium')
 
     # Allow SSH on IP 192.168.231.1
     #print('DEBUG: Allow SSH from IP 192.168.231.1')
@@ -248,7 +248,7 @@ def ufw_initial_setup():
 
     # Enable UFW
     print('UFW Enable')
-    ufw.enable()
+    pyufw.enable()
     
     # Show UFW Status
     print('Nach Setup')
