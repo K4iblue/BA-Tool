@@ -230,29 +230,17 @@ def config_ntp():
 
 
 # Using EasyUFW => A even thinner wrapper for UFW
-# UFW Default Setup
-def ufw_initial_setup():
-    #print('Vor Setup')
-    #print(ufw.status())
-    
+# UFW set default settings and enable
+def ufw_set_default_settings():   
     # Default settings
-    #print('DEBUG: Deny all incoming and outgoing traffic')
-    #ufw.run('default deny incoming')
-    #ufw.run('default deny outgoing')
-    #print('UFW Logging Medium')
-    #ufw.run('logging medium')
-
-    # Allow SSH on IP 192.168.231.1
-    #print('DEBUG: Allow SSH from IP 192.168.231.1')
-    ufw_rule_generator(port=22,target_ip='192.168.231.1')
+    print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
+    ufw.run('default deny incoming')
+    ufw.run('default deny outgoing')
+    ufw.run('logging medium')
 
     # Enable UFW
     print('UFW Enable')
-    pyufw.enable()
-    
-    # Show UFW Status
-    #print('Nach Setup')
-    #print(ufw.status())
+    ufw.enable()
 
 
 # UFW Rule Generator 
@@ -322,16 +310,13 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
 
 
 # UFW delete all Rules
-def ufw_reset_rules():
+def ufw_delete_rules():
     # Get all rules
     all_rules = pyufw.get_rules()
     for n in all_rules:
         pyufw.delete(all_rules.get(n))
         print('DEBUG || Delete rule = ' + all_rules.get(n))
-        
-        #for key in config_dict:
-        #    to_replace = '$'+key+'$'
-        #    filedata = filedata.replace(to_replace, config_dict.get(key))
+
 
 # Get a list of all added "apt-get" Repositories
 def get_repo_list():

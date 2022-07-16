@@ -143,11 +143,13 @@ def debug_submenu():
             nw.config_snmp()
             debug_submenu()
         case 5:
-            print(ufw.status())
-            nw.ufw_reset_rules()
-            print(ufw.status())
-            nw.ufw_initial_setup()
-            print(ufw.status())
+            # Delete rules
+            print('Debug: Delete all Rules')
+            nw.ufw_delete_rules()
+            
+            print('Debug: Default Setup')
+            nw.ufw_set_default_settings()
+            
             debug_submenu()
         case 6:
             nw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
