@@ -239,8 +239,8 @@ def ufw_set_default_settings():
     ufw.run('logging medium')
 
     # Enable UFW
-    print('UFW Enable')
-    ufw.enable()
+    print('DEBUG: UFW Enable')
+    pyufw.enable()
 
 
 # UFW Rule Generator 
@@ -311,8 +311,14 @@ def ufw_rules_add_lists(port='', ip_list='', protocol=''):
 
 # UFW delete all Rules
 def ufw_delete_rules():
+    # Disable UFW
+    print('DEBUG: UFW Disable')
+    pyufw.disable()
+
     # Get all rules
     all_rules = pyufw.get_rules()
+    
+    # Delete rules individually
     for n in all_rules:
         pyufw.delete(all_rules.get(n))
         print('DEBUG || Delete rule = ' + all_rules.get(n))
