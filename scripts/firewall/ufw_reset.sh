@@ -10,7 +10,3 @@ sudo rm -r /etc/ufw/before.rules.*
 sudo rm -r /etc/ufw/before6.rules.*
 sudo rm -r /etc/ufw/user.rules.*
 sudo rm -r /etc/ufw/user6.rules.*
-
-sudo ufw --force disable
-
-#sudo ufw --force enable

@@ -233,31 +233,20 @@ def ufw_initial_setup():
     print('Vor Setup')
     print(ufw.status())
     
-    print('UFW Reset and Disable')
+    print('UFW Disable')
+    ufw.disable()
+
+    print('UFW Reset')
     hf.start_ufw_reset_script()
     
     print('DEBUG: Deny all incoming and outgoing traffic')
     ufw.run('default deny incoming')
     ufw.run('default deny outgoing')
-
-    #print('UFW Logging Low')
-    #ufw.run('logging low')
     
     print('UFW Enable')
     ufw.enable()
-
-    # reset and restart UFW
-    #print('DEBUG: Reset UFW')
-    #os.system('ufw --force reset')
-
-    #print('DEBUG: Disable')
-    #ufw.disable()
     
-    #print('DEBUG: Enable UFW')
-    #ufw.enable()
-
-    # Enable UFW logging with low severity
-    #print('DEBUG: Enable UFW logging')
+    #print('UFW Logging Low')
     #ufw.run('logging low')
    
     # Allow SSH on IP 192.168.231.1
