@@ -333,7 +333,8 @@ def ufw_delete_rules():
     
     # Delete rules individually
     for n in all_rules:
-        pyufw.delete(all_rules.get(n))
+        os.system('sudo ufw delete ' + all_rules.get(n))
+        #pyufw.delete(all_rules.get(n))
         print('DEBUG || Delete rule = ' + all_rules.get(n))
 
 
