@@ -239,7 +239,7 @@ def config_ntp():
         # Remove Spaces
         ntp_server_list = ntp_server_list.replace(' ', '')
         # Create list from string
-        ntp_server_list = ntp_server_list(',')
+        ntp_server_list = ntp_server_list.split(',')
         # List to string, with spaces in between
         ntp_server = ' '.join(ntp_server_list)
 
