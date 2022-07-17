@@ -98,20 +98,20 @@ def ufw_delete_rules():
 # /etc/default/ufw/before.rules
 def ufw_allow_ping():
     # Backup before.rules file
+    print('DEBUG: Backing up "/etc/ufw/before.rules"')
     subprocess.run(('sudo cp -n /etc/ufw/before.rules{,.bak}'), capture_output=True, shell=True, check=True)
 
     # Get path to template file
     before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
 
-    # Overwrite with template "before.rules"
+    # Path to original "before.rule" file
     before_rules_file = '/etc/default/ufw/before.rules'
 
     # Change file permissions to "666" so everyone can read and write
-    #os.chmod(before_rules_file, 0o666)
+    os.chmod(before_rules_file, 0o666)
 
-    # # Replace netplan with template file
-    #subprocess.run(('sudo ufw allow in to any port ' + str(port)), capture_output=True, shell=True, check=True)
-    subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
+    # Overwrite original "before.rule" file with template
+    os.system('cat ' + before_rules_template + ' > ' + before_rules_file)
 
     # Change file permissions to "640" so owner and group can read, but only owner can write
-    #os.chmod(before_rules_file, 0o640)
+    os.chmod(before_rules_file, 0o640)
