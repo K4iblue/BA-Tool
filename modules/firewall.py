@@ -142,5 +142,8 @@ def ufw_disable_ipv6():
         # Write back to file
         with open (default_ufw, 'w', encoding='UTF-8') as file:
             filedata = file.write(filedata)
+
+        # Need to reload firewall
+        os.system('sudo ufw reload')
     else:
         return
