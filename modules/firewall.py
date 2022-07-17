@@ -106,13 +106,14 @@ def ufw_allow_ping():
     before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
 
     # Path to original "before.rule" file
-    before_rules_file = '/etc/default/ufw/before.rules'
+    before_rules_file = '/etc/ufw/before.rules'
 
     # Change file permissions to "666" so everyone can read and write
-    os.chmod(before_rules_file, 0o666)
+    #os.chmod(before_rules_file, 0o666)
 
     # Overwrite original "before.rule" file with template
-    os.system('cat ' + before_rules_template + ' > ' + before_rules_file)
+    subprocess(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
+    #os.system('cat ' + before_rules_template + ' > ' + before_rules_file)
 
     # Change file permissions to "640" so owner and group can read, but only owner can write
-    os.chmod(before_rules_file, 0o640)
+    #os.chmod(before_rules_file, 0o640)
