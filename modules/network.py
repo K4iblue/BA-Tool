@@ -224,8 +224,59 @@ def config_snmp():
 # NTP configuration
 # /etc/systemd/timesyncd.conf
 def config_ntp():
-    print('NTP Test')
+    print('Wird NTP benötigt?')
+    ntp_needed = ''
+    # Only 'y' and 'n' allowed
+    while ntp_needed not in ['Y','N']:
+        ntp_needed = input('(y/n): ').upper()
+    
+    ntp_needed = True if ntp_needed == 'Y' else False
+    
+    if ntp_needed is True:
+        # Get NTP Servers
+        print('Wie lauten die NTP Server IPs oder Domains)? Mehrere Server durch ein Komma trennen!')
+        ntp_server_list = input('NTP Server: ')
+        # List to string, with spaces in between
+        ntp_server = ' '.join(ntp_server_list)
 
+        # Create a empty list and fill it with the syslog server IP
+        config_list = []
+        config_list += [ntp_server]
+
+        # Get path to template file
+        ntp_template = os.path.join(sys.path[0]) + '/config/templates/ntp.template'
+
+        # Read from template file
+        with open (ntp_template, 'r', encoding='UTF-8') as file:
+            filedata = file.read()
+
+        # Replace variable with config value from config_list
+        count = 1
+        for n in config_list:
+            to_replace = '$'+str(count)+'$'
+            filedata = filedata.replace(to_replace, n)
+            count = count + 1
+
+        # Write to file in current config folder
+        ntp_current_config = os.path.join(sys.path[0]) + '/config/current_config/ntp.cfg'
+        with open (ntp_current_config, 'w+', encoding='UTF-8') as file:
+            file.write(filedata)
+
+        ntp_file = '/etc/systemd/timesyncd.conf'
+        # Change file permissions to "666" so everyone can read and write
+        os.chmod(ntp_file, 0o666)
+
+        # Replace syslog file with template file
+        os.system('cat ' + ntp_current_config + ' > ' + ntp_file)
+
+        # Change file permissions to "644" so everyone can read, but only owner can write
+        os.chmod(ntp_file, 0o644)
+
+        # Restart syslog service
+        os.system('systemctl restart rsyslog')
+    else:
+        return
+        
 
 # Get a list of all added "apt-get" Repositories
 def get_repo_list():
