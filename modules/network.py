@@ -235,7 +235,11 @@ def config_ntp():
     if ntp_needed is True:
         # Get NTP Servers
         print('Wie lauten die NTP Server (IPs oder Domains)? Mehrere Server durch ein Komma trennen!')
-        ntp_server_list = input('NTP Server: ').replace(' ', '')
+        ntp_server_list = input('NTP Server: ')
+        # Remove Spaces
+        ntp_server_list = ntp_server_list.replace(' ', '')
+        # Create list from string
+        ntp_server_list = ntp_server_list(',')
         # List to string, with spaces in between
         ntp_server = ' '.join(ntp_server_list)
 
