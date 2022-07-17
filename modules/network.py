@@ -90,6 +90,7 @@ def config_netplan():
     dns_ips_list = hf.get_ips()
     # List to string, with commas in between
     dns_ips = ','.join(dns_ips_list)
+    print(dns_ips)
 
     # 4. Default gateway 
     print('Wie lautet die IP des Default gateways?')
@@ -321,10 +322,10 @@ def config_snmp():
         # Activate current config
         snmp_file = '/etc/snmp/snmpd.conf'
         # Change file permissions to "666" so everyone can read and write
-        os.chmod(snmp_file, 0o666)
+        #os.chmod(snmp_file, 0o666)
 
         # Replace snmp file with template file
-        os.system('cp ' + snmp_current_config + ' ' + snmp_file)
+        os.system('sudo cp ' + snmp_current_config + ' ' + snmp_file)
 
         # Change file permissions to "644" so everyone can read, but only owner can write
         os.chmod(snmp_file, 0o644)
