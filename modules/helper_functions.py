@@ -1,4 +1,5 @@
 import ipaddress
+import os
 
 # Validate IP addresses
 def ip_validation(address):
@@ -43,3 +44,15 @@ def get_int(x,y):
             continue
         break
     return number
+
+def restart_system():
+    print('Das System muss neugestartet werden, Neustart durchführen?')
+    restart_needed = ''
+    # Only 'y' and 'n' allowed
+    while restart_needed not in ['Y','N']:
+        restart_needed = input('(y/n): ').upper()
+    restart_needed = True if restart_needed == 'Y' else False
+    if restart_needed is True:
+        os.system('sudo reboot')
+    else:
+        return False
