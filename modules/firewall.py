@@ -189,9 +189,12 @@ def get_ntp_list():
     ntp_list = list(filter(None, ntp_list))
 
     # List to string, split string again at whitespaces
-    ntp_list_string = ntp_list[0]
-    ntp_list = ntp_list_string.split(' ')
-    
+    if len(ntp_list) != 0:
+        ntp_list_string = ntp_list[0]
+        ntp_list = ntp_list_string.split(' ')
+    else:
+        return 
+
     # Create empty list
     url_list = []
 

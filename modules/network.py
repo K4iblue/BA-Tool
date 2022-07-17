@@ -339,4 +339,4 @@ def config_snmp():
 # Install UFW, rsyslog and snmp
 def install_networking_packages():
     print('Installing UFW, Syslog, SNMP if not already installed')
-    os.system('sudo apt-get install ufw rsyslog snmp -y')
+    os.system('sudo apt-get install ufw rsyslog snmpd snmp -y')
