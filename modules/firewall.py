@@ -5,6 +5,10 @@ from .pyufw import pyufw
 
 # UFW set default settings and enable
 def ufw_set_default_settings():
+    # Enable UFW
+    os.system('sudo ufw --force enable')
+    #subprocess.run('sudo ufw --force enable', capture_output=True, shell=True, check=True)
+    
     # Set Default settings
     #print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
     subprocess.run('sudo ufw default deny incoming', capture_output=True, shell=True, check=True)
@@ -13,9 +17,6 @@ def ufw_set_default_settings():
 
     # DEBUG: Add SSH IP
     ufw_rule_generator(port=22, target_ip='192.168.231.1')
-    
-    # Enable UFW
-    subprocess.run('sudo ufw --force enable', capture_output=True, shell=True, check=True)
 
 
 # UFW Rule Generator 
