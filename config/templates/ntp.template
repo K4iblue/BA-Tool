@@ -13,7 +13,7 @@
 # See timesyncd.conf(5) for details.
 
 [Time]
-NTP=$1
+NTP=$1$
 #FallbackNTP=ntp.ubuntu.com
 #RootDistanceMaxSec=5
 #PollIntervalMinSec=32
