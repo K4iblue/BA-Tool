@@ -119,4 +119,5 @@ def ufw_allow_ping():
     #os.chmod(before_rules_file, 0o640)
 
     # Reload UFW rules to allow the ICMP changes
-    subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
+    print('DEBUG: UFW reload')
+    subprocess.run('sudo ufw --force reload', capture_output=True, shell=True, check=True)
