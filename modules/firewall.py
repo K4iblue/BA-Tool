@@ -116,20 +116,31 @@ def ufw_allow_ping():
 # UFW disable IPv6
 # /etc/default/ufw
 def ufw_disable_ipv6():
-    # Backup "default/ufw" file to a backup folder
-    os.system('sudo mkdir -p "/etc/default/ufw-backup/" && sudo cp -n /etc/default/ufw /etc/default/ufw-backup/ufw.backup')
+    print('Soll IPv6 in der Firewall deaktiviert werden?')
+    ipv6_ufw_needed = ''
+    # Only 'y' and 'n' allowed
+    while ipv6_ufw_needed not in ['Y','N']:
+        ipv6_ufw_needed = input('(y/n): ').upper()
+    
+    ipv6_ufw_needed = True if ipv6_ufw_needed == 'Y' else False
 
-    # Path to "/etc/default/ufw"
-    default_ufw = '/etc/default/ufw'
+    if ipv6_ufw_needed is True:
+        # Backup "default/ufw" file to a backup folder
+        os.system('sudo mkdir -p "/etc/default/ufw-backup/" && sudo cp -n /etc/default/ufw /etc/default/ufw-backup/ufw.backup')
+
+        # Path to "/etc/default/ufw"
+        default_ufw = '/etc/default/ufw'
     
-    # Open file to read
-    # Read from template file
-    with open (default_ufw, 'r', encoding='UTF-8') as file:
-        filedata = file.read()
+        # Open file to read
+        # Read from template file
+        with open (default_ufw, 'r', encoding='UTF-8') as file:
+            filedata = file.read()
     
-    # Replace IPv6=yes line
-    filedata = filedata.replace('IPV6=yes', 'IPV6=no')
+        # Replace IPv6=yes line
+        filedata = filedata.replace('IPV6=yes', 'IPV6=no')
     
-    # Write back to file
-    with open (default_ufw, 'w', encoding='UTF-8') as file:
-        filedata = file.write(filedata)
+        # Write back to file
+        with open (default_ufw, 'w', encoding='UTF-8') as file:
+            filedata = file.write(filedata)
+    else:
+        return
