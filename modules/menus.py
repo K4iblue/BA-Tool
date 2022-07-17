@@ -180,7 +180,9 @@ def debug_submenu():
             debug_submenu()
         case 15:
             net.config_ntp()
+            debug_submenu()
         case 16:
             fw.ufw_allow_ping()
+            debug_submenu()
         case _:
             debug_submenu()
