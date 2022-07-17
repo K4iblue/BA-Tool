@@ -109,21 +109,22 @@ def maintenance_submenu():
 # DEBUG Menu
 def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
-            '0. \tMain Menu \n' +
-            '1. \tDEBUG\n' +
-            '2. \tNetplan config\n' +
-            '3. \tSyslog config\n' +
-            '4. \tSNMP config\n' +
-            '5. \tDebug UFW Delete Rules and Default Setup\n' +
-            '6. \tDebug UFW Generator\n' + 
-            '7. \tDebug UFW add APT repos\n' +
-            '8. \tDebug UFW add NTP server\n' +
-            '9. \tUFW -> Disable\n' +
-            '10. \tUFW -> Reset\n' +
-            '11. \tUFW -> Enable\n' +
-            '12. \tUFW -> Logging OFF\n' +
-            '13. \tUFW -> Logging Low\n' +
-            '14. \tUFW -> Delete all Rules\n' +
+            '0. \t Main Menu\n' +
+            '1. \t DEBUG\n' +
+            '2. \t Netplan config\n' +
+            '3. \t Syslog config\n' +
+            '4. \t SNMP config\n' +
+            '5. \t Debug UFW Delete Rules and Default Setup\n' +
+            '6. \t Debug UFW Generator\n' + 
+            '7. \t Debug UFW add APT repos\n' +
+            '8. \t Debug UFW add NTP server\n' +
+            '9. \t UFW -> Disable\n' +
+            '10. \t UFW -> Reset\n' +
+            '11. \t UFW -> Enable\n' +
+            '12. \t UFW -> Logging OFF\n' +
+            '13. \t UFW -> Logging Low\n' +
+            '14. \t UFW -> Delete all Rules\n' +
+            '15. \t Config NTP Server\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -176,5 +177,7 @@ def debug_submenu():
         case 14:
             fw.ufw_delete_rules()
             debug_submenu()
+        case 15:
+            net.config_ntp()
         case _:
             debug_submenu()
