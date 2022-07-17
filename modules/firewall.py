@@ -98,7 +98,7 @@ def ufw_delete_rules():
 # UFW Allow outgoing Ping
 # /etc/default/ufw/before.rules
 def ufw_allow_ping():
-    # Backup before.rules file
+    # Backup before.rules file to a backup folder
     os.system('sudo mkdir -p "/etc/ufw/backups/" && sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
 
     # Get path to template file
@@ -112,3 +112,24 @@ def ufw_allow_ping():
 
     # Reload UFW rules to allow the ICMP changes
     #subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
+
+# UFW disable IPv6
+# /etc/default/ufw
+def ufw_disable_ipv6():
+    # Backup "default/ufw" file to a backup folder
+    os.system('sudo mkdir -p "/etc/default/ufw-backup/" && sudo cp -n /etc/default/ufw /etc/default/ufw-backup/ufw.backup')
+
+    # Path to "/etc/default/ufw"
+    default_ufw = '/etc/default/ufw'
+    
+    # Open file to read
+    # Read from template file
+    with open (default_ufw, 'r', encoding='UTF-8') as file:
+        filedata = file.read()
+    
+    # Replace IPv6=yes line
+    filedata = filedata.replace('IPV6=yes', 'IPV6=no')
+    
+    # Write back to file
+    with open (default_ufw, 'w', encoding='UTF-8') as file:
+        filedata = file.write(filedata)

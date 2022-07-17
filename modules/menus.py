@@ -125,7 +125,8 @@ def debug_submenu():
             '13. \t UFW -> Logging Low\n' +
             '14. \t UFW -> Delete all Rules\n' +
             '15. \t Config NTP Server\n' +
-            '16. \t UFW -> Allow outgoing Ping\n' +
+            '16. \t UFW -> Allow outgoing Ping # WIP #\n' +
+            '17. \t UFW -> Disable IPv6\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -183,6 +184,9 @@ def debug_submenu():
             debug_submenu()
         case 16:
             fw.ufw_allow_ping()
+            debug_submenu()
+        case 17:
+            fw.ufw_disable_ipv6()
             debug_submenu()
         case _:
             debug_submenu()
