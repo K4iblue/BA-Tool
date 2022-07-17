@@ -196,7 +196,7 @@ def config_ntp():
         os.chmod(ntp_file, 0o644)
 
         # Generate Firewall Rules for NTP
-        fw.ufw_rules_add_lists(port=123,ip_list=ntp_server_list)
+        fw.ufw_rules_add_lists(port=123,ip_list=fw.get_ntp_list())
     else:
         return
 
