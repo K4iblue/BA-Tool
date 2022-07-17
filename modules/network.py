@@ -314,7 +314,7 @@ def config_snmp():
             filedata = filedata.replace(to_replace, config_dict.get(key))
     
         # Write to file in current config folder
-        snmp_current_config = os.path.join(sys.path[0]) + '/config/current_config/snmp.cfg'
+        snmp_current_config = os.path.join(sys.path[0]) + '/config/current_config/snmpd.conf'
         with open (snmp_current_config, 'w+', encoding='UTF-8') as file:
             file.write(filedata)
 
@@ -324,7 +324,7 @@ def config_snmp():
         os.chmod(snmp_file, 0o666)
 
         # Replace snmp file with template file
-        os.system('cat ' + snmp_current_config + ' > ' + snmp_file)
+        os.system('cp ' + snmp_current_config + ' ' + snmp_file)
 
         # Change file permissions to "644" so everyone can read, but only owner can write
         os.chmod(snmp_file, 0o644)
@@ -338,4 +338,4 @@ def config_snmp():
 # Install UFW, rsyslog and snmp
 def install_networking_packages():
     print('Installing UFW, Syslog, SNMP if not already installed')
-    os.system('sudo apt-get install ufw rsyslog snmp -y')
+    os.system('sudo apt-get install ufw rsyslog net-snmp -y')
