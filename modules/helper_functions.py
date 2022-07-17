@@ -16,7 +16,7 @@ def get_ips():
         ips = input('IP-Adresse(n): ')
         # Remove spaces
         ips = ips.strip().replace(' ', '')
-         # Create list from string
+        # Create list from string
         ips = ips.split(',')
         # Validate IPs, if all IPs are correct break out of while loop
         ip_valid = 1
