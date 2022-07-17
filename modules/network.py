@@ -20,6 +20,8 @@ network_dict = {
 
 # Configuration of all Networking parts
 def complete_configuration_dialog():
+    # 
+    
     print('Netzwerk komplett konfigurieren?')
     complete_config_needed = ''
     # Only 'y' and 'n' allowed
@@ -29,11 +31,21 @@ def complete_configuration_dialog():
     complete_config_needed = True if complete_config_needed == 'Y' else False
 
     if complete_config_needed is True:
+        # Install UFW, rsyslog and snmp
+        install_networking_packages()
+
+        # Reset Firewall, disable IPv6, set Default Settings
         fw.ufw_disable_ipv6()
+        fw.ufw_delete_rules()
+        fw.ufw_set_default_settings()
+
+        # Configure Network
         config_netplan()
         config_ntp()
         config_syslog()
         config_snmp()
+
+        # Add UFW rules, if not already added
         # UFW add APT repos
         fw.ufw_rules_add_lists(port=80, ip_list=fw.get_repo_list(), protocol='tcp')
         # UFW add NTP server if missing
@@ -321,3 +333,9 @@ def config_snmp():
         os.system('systemctl restart snmpd')
     else:
         return
+
+
+# Install UFW, rsyslog and snmp
+def install_networking_packages():
+    print('Installing UFW, Syslog, SNMP if not already installed')
+    os.system('sudo apt-get install ufw rsyslog snmp')
