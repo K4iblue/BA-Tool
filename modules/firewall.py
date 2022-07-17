@@ -99,7 +99,7 @@ def ufw_delete_rules():
 # /etc/default/ufw/before.rules
 def ufw_allow_ping():
     # Backup before.rules file
-    os.system('sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
+    os.system('sudo mkdir -p "/etc/ufw/backups/" && sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
 
     # Get path to template file
     before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
@@ -111,4 +111,4 @@ def ufw_allow_ping():
     subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
 
     # Reload UFW rules to allow the ICMP changes
-    subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
+    #subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
