@@ -99,7 +99,7 @@ def ufw_delete_rules():
 # /etc/default/ufw/before.rules
 def ufw_allow_ping():
     # Backup before.rules file
-    os.system('sudo cp -n /etc/ufw/before.rules /etc/ufw/before.rules.backup')
+    os.system('sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
 
     # Get path to template file
     before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
