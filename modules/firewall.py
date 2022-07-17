@@ -95,23 +95,6 @@ def ufw_delete_rules():
         subprocess.run(('sudo ufw delete ' + all_rules.get(n)), capture_output=True, shell=True, check=True)
         #print('DEBUG: || Delete rule = ' + all_rules.get(n))
 
-# UFW Allow outgoing Ping
-# /etc/default/ufw/before.rules
-def ufw_allow_ping():
-    # Backup before.rules file to a backup folder
-    os.system('sudo mkdir -p "/etc/ufw/backups/" && sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
-
-    # Get path to template file
-    before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
-
-    # Path to original "before.rule" file
-    before_rules_file = '/etc/ufw/before.rules'
-
-    # Overwrite original "before.rule" file with template
-    subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
-
-    # Reload UFW rules to allow the ICMP changes
-    #subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
 
 # UFW disable IPv6
 # /etc/default/ufw
@@ -147,3 +130,23 @@ def ufw_disable_ipv6():
         os.system('sudo ufw reload')
     else:
         return
+
+
+#### WIP ####
+# UFW Allow outgoing Ping
+# /etc/default/ufw/before.rules
+def ufw_allow_ping():
+    # Backup before.rules file to a backup folder
+    os.system('sudo mkdir -p "/etc/ufw/backups/" && sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
+
+    # Get path to template file
+    before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
+
+    # Path to original "before.rule" file
+    before_rules_file = '/etc/ufw/before.rules'
+
+    # Overwrite original "before.rule" file with template
+    subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
+
+    # Reload UFW rules to allow the ICMP changes
+    #subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
