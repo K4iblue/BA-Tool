@@ -3,8 +3,20 @@ import os
 import sys
 import random
 from string import ascii_letters
+from . import firewall as fw
 from . import helper_functions as hf
 
+# Global Dict
+network_dict = {
+  "DHCP": "",
+  "STATIC_INTERFACE_IP": "Test",
+  "DNS_SERVER_IP": "",
+  "DEFAULT_GATEWAY_IP": "",
+  "SYSLOG_SERVER_IP": "",
+  "SNMP_USER": "",
+  "SNMP_PW": "",
+  "NTP_SERVER": "",
+}
 
 # Configuration of all Networking parts
 def complete_configuration_dialog():
@@ -17,10 +29,15 @@ def complete_configuration_dialog():
     complete_config_needed = True if complete_config_needed == 'Y' else False
 
     if complete_config_needed is True:
+        fw.ufw_disable_ipv6()
         config_netplan()
         config_ntp()
         config_syslog()
         config_snmp()
+        # UFW add APT repos
+        fw.ufw_rules_add_lists(port=80, ip_list=fw.get_repo_list(), protocol='tcp')
+        # UFW add NTP server if missing
+        fw.ufw_rules_add_lists(port=123, ip_list=fw.get_ntp_list())
     else:
         return
 
@@ -75,6 +92,9 @@ def config_netplan():
     config_list += [static_ip]      # 3. Static IP for interface, with subnetprefix
     config_list += [dns_ips]        # 4. DNS
     config_list += [dgw_ips]        # 5. Default gateway
+
+    # Generate Firewall Rules for DNS
+    fw.ufw_rules_add_lists(port=53,ip_list=dns_ips_list)
 
     # Get path to template file
     netplan_template = os.path.join(sys.path[0]) + '/config/templates/netplan.template'
@@ -175,8 +195,8 @@ def config_ntp():
         # Change file permissions to "644" so everyone can read, but only owner can write
         os.chmod(ntp_file, 0o644)
 
-        # Restart syslog service
-        os.system('systemctl restart rsyslog')
+        # Generate Firewall Rules for NTP
+        fw.ufw_rules_add_lists(port=123,ip_list=ntp_server_list)
     else:
         return
 
@@ -231,6 +251,9 @@ def config_syslog():
 
         # Change file permissions to "644" so everyone can read, but only owner can write
         os.chmod(syslog_file, 0o644)
+
+        # Generate Firewall Rules for Syslog
+        fw.ufw_rules_add_lists(port=514,ip_list=syslog_server_ip_list,protocol='udp')
 
         # Restart syslog service
         os.system('systemctl restart rsyslog')

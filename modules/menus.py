@@ -72,6 +72,7 @@ def network_submenu():
             main_menu()
         case 1:
             net.complete_configuration_dialog()
+            network_submenu()
         case 2:
             print('Case 2')
 
