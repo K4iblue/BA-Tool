@@ -150,6 +150,7 @@ def debug_submenu():
             '15. \t Config NTP Server\n' +
             '16. \t UFW -> Allow outgoing Ping # WIP #\n' +
             '17. \t UFW -> Disable IPv6\n' +
+            '18. \t Install Needed Network Packages\n' + 
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -211,5 +212,9 @@ def debug_submenu():
         case 17:
             fw.ufw_disable_ipv6()
             debug_submenu()
+        case 18:
+            net.install_networking_packages()
+            print('DEBUG: System wird neugestartet')
+            os.system('sudo reboot')
         case _:
             debug_submenu()

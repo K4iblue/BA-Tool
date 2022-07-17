@@ -32,7 +32,7 @@ def complete_configuration_dialog():
 
     if complete_config_needed is True:
         # Install UFW, rsyslog and snmp
-        install_networking_packages()
+        #install_networking_packages()
 
         # Reset Firewall, disable IPv6, set Default Settings
         fw.ufw_disable_ipv6()
@@ -340,3 +340,4 @@ def config_snmp():
 def install_networking_packages():
     print('Installing UFW, Syslog, SNMP if not already installed')
     os.system('sudo apt-get install ufw rsyslog snmpd snmp -y')
+    os.system
