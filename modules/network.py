@@ -20,8 +20,6 @@ network_dict = {
 
 # Configuration of all Networking parts
 def complete_configuration_dialog():
-    # 
-    
     print('Netzwerk komplett konfigurieren?')
     complete_config_needed = ''
     # Only 'y' and 'n' allowed
@@ -339,5 +337,4 @@ def config_snmp():
 # Install UFW, rsyslog and snmp
 def install_networking_packages():
     print('Installing UFW, Syslog, SNMP if not already installed')
-    os.system('sudo apt-get install ufw rsyslog snmpd snmp -y')
-    os.system
+    os.system('sudo apt install ufw rsyslog snmpd snmp -y')

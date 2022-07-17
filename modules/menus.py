@@ -214,7 +214,7 @@ def debug_submenu():
             debug_submenu()
         case 18:
             net.install_networking_packages()
-            print('DEBUG: System wird neugestartet')
+            print('Das System muss neugestartet werden, fortfahren?')
             os.system('sudo reboot')
         case _:
             debug_submenu()
