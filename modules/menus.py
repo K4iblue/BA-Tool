@@ -12,11 +12,12 @@ from . import helper_functions as hf
 # Main Menu
 def main_menu():
     print('----------- Main Menu ----------- \n' +
-          '0. Exit Programm \n' +
-          '1. Härtung \n' +
-          '2. Docker \n' +
-          '3. Systempflege \n' +
-          '4. DEBUG \n' +
+          '0. \t Exit Programm \n' +
+          '1. \t Härtung \n' +
+          '2. \t Netzwerk \n' +
+          '3. \t Docker \n' +
+          '4. \t Systempflege \n' +
+          '5. \t DEBUG \n' +
           '----- Please enter a number (0-4) -----')
 
     # Get a Number from the user in given range
@@ -28,10 +29,12 @@ def main_menu():
         case 1:
             hardening_submenu()
         case 2:
-            docker_submenu()
+            network_submenu()
         case 3:
-            maintenance_submenu()
+            docker_submenu()
         case 4:
+            maintenance_submenu()
+        case 5:
             debug_submenu()
 
 # Hardening Menu
@@ -50,6 +53,25 @@ def hardening_submenu():
             main_menu()
         case 1:
             hardening.create_configfile()
+        case 2:
+            print('Case 2')
+
+# Network Menu
+def network_submenu():
+    print('----------- Network Menu ----------- \n' +
+            '0. Main Menu \n' +
+            '1. Vollständige Netzwerk Konfiguration \n' +
+            '2. Härtung Überprüfen \n' +
+            '----- Please enter a number (0-2) -----')
+
+    # Get a Number from the user in given range
+    case_number = hf.get_int(0,3)
+    
+    match case_number:
+        case 0:
+            main_menu()
+        case 1:
+            net.complete_configuration_dialog()
         case 2:
             print('Case 2')
 
@@ -156,10 +178,10 @@ def debug_submenu():
             fw.ufw_rule_generator (port=443, target_ip='', protocol='')
             debug_submenu()
         case 7:
-            fw.ufw_rules_add_lists(80,net.get_repo_list(),'tcp')
+            fw.ufw_rules_add_lists(80, fw.get_repo_list(),'tcp')
             debug_submenu()
         case 8:
-            fw.ufw_rules_add_lists(123, net.get_ntp_list())
+            fw.ufw_rules_add_lists(123, fw.get_ntp_list())
             debug_submenu()
         case 9:
             os.system('sudo ufw --force disable')

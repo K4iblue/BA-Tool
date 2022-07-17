@@ -2,10 +2,28 @@ import subprocess
 import os
 import sys
 import random
-import socket
 from string import ascii_letters
-from urllib.parse import urlparse
 from . import helper_functions as hf
+
+
+# Configuration of all Networking parts
+def complete_configuration_dialog():
+    print('Netzwerk komplett konfigurieren?')
+    complete_config_needed = ''
+    # Only 'y' and 'n' allowed
+    while complete_config_needed not in ['Y','N']:
+        complete_config_needed = input('(y/n): ').upper()
+    
+    complete_config_needed = True if complete_config_needed == 'Y' else False
+
+    if complete_config_needed is True:
+        config_netplan()
+        config_ntp()
+        config_syslog()
+        config_snmp()
+    else:
+        return
+
 
 # Netplan configuration (DHCP, Static IP, DNS, Default Gateway)
 # Netplan: /etc/netplan/
@@ -100,6 +118,67 @@ def config_netplan():
     # Apply new netplan config
     # os.system('sudo netplan --debug try')     # For debugging use only 
     os.system('sudo netplan apply')
+
+
+# NTP configuration
+# /etc/systemd/timesyncd.conf
+def config_ntp():
+    print('Wird NTP benötigt?')
+    ntp_needed = ''
+    # Only 'y' and 'n' allowed
+    while ntp_needed not in ['Y','N']:
+        ntp_needed = input('(y/n): ').upper()
+    
+    ntp_needed = True if ntp_needed == 'Y' else False
+    
+    if ntp_needed is True:
+        # Get NTP Servers
+        print('Wie lauten die NTP Server (IPs oder Domains)? Mehrere Server durch ein Komma trennen!')
+        ntp_server_list = input('NTP Server: ')
+        # Remove Spaces
+        ntp_server_list = ntp_server_list.replace(' ', '')
+        # Create list from string
+        ntp_server_list = ntp_server_list.split(',')
+        # List to string, with spaces in between
+        ntp_server = ' '.join(ntp_server_list)
+
+        # Create a empty list and fill it with the syslog server IP
+        config_list = []
+        config_list += [ntp_server]
+
+        # Get path to template file
+        ntp_template = os.path.join(sys.path[0]) + '/config/templates/ntp.template'
+
+        # Read from template file
+        with open (ntp_template, 'r', encoding='UTF-8') as file:
+            filedata = file.read()
+
+        # Replace variable with config value from config_list
+        count = 1
+        for n in config_list:
+            to_replace = '$'+str(count)+'$'
+            filedata = filedata.replace(to_replace, n)
+            count = count + 1
+
+        # Write to file in current config folder
+        ntp_current_config = os.path.join(sys.path[0]) + '/config/current_config/ntp.cfg'
+        with open (ntp_current_config, 'w+', encoding='UTF-8') as file:
+            file.write(filedata)
+
+        ntp_file = '/etc/systemd/timesyncd.conf'
+        # Change file permissions to "666" so everyone can read and write
+        os.chmod(ntp_file, 0o666)
+
+        # Replace syslog file with template file
+        os.system('cat ' + ntp_current_config + ' > ' + ntp_file)
+
+        # Change file permissions to "644" so everyone can read, but only owner can write
+        os.chmod(ntp_file, 0o644)
+
+        # Restart syslog service
+        os.system('systemctl restart rsyslog')
+    else:
+        return
 
 
 # Syslog configuration
@@ -219,123 +298,3 @@ def config_snmp():
         os.system('systemctl restart snmpd')
     else:
         return
-
-
-# NTP configuration
-# /etc/systemd/timesyncd.conf
-def config_ntp():
-    print('Wird NTP benötigt?')
-    ntp_needed = ''
-    # Only 'y' and 'n' allowed
-    while ntp_needed not in ['Y','N']:
-        ntp_needed = input('(y/n): ').upper()
-    
-    ntp_needed = True if ntp_needed == 'Y' else False
-    
-    if ntp_needed is True:
-        # Get NTP Servers
-        print('Wie lauten die NTP Server (IPs oder Domains)? Mehrere Server durch ein Komma trennen!')
-        ntp_server_list = input('NTP Server: ')
-        # Remove Spaces
-        ntp_server_list = ntp_server_list.replace(' ', '')
-        # Create list from string
-        ntp_server_list = ntp_server_list.split(',')
-        # List to string, with spaces in between
-        ntp_server = ' '.join(ntp_server_list)
-
-        # Create a empty list and fill it with the syslog server IP
-        config_list = []
-        config_list += [ntp_server]
-
-        # Get path to template file
-        ntp_template = os.path.join(sys.path[0]) + '/config/templates/ntp.template'
-
-        # Read from template file
-        with open (ntp_template, 'r', encoding='UTF-8') as file:
-            filedata = file.read()
-
-        # Replace variable with config value from config_list
-        count = 1
-        for n in config_list:
-            to_replace = '$'+str(count)+'$'
-            filedata = filedata.replace(to_replace, n)
-            count = count + 1
-
-        # Write to file in current config folder
-        ntp_current_config = os.path.join(sys.path[0]) + '/config/current_config/ntp.cfg'
-        with open (ntp_current_config, 'w+', encoding='UTF-8') as file:
-            file.write(filedata)
-
-        ntp_file = '/etc/systemd/timesyncd.conf'
-        # Change file permissions to "666" so everyone can read and write
-        os.chmod(ntp_file, 0o666)
-
-        # Replace syslog file with template file
-        os.system('cat ' + ntp_current_config + ' > ' + ntp_file)
-
-        # Change file permissions to "644" so everyone can read, but only owner can write
-        os.chmod(ntp_file, 0o644)
-
-        # Restart syslog service
-        os.system('systemctl restart rsyslog')
-    else:
-        return
-        
-
-# Get a list of all added "apt-get" Repositories
-def get_repo_list():
-    # Get Repos
-    repo_list = subprocess.run("apt-cache policy |grep http |awk '{print $2}' |sort -u", capture_output=True, shell=True, check=True)
-    repo_list = str(repo_list.stdout).replace('b','',1).strip("'").split("\\n")
-
-    # Remove empty entries
-    repo_list = list(filter(None, repo_list))
-
-    # Create empty list
-    url_list = []
-
-    # Add translated IPs to new list
-    count = 0
-    for n in repo_list:
-        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
-        count += 1
-
-    return url_list
-
-
-#Get a list of all added NTP Servers
-def get_ntp_list():
-    # Get ntp server list
-    ntp_list = subprocess.run("grep -v '^\s*$\|^\s*\# NTP=' '/etc/systemd/timesyncd.conf' |awk '!/^ *#/ &&  NF'", capture_output=True, shell=True, check=True)
-
-    # String to list
-    ntp_list = str(ntp_list.stdout).replace("'",'').replace('NTP=','').split("\\n")
-
-    # Pop first element and remove empty entries
-    ntp_list.pop(0)
-    ntp_list = list(filter(None, ntp_list))
-
-    # List to string, split string again at whitespaces
-    ntp_list_string = ntp_list[0]
-    ntp_list = ntp_list_string.split(' ')
-    
-    # Create empty list
-    url_list = []
-
-    # Add translated IPs to new list
-    count = 0
-    for n in ntp_list:
-        if hf.ip_validation(n) is False:
-            url_list.append(fqdn_to_ip_translator(n))
-            count += 1
-        else:
-            url_list.append(n)
-            count += 1
-
-    return url_list
-
-
-# Translates Hostname to IP
-def fqdn_to_ip_translator(hostname):
-    hostname_ip = socket.gethostbyname(str(hostname))
-    return str(hostname_ip)

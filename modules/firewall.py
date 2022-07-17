@@ -1,7 +1,10 @@
 import subprocess
 import os
 import sys
+import socket
+from urllib.parse import urlparse
 from .pyufw import pyufw
+from . import helper_functions as hf
 
 # UFW set default settings and enable
 def ufw_set_default_settings():
@@ -150,3 +153,62 @@ def ufw_allow_ping():
 
     # Reload UFW rules to allow the ICMP changes
     #subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
+
+
+# Get a list of all added "apt-get" Repositories
+def get_repo_list():
+    # Get Repos
+    repo_list = subprocess.run("apt-cache policy |grep http |awk '{print $2}' |sort -u", capture_output=True, shell=True, check=True)
+    repo_list = str(repo_list.stdout).replace('b','',1).strip("'").split("\\n")
+
+    # Remove empty entries
+    repo_list = list(filter(None, repo_list))
+
+    # Create empty list
+    url_list = []
+
+    # Add translated IPs to new list
+    count = 0
+    for n in repo_list:
+        url_list.append(fqdn_to_ip_translator(urlparse(n).netloc))
+        count += 1
+
+    return url_list
+
+
+#Get a list of all added NTP Servers
+def get_ntp_list():
+    # Get ntp server list
+    ntp_list = subprocess.run("grep -v '^\s*$\|^\s*\# NTP=' '/etc/systemd/timesyncd.conf' |awk '!/^ *#/ &&  NF'", capture_output=True, shell=True, check=True)
+
+    # String to list
+    ntp_list = str(ntp_list.stdout).replace("'",'').replace('NTP=','').split("\\n")
+
+    # Pop first element and remove empty entries
+    ntp_list.pop(0)
+    ntp_list = list(filter(None, ntp_list))
+
+    # List to string, split string again at whitespaces
+    ntp_list_string = ntp_list[0]
+    ntp_list = ntp_list_string.split(' ')
+    
+    # Create empty list
+    url_list = []
+
+    # Add translated IPs to new list
+    count = 0
+    for n in ntp_list:
+        if hf.ip_validation(n) is False:
+            url_list.append(fqdn_to_ip_translator(n))
+            count += 1
+        else:
+            url_list.append(n)
+            count += 1
+
+    return url_list
+
+
+# Translates Hostname to IP
+def fqdn_to_ip_translator(hostname):
+    hostname_ip = socket.gethostbyname(str(hostname))
+    return str(hostname_ip)
