@@ -206,6 +206,9 @@ def config_ntp():
         # Change file permissions to "644" so everyone can read, but only owner can write
         os.chmod(ntp_file, 0o644)
 
+        # Restart NTP Service
+        os.system('systemctl restart systemd-timesyncd.service')
+
         # Generate Firewall Rules for NTP
         # fw.ufw_rules_add_lists(port=123,ip_list=fw.get_ntp_list())
     else:
