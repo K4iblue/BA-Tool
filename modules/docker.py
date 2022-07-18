@@ -60,6 +60,3 @@ def install_docker():
 
     # Start Docker Deamon
     os.system('sudo systemctl start docker')
-
-    # Check if docker installation was successful
-    check_docker_install()
