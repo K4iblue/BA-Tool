@@ -8,8 +8,8 @@ from . import helper_functions as hf
 
 # UFW set default settings and enable
 def ufw_set_default_settings():
-    # Enable UFW
-    os.system('sudo ufw --force enable')
+    # Disable UFW
+    os.system('sudo ufw --force disable')
     #subprocess.run('sudo ufw --force enable', capture_output=True, shell=True, check=True)
     
     # Set Default settings
@@ -18,8 +18,14 @@ def ufw_set_default_settings():
     subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
     subprocess.run('sudo ufw logging medium', capture_output=True, shell=True, check=True)
 
-    # DEBUG: Add SSH IP
-    ufw_rule_generator(port=22, target_ip='192.168.231.1')
+    # Add SSH IP
+    print('Welche IPs soll SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
+    ufw_ssh_ip_list = hf.get_ips()
+    ufw_rules_add_lists(port=22, ip_list=ufw_ssh_ip_list)
+    #ufw_rule_generator(port=22, target_ip='192.168.231.1')
+
+    # Enable UFW
+    os.system('sudo ufw --force enable')
 
 
 # UFW Rule Generator 
