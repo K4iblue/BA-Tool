@@ -25,13 +25,6 @@ def start_docker_container(image_name):
     # Start Container from image
     subprocess.run(['docker', 'run', image_name], shell=True, check=True)
 
-def check_docker_install():
-    print('Check: Docker Installation')
-    if os.system('docker -v') == 'docker: not found': #os.system('echo $?') == 0:
-        print('Docker ist installiert')
-    else:
-        print('Docker ist nicht installiert')
-        install_docker()
 
 # Installation according to https://docs.docker.com/engine/install/ubuntu/
 def install_docker():
