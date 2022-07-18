@@ -218,6 +218,6 @@ def debug_submenu():
             if hf.restart_system is False:
                 debug_submenu()
         case 19:
-            doc.check_docker_install()
+            doc.install_docker()
         case _:
             debug_submenu()
