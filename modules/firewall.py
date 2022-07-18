@@ -16,7 +16,7 @@ def ufw_set_default_settings():
     #print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
     subprocess.run('sudo ufw default deny incoming', capture_output=True, shell=True, check=True)
     subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
-    subprocess.run('sudo ufw logging medium', capture_output=True, shell=True, check=True)
+    subprocess.run('sudo ufw logging low', capture_output=True, shell=True, check=True)
 
     # Add SSH IP
     print('Welche IPs soll SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
