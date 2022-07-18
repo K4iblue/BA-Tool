@@ -2,7 +2,7 @@ import os
 from . import hardening
 from . import network as net
 from . import firewall as fw
-#from . import docker
+from . import docker as doc
 #from . import maintenance
 from . import debug as de
 from . import helper_functions as hf
@@ -151,6 +151,7 @@ def debug_submenu():
             '16. \t UFW -> Allow outgoing Ping # WIP #\n' +
             '17. \t UFW -> Disable IPv6\n' +
             '18. \t Install Needed Network Packages\n' + 
+            '19. \t Docker Installation\n' + 
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -216,5 +217,7 @@ def debug_submenu():
             net.install_networking_packages()
             if hf.restart_system is False:
                 debug_submenu()
+        case 19:
+            doc.check_docker_install()
         case _:
             debug_submenu()
