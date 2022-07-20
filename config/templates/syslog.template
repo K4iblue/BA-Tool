@@ -1,14 +1,8 @@
 # Send logs to remote syslog server over Port 514(UDP):
 *.* @$1$:514
-# Send authentication logs only
-# auth,authpriv.* @$1$:514
-
 
 # Send logs to remote syslog server over Port 50514(TCP):
 *.* @@$1$:50514
-# Send authentication logs only
-# auth,authpriv.* @@$1$:50514
-
 
 # Set disk queue when rsyslog server will be down:
 $ActionQueueFileName queue
