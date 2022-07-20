@@ -268,6 +268,7 @@ def config_syslog():
 
         # Generate Firewall Rules for Syslog
         fw.ufw_rules_add_lists(port=514,ip_list=syslog_server_ip_list,protocol='udp')
+        fw.ufw_rules_add_lists(port=50514,ip_list=syslog_server_ip_list,protocol='tcp')
 
         # Restart syslog service
         os.system('systemctl restart rsyslog')
