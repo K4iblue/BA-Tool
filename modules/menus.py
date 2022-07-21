@@ -129,7 +129,7 @@ def container_submenu():
             doc.create_container()
             container_submenu()
         case 7:
-            print('Case 7')
+            doc.delete_image()
             container_submenu()
 
 # Maintenance Menu
