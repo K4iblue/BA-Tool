@@ -40,7 +40,6 @@ def create_container_from_file():
     else:
         print ('File does not exists, is the path correct?')
 
-    
 
 # Create Container, from Image
 def create_container_from_image():
