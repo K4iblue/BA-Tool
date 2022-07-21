@@ -332,6 +332,10 @@ def config_snmp():
         # Change file permissions to "644" so everyone can read, but only owner can write
         os.chmod(snmp_file, 0o644)
 
+        # Generate Firewall Rules for SNMPv3
+        fw.ufw_rule_generator(port=161,protocol='udp')
+        fw.ufw_rule_generator(port=162,protocol='udp')
+
         # Restart SNMP Service
         os.system('systemctl restart snmpd')
     else:
@@ -340,5 +344,5 @@ def config_snmp():
 
 # Install UFW, rsyslog and snmp
 def install_networking_packages():
-    print('Installing UFW, Syslog, SNMP if not already installed')
-    os.system('sudo apt install ufw rsyslog snmpd snmp -y')
+    print('Installing Syslog, SNMP if not already installed')
+    os.system('sudo apt install rsyslog snmpd snmp -y')

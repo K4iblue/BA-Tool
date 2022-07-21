@@ -15,8 +15,8 @@
 #   this token in the snmpd.conf file will disable write access to
 #   the variable.
 #   arguments:  location_string
-sysLocation    SNMPv3 Test
-sysContact     Kai <Kai@example.me>
+sysLocation    SNMPv3
+sysContact     example <example@example.me>
 
 # sysservices: The proper value for the sysServices object.
 #   arguments:  sysservices_number
