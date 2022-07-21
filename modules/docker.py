@@ -5,7 +5,7 @@ def create_container_from_file():
     # Get dockerfile path from user
     print('Wie lautet der Pfad der Dockerfile?')
     path = input('Pfad: ')
-    if os.path.exists(path):
+    if os.path.isfile(path):
         print('Klappt')
     else:
         print ('Directory not exists')
