@@ -11,13 +11,13 @@ from . import helper_functions as hf
 
 # Main Menu
 def main_menu():
-    print('----------- Main Menu ----------- \n' +
-          '0. \t Exit Programm \n' +
-          '1. \t Härtung \n' +
-          '2. \t Netzwerk \n' +
-          '3. \t Docker \n' +
-          '4. \t Systempflege \n' +
-          '5. \t DEBUG \n' +
+    print('----------- Hauptmenü ----------- \n' +
+          '0.\t Exit Programm \n' +
+          '1.\t Härtung \n' +
+          '2.\t Netzwerkkonfiguration \n' +
+          '3.\t Container Verwaltung \n' +
+          '4.\t Systempflege \n' +
+          '5.\t DEBUG \n' +
           '----- Please enter a number (0-5) -----')
 
     # Get a Number from the user in given range
@@ -31,7 +31,7 @@ def main_menu():
         case 2:
             network_submenu()
         case 3:
-            docker_submenu()
+            container_submenu()
         case 4:
             maintenance_submenu()
         case 5:
@@ -58,14 +58,17 @@ def hardening_submenu():
 
 # Network Menu
 def network_submenu():
-    print('----------- Network Menu ----------- \n' +
-            '0. Main Menu \n' +
-            '1. Vollständige Netzwerk Konfiguration \n' +
-            '2. Härtung Überprüfen \n' +
-            '----- Please enter a number (0-2) -----')
+    print('----------- Netzwerkkonfiguration ----------- \n' +
+            '0.\t Main Menu \n' +
+            '1.\t Vollständige Netzwerk Konfiguration \n' +
+            '2.\t Netplan Konfiguration (DHCP, DNS, Default Gateway, Static IP) \n' +
+            '3.\t NTP Konfiguration \n' +
+            '4.\t SNMPv3 Konfiguration \n' +
+            '5.\t Syslog Konfiguration \n' +            
+            '----- Please enter a number (0-5) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,3)
+    case_number = hf.get_int(0,6)
     
     match case_number:
         case 0:
@@ -74,19 +77,31 @@ def network_submenu():
             net.complete_configuration_dialog()
             network_submenu()
         case 2:
-            print('Case 2')
+            net.config_netplan()
+            network_submenu()
+        case 3:
+            net.config_ntp()
+            network_submenu()
+        case 4:
+            net.config_syslog()
+            network_submenu()
+        case 5:
+            net.config_snmp()
+            network_submenu()
+        case _:
+            network_submenu()
 
-# Docker Menu
-def docker_submenu():
-    print('----------- Docker Menu ----------- \n' +
-            '0. Main Menu \n' +
-            '1. Docker Container erstellen \n' +
-            '2. Docker Container starten \n' +
-            '3. Docker Container stoppen \n' +
-            '4. Docker Container löschen \n' +
-            '5. Docker Container auflisten \n' +
-            '6. Docker Image löschen \n' +
-            '7. Docker Images auflisten \n' +
+# Container Menu
+def container_submenu():
+    print('----------- Container Verwaltung ----------- \n' +
+            '0.\t Main Menu \n' +
+            '1.\t Liste aller Container anzeigen \n' +
+            '2.\t Liste aller Images anzeigen \n' +
+            '3.\t Container starten \n' +
+            '4.\t Container stoppen \n' +
+            '5.\t Container löschen \n' +
+            '6.\t Container erstellen \n' +
+            '7.\t Image löschen \n' +
             '----- Please enter a number (0-7) -----')
 
     # Get a Number from the user in given range
