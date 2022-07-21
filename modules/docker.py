@@ -5,7 +5,7 @@ def create_container_from_file():
     # Get dockerfile path from user
     print('Wie lautet der Pfad der Dockerfile?')
     path = input('Pfad: ')
-    if os.path.isfile(path):
+    if os.path.isdir(path):
         print('Wie soll das Image genannt werden?')
         image_name = input('Image Name: ').replace(' ','')
         print('sudo docker build -t ' + str(image_name) + ' ' + str(path) )
