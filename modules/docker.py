@@ -21,7 +21,7 @@ def create_docker_image():
     return image_name
 
 
-def start_docker_container(image_name):
+def start_docker_container(image_name=''):
     # Start Container from image
     subprocess.run(['docker', 'run', image_name], shell=True, check=True)
 
@@ -65,18 +65,24 @@ def show_images_list():
     os.system('sudo docker image ls --all')
 
 # Start given Container
-def start_container(container_name):
+def start_container(container_name=''):
+    print('Starte Container XXX...')
     os.system('sudo docker start ' + str(container_name))
 
 
 # Stop given Container
-def stop_container(container_name):
+def stop_container(container_name=''):
     print('Stop Container XXX...')
 
 
 # Delete given Container
-def delete_container(container_name):
-    print('Delete Container XXX...')
+def delete_container(container_name=''):
+    if container_name == '':
+        print('Welcher Container soll gelöscht werden?')
+        container_name = input('Container Name oder ID: ')
+        os.system('sudo docker rm ' + str(container_name))
+    else:
+        os.system('sudo docker rm ' + str(container_name))
     # Wenn Container läuft muss dieser zuerst gestoppt werden
     # Dann kann der Container gelöscht werden
 
@@ -86,3 +92,14 @@ def create_container():
     print('Create Container XXX...')
     # Dockerfile angeben -> Image daraus erstellen -> Container daraus erstellen
     # Docker Image runterladen als Option ?
+
+# Delete given Image
+def delete_image(image_name=''):
+    if image_name == '':
+        print('Welches Image soll gelöscht werden?')
+        image_name = input('Image Name oder ID: ')
+        os.system('sudo docker image rm ' + str(image_name))
+    else:
+        os.system('sudo docker image rm ' + str(image_name))
+    # Wenn Container läuft muss dieser zuerst gestoppt werden
+    # Dann kann der Container gelöscht werden

@@ -40,9 +40,9 @@ def main_menu():
 # Hardening Menu
 def hardening_submenu():
     print('----------- Hardening Menu ----------- \n' +
-            '0. Main Menu \n' +
-            '1. Härtung durchführen \n' +
-            '2. Härtung Überprüfen \n' +
+            '0.\t Main Menu \n' +
+            '1.\t Härtung durchführen \n' +
+            '2.\t Härtung Überprüfen \n' +
             '----- Please enter a number (0-2) -----')
 
     # Get a Number from the user in given range
@@ -117,16 +117,16 @@ def container_submenu():
             doc.show_images_list()
             container_submenu()
         case 3:
-            print('Case 3')
+            doc.start_container()
             container_submenu()
         case 4:
-            print('Case 4')
+            doc.stop_container()
             container_submenu()
         case 5:
-            print('Case 5')
+            doc.delete_container()
             container_submenu()
         case 6:
-            print('Case 6')
+            doc.create_container()
             container_submenu()
         case 7:
             print('Case 7')
