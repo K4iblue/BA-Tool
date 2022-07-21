@@ -99,8 +99,8 @@ def container_submenu():
             '2.\t Liste aller Images anzeigen \n' +
             '3.\t Container starten \n' +
             '4.\t Container stoppen \n' +
-            '5.\t Container löschen \n' +
-            '6.\t Container erstellen \n' +
+            '5.\t Container erstellen \n' +
+            '6.\t Container löschen \n' +
             '7.\t Image löschen \n' +
             '----- Please enter a number (0-7) -----')
 
@@ -123,10 +123,10 @@ def container_submenu():
             doc.stop_container()
             container_submenu()
         case 5:
-            doc.delete_container()
+            doc.create_container()
             container_submenu()
         case 6:
-            doc.create_container()
+            doc.delete_container()
             container_submenu()
         case 7:
             doc.delete_image()
