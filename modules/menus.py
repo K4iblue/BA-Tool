@@ -111,19 +111,26 @@ def container_submenu():
         case 0:
             main_menu()
         case 1:
-            print('Case 1')
+            doc.show_container_list()
+            container_submenu()
         case 2:
-            print('Case 2')
+            doc.show_images_list()
+            container_submenu()
         case 3:
             print('Case 3')
+            container_submenu()
         case 4:
             print('Case 4')
+            container_submenu()
         case 5:
             print('Case 5')
+            container_submenu()
         case 6:
             print('Case 6')
+            container_submenu()
         case 7:
             print('Case 7')
+            container_submenu()
 
 # Maintenance Menu
 def maintenance_submenu():

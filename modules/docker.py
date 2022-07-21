@@ -53,3 +53,36 @@ def install_docker():
 
     # Start Docker Deamon
     os.system('sudo systemctl start docker')
+
+
+# List all Containers
+def show_container_list():
+    print('Container List...')
+    os.system('sudo docker container ls --all')
+
+# List all Images
+def show_images_list():
+    os.system('sudo docker image ls --all')
+
+# Start given Container
+def start_container(container_name):
+    os.system('sudo docker start ' + str(container_name))
+
+
+# Stop given Container
+def stop_container(container_name):
+    print('Stop Container XXX...')
+
+
+# Delete given Container
+def delete_container(container_name):
+    print('Delete Container XXX...')
+    # Wenn Container läuft muss dieser zuerst gestoppt werden
+    # Dann kann der Container gelöscht werden
+
+
+# Create Container
+def create_container():
+    print('Create Container XXX...')
+    # Dockerfile angeben -> Image daraus erstellen -> Container daraus erstellen
+    # Docker Image runterladen als Option ?
