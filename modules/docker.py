@@ -26,26 +26,6 @@ def start_docker_container(image_name=''):
     subprocess.run(['docker', 'run', image_name], shell=True, check=True)
 
 
-# Start given Container
-def start_container(container_name=''):
-    print('Starte Container XXX...')
-    os.system('sudo docker start ' + str(container_name))
-
-
-# Stop given Container
-def stop_container(container_name=''):
-    if container_name == '':
-        print('Welcher Container soll gestoppt werden?')
-        container_name = input('Container Name oder ID: ')
-        os.system('sudo docker stop ' + str(container_name))
-        # Print 2 empty Lines for better reading
-        print('\n\n')
-    else:
-        os.system('sudo docker stop ' + str(container_name))
-        # Print 2 empty Lines for better reading
-        print('\n\n')
-
-
 # Create Container, from Image
 def create_container():
 
@@ -85,6 +65,34 @@ def create_container():
 ###################################################
 ######### Alles hier drunter funktioniert #########
 ###################################################
+# Start given Container
+def start_container(container_name=''):
+    if container_name == '':
+        print('Welcher Container soll gestartet werden?')
+        container_name = input('Container Name oder ID: ')
+        os.system('sudo docker start ' + str(container_name))
+        # Print 2 empty Lines for better reading
+        print('\n\n')
+    else:
+        os.system('sudo docker stop ' + str(container_name))
+        # Print 2 empty Lines for better reading
+        print('\n\n')
+
+
+# Stop given Container
+def stop_container(container_name=''):
+    if container_name == '':
+        print('Welcher Container soll gestoppt werden?')
+        container_name = input('Container Name oder ID: ')
+        os.system('sudo docker stop ' + str(container_name))
+        # Print 2 empty Lines for better reading
+        print('\n\n')
+    else:
+        os.system('sudo docker stop ' + str(container_name))
+        # Print 2 empty Lines for better reading
+        print('\n\n')
+
+
 # List all Containers
 def show_container_list():
     os.system('sudo docker container ls --all')
