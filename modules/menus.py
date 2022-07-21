@@ -99,13 +99,14 @@ def container_submenu():
             '2.\t Liste aller Images anzeigen \n' +
             '3.\t Container starten \n' +
             '4.\t Container stoppen \n' +
-            '5.\t Container erstellen \n' +
-            '6.\t Container löschen \n' +
-            '7.\t Image löschen \n' +
-            '----- Please enter a number (0-7) -----')
+            '5.\t Container erstellen (Dockerfile) \n' +
+            '6.\t Container erstellen (Image) \n' +
+            '7.\t Container löschen \n' +
+            '8.\t Image löschen \n' +
+            '----- Please enter a number (0-8) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,8)
+    case_number = hf.get_int(0,9)
     
     match case_number:
         case 0:
@@ -123,12 +124,15 @@ def container_submenu():
             doc.stop_container()
             container_submenu()
         case 5:
-            doc.create_container()
+            doc.create_container_from_file()
             container_submenu()
         case 6:
-            doc.delete_container()
+            doc.create_container_from_image()
             container_submenu()
         case 7:
+            doc.delete_container()
+            container_submenu()
+        case 8:
             doc.delete_image()
             container_submenu()
 

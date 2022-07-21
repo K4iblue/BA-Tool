@@ -1,33 +1,17 @@
-import subprocess
 import os
-import sys
 
-def create_docker_image():
-    # Get path of script and dockerfile
-    path = os.path.join(sys.path[0])
-
-    # User input for docker image name
-    print('--- Enter Docker Image Name ---')
-    image_name = input('Image Name: ').lower()
-
-    # Get ImageID from console and convert to string
-    # ImageId = subprocess.check_output(['docker', 'images', '-q', ImageName])
-    # ImageIdString = str(ImageId).replace(''','').replace('\\n','')
-
-    # Create image from Dockerfile
-    subprocess.run(['docker', 'build', path, '-t', image_name.replace('"', '')], shell=True, check=True)
-
-    # return image name for later use
-    return image_name
-
-
-def start_docker_container(image_name=''):
-    # Start Container from image
-    subprocess.run(['docker', 'run', image_name], shell=True, check=True)
-
+# Create Container, from file
+def create_container_from_file():
+    # Get dockerfile path from user
+    print('Wie lautet der Pfad der Dockerfile?')
+    path = input('Pfad: ')
+    if os.path.isdir(path):
+        print('Klappt')
+    else:
+        print ('Directory not exists')
 
 # Create Container, from Image
-def create_container():
+def create_container_from_image():
 
     # Get image name
     print('Aus welchen Image soll der Container erstellt werden?')
@@ -56,11 +40,9 @@ def create_container():
     run_command += ' --name ' + container_name + ' '
     run_command += image_name
 
-    print(run_command)
-
+    # Run the docker command
     os.system('sudo ' + str(run_command))
-    #run_command = run_command.append(' -p ' + str(n)+ ':' + str(n) + ' ')
-    #-p <host_port1>:<container_port1>
+
 
 ###################################################
 ######### Alles hier drunter funktioniert #########
@@ -162,3 +144,24 @@ def install_docker():
 
     # Start Docker Deamon
     os.system('sudo systemctl start docker')
+
+
+########## Löschen
+#def create_docker_image():
+#    # Get path of script and dockerfile
+#    path = os.path.join(sys.path[0])
+#    # User input for docker image name
+#    print('--- Enter Docker Image Name ---')
+#    image_name = input('Image Name: ').lower()
+#    # Get ImageID from console and convert to string
+#    # ImageId = subprocess.check_output(['docker', 'images', '-q', ImageName])
+#    # ImageIdString = str(ImageId).replace(''','').replace('\\n','')
+#    # Create image from Dockerfile
+#    subprocess.run(['docker', 'build', path, '-t', image_name.replace('"', '')], shell=True, check=True)
+#    # return image name for later use
+#    return image_name
+
+
+#def start_docker_container(image_name=''):
+#    # Start Container from image
+#    subprocess.run(['docker', 'run', image_name], shell=True, check=True)
