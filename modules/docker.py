@@ -6,9 +6,41 @@ def create_container_from_file():
     print('Wie lautet der Pfad der Dockerfile?')
     path = input('Pfad: ')
     if os.path.isfile(path):
-        print('Klappt')
+        print('Wie soll das Image genannt werden?')
+        image_name = input('Image Name: ').replace(' ','')
+        print('sudo docker build -t ' + str(image_name) + ' ' + str(path) )
+        os.system('sudo docker build -t ' + str(image_name) + ' ' + str(path))
+
+        # Get name for container
+        print('Wie soll der Container heißen?')
+        container_name = str(input('Container Name: '))
+
+        # Get Ports that are needed for the container
+        print('Welche Ports werden für den Container benötigt? Mehrere Ports durch ein Komma trennen!')
+        ports = str(input('Ports: '))
+
+        # Remove Spaces
+        ports = ports.replace(' ', '')
+        # Create list from string
+        port_list = ports.split(',')
+        # Append ports for the run command if multiple are needed
+        port_string = ''
+        for n in port_list:
+            port_string += ' -p ' + str(n)+ ':' + str(n)
+    
+        # Create docker run command
+        run_command = 'docker run -d'
+        run_command += port_string
+        run_command += ' --name ' + container_name + ' '
+        run_command += image_name
+
+        # Run the docker command
+        os.system('sudo ' + str(run_command))
+
     else:
-        print ('Directory not exists')
+        print ('File does not exists, is the path correct?')
+
+    
 
 # Create Container, from Image
 def create_container_from_image():
