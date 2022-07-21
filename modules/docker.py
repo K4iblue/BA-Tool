@@ -80,9 +80,9 @@ def delete_container(container_name=''):
     if container_name == '':
         print('Welcher Container soll gelöscht werden?')
         container_name = input('Container Name oder ID: ')
-        os.system('sudo docker rm --force' + str(container_name))
+        os.system('sudo docker rm --force ' + str(container_name))
     else:
-        os.system('sudo docker rm --force' + str(container_name))
+        os.system('sudo docker rm --force ' + str(container_name))
     # Wenn Container läuft muss dieser zuerst gestoppt werden
     # Dann kann der Container gelöscht wgit erden
 
@@ -98,8 +98,8 @@ def delete_image(image_name=''):
     if image_name == '':
         print('Welches Image soll gelöscht werden?')
         image_name = input('Image Name oder ID: ')
-        os.system('sudo docker image rm --force' + str(image_name))
+        os.system('sudo docker image rm --force ' + str(image_name))
     else:
-        os.system('sudo docker image rm --force' + str(image_name))
+        os.system('sudo docker image rm --force ' + str(image_name))
     # Wenn Container läuft muss dieser zuerst gestoppt werden
     # Dann kann der Container gelöscht werden
