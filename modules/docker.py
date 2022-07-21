@@ -46,12 +46,41 @@ def stop_container(container_name=''):
         print('\n\n')
 
 
-# Create Container
+# Create Container, from Image
 def create_container():
-    print('Create Container XXX...')
-    # Dockerfile angeben -> Image daraus erstellen -> Container daraus erstellen
-    # Docker Image runterladen als Option ?
 
+    # Get image name
+    print('Aus welchen Image soll der Container erstellt werden?')
+    image_name = str(input('Name oder ID: '))
+
+    # Get name for container
+    print('Wie soll der Container heißen?')
+    container_name = str(input('Container Name: '))
+
+    # Get Ports that are needed for the container
+    print('Welche Ports werden für den Container benötigt? Mehrere Ports durch ein Komma trennen!')
+    ports = str(input('Ports: '))
+
+    # Remove Spaces
+    ports = ports.replace(' ', '')
+    # Create list from string
+    port_list = ports.split(',')
+    # Append ports for the run command if multiple are needed
+    port_string = ''
+    for n in port_list:
+        port_string += ' -p ' + str(n)+ ':' + str(n)
+    
+    # Create docker run command
+    run_command = 'docker run -d'
+    run_command += port_string
+    run_command += ' --name ' + container_name + ' '
+    run_command += image_name
+
+    print(run_command)
+
+    os.system('sudo ' + str(run_command))
+    #run_command = run_command.append(' -p ' + str(n)+ ':' + str(n) + ' ')
+    #-p <host_port1>:<container_port1>
 
 ###################################################
 ######### Alles hier drunter funktioniert #########
