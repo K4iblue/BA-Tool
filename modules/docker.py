@@ -191,7 +191,7 @@ def delete_image(image_name=''):
 def delete_volume(volume_name=''):
     if volume_name == '':
         print('Welches Volume soll gelöscht werden?')
-        volume_name = input('Image Name oder ID: ')
+        volume_name = input('Volume Name oder ID: ')
         os.system('sudo docker volume rm --force ' + str(volume_name))
         # Print 2 empty Lines for better reading
         print('\n\n')
