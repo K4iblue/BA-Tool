@@ -97,16 +97,18 @@ def container_submenu():
             '0.\t Main Menu \n' +
             '1.\t Liste aller Container anzeigen \n' +
             '2.\t Liste aller Images anzeigen \n' +
-            '3.\t Container starten \n' +
-            '4.\t Container stoppen \n' +
-            '5.\t Container erstellen (Dockerfile) \n' +
-            '6.\t Container erstellen (Image) \n' +
-            '7.\t Container löschen \n' +
-            '8.\t Image löschen \n' +
-            '----- Please enter a number (0-8) -----')
+            '3.\t Liste aller Volumes anzeigen \n' +
+            '4.\t Container starten \n' +
+            '5.\t Container stoppen \n' +
+            '6.\t Container erstellen (Dockerfile) \n' +
+            '7.\t Container erstellen (Image) \n' +
+            '8.\t Container löschen \n' +
+            '9.\t Image löschen \n' +
+            '10.\t Volume löschen \n' +
+            '----- Please enter a number (0-10) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,9)
+    case_number = hf.get_int(0,11)
     
     match case_number:
         case 0:
@@ -118,22 +120,28 @@ def container_submenu():
             doc.show_images_list()
             container_submenu()
         case 3:
-            doc.start_container()
+            doc.show_volumes_list()
             container_submenu()
         case 4:
-            doc.stop_container()
+            doc.start_container()
             container_submenu()
         case 5:
-            doc.create_container_from_file()
+            doc.stop_container()
             container_submenu()
         case 6:
-            doc.create_container_from_image()
+            doc.create_container_from_file()
             container_submenu()
         case 7:
-            doc.delete_container()
+            doc.create_container_from_image()
             container_submenu()
         case 8:
+            doc.delete_container()
+            container_submenu()
+        case 9:
             doc.delete_image()
+            container_submenu()
+        case 10:
+            doc.delete_volume()
             container_submenu()
 
 # Maintenance Menu

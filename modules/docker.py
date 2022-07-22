@@ -110,10 +110,7 @@ def create_container_from_image():
     os.system('sudo ' + str(run_command))
 
 
-###################################################
-######### Alles hier drunter funktioniert #########
-###################################################
-# Start given Container
+# Start given container
 def start_container(container_name=''):
     if container_name == '':
         print('Welcher Container soll gestartet werden?')
@@ -127,7 +124,7 @@ def start_container(container_name=''):
         print('\n\n')
 
 
-# Stop given Container
+# Stop given container
 def stop_container(container_name=''):
     if container_name == '':
         print('Welcher Container soll gestoppt werden?')
@@ -141,21 +138,28 @@ def stop_container(container_name=''):
         print('\n\n')
 
 
-# List all Containers
+# List all containers
 def show_container_list():
     os.system('sudo docker container ls --all')
     # Print 2 empty Lines for better reading
     print('\n\n')
 
 
-# List all Images
+# List all images
 def show_images_list():
     os.system('sudo docker image ls --all')
     # Print 2 empty Lines for better reading
     print('\n\n')
 
 
-# Delete given Container
+# List all volumes
+def show_volumes_list():
+    os.system('sudo docker volume ls')
+    # Print 2 empty Lines for better reading
+    print('\n\n')
+
+
+# Delete given container
 def delete_container(container_name=''):
     if container_name == '':
         print('Welcher Container soll gelöscht werden?')
@@ -169,7 +173,7 @@ def delete_container(container_name=''):
         print('\n\n')
 
 
-# Delete given Image
+# Delete given image
 def delete_image(image_name=''):
     if image_name == '':
         print('Welches Image soll gelöscht werden?')
@@ -179,6 +183,20 @@ def delete_image(image_name=''):
         print('\n\n')
     else:
         os.system('sudo docker image rm --force ' + str(image_name))
+        # Print 2 empty Lines for better reading
+        print('\n\n')
+
+
+# Delete given volume
+def delete_volume(volume_name=''):
+    if volume_name == '':
+        print('Welches Volume soll gelöscht werden?')
+        volume_name = input('Image Name oder ID: ')
+        os.system('sudo docker volume rm --force ' + str(volume_name))
+        # Print 2 empty Lines for better reading
+        print('\n\n')
+    else:
+        os.system('sudo docker volume rm --force ' + str(volume_name))
         # Print 2 empty Lines for better reading
         print('\n\n')
 
@@ -210,24 +228,3 @@ def install_docker():
 
     # Start Docker Deamon
     os.system('sudo systemctl start docker')
-
-
-########## Löschen
-#def create_docker_image():
-#    # Get path of script and dockerfile
-#    path = os.path.join(sys.path[0])
-#    # User input for docker image name
-#    print('--- Enter Docker Image Name ---')
-#    image_name = input('Image Name: ').lower()
-#    # Get ImageID from console and convert to string
-#    # ImageId = subprocess.check_output(['docker', 'images', '-q', ImageName])
-#    # ImageIdString = str(ImageId).replace(''','').replace('\\n','')
-#    # Create image from Dockerfile
-#    subprocess.run(['docker', 'build', path, '-t', image_name.replace('"', '')], shell=True, check=True)
-#    # return image name for later use
-#    return image_name
-
-
-#def start_docker_container(image_name=''):
-#    # Start Container from image
-#    subprocess.run(['docker', 'run', image_name], shell=True, check=True)
