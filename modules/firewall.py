@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 from .pyufw import pyufw
 from . import helper_functions as hf
 
+
 # UFW set default settings and enable
 def ufw_set_default_settings():
     # Disable UFW

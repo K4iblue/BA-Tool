@@ -1,9 +1,11 @@
 import os
 from . import docker as doc
 
+
 # Start Automatic updates
 def start_updates():
     print('')
+
 
 # Install default programs definied by K-Businesscom
 def install_default_programs():

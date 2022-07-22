@@ -6,17 +6,6 @@ from string import ascii_letters, punctuation, digits
 from . import firewall as fw
 from . import helper_functions as hf
 
-# Global Dict
-network_dict = {
-  "DHCP": "",
-  "STATIC_INTERFACE_IP": "Test",
-  "DNS_SERVER_IP": "",
-  "DEFAULT_GATEWAY_IP": "",
-  "SYSLOG_SERVER_IP": "",
-  "SNMP_USER": "",
-  "SNMP_PW": "",
-  "NTP_SERVER": "",
-}
 
 # Configuration of all Networking parts
 def complete_configuration_dialog():

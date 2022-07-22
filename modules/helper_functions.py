@@ -1,6 +1,7 @@
 import ipaddress
 import os
 
+
 # Validate IP addresses
 def ip_validation(address):
     try:
@@ -44,6 +45,7 @@ def get_int(x,y):
             continue
         break
     return number
+
 
 def restart_system():
     print('Das System muss neugestartet werden, Neustart durchführen?')

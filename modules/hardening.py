@@ -1,9 +1,8 @@
 import subprocess
 import os
 import sys
-
-# Import helper functions
 from . import helper_functions as hf
+
 
 # Execute system hardening
 def system_hardening():
@@ -39,10 +38,12 @@ def system_hardening():
     # Main Menu
     return
 
+
 # Hardening start
 def hardening_check_programs():
     # Check ob Programme schon installiert sind, dann überspringe die komplette Funktion
     print('')
+
 
 # Create configfile for hardening script
 def create_configfile():
@@ -146,6 +147,7 @@ def create_configfile():
     # Write back to file
     with open (path, 'w', encoding='UTF-8') as file:
         file.write(filedata)
+
 
 # Start hardening script
 def start_hardening_script():
