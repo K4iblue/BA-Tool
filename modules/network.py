@@ -2,7 +2,7 @@ import subprocess
 import os
 import sys
 import random
-from string import ascii_letters
+from string import ascii_letters, punctuation, digits
 from . import firewall as fw
 from . import helper_functions as hf
 
@@ -303,7 +303,7 @@ def config_snmp():
         config_dict['PASSWORD']= snmp_password
 
         # Generate random encryption key with 16 characters
-        config_dict['ENCRYPTION_KEY']= ''.join(random.sample(ascii_letters,16))
+        config_dict['ENCRYPTION_KEY']= ''.join(random.sample(ascii_letters + digits + punctuation,16))
         # Get path to template file
         snmp_template = os.path.join(sys.path[0]) + '/config/templates/snmp.template'
     
