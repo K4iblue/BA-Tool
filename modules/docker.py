@@ -15,10 +15,25 @@ def create_container_from_file():
         print('Wie soll der Container heißen?')
         container_name = str(input('Container Name: '))
 
+        # Docker volume needed?
+        print('Wird ein Docker Volume zum persistenten speichern benötigt?')
+        volume_needed = ''
+        # Only 'y' and 'n' allowed
+        while volume_needed not in ['Y','N']:
+            volume_needed = input('(y/n): ').upper()
+        volume_needed = True if volume_needed == 'Y' else False
+
+        if volume_needed is True:
+            print('Wie soll das Volumen heißen?')
+            volume_name = str(input('Volume Name: '))
+            print('Bitte den Mounting Pfad im Container angeben')
+            print('z.b: /var/lib/mysql/data')
+            volume_mounting = str(input('Mounting point: '))
+            volume_string = ' -v ' + volume_name + ':' + volume_mounting
+
         # Get Ports that are needed for the container
         print('Welche Ports werden für den Container benötigt? Mehrere Ports durch ein Komma trennen!')
         ports = str(input('Ports: '))
-
         # Remove Spaces
         ports = ports.replace(' ', '')
         # Create list from string
@@ -30,6 +45,8 @@ def create_container_from_file():
     
         # Create docker run command
         run_command = 'docker run -d'
+        if volume_needed is True: 
+            run_command += volume_string
         run_command += port_string
         run_command += ' --name ' + container_name + ' '
         run_command += image_name
@@ -52,6 +69,22 @@ def create_container_from_image():
     print('Wie soll der Container heißen?')
     container_name = str(input('Container Name: '))
 
+    # Docker volume needed?
+    print('Wird ein Docker Volume zum persistenten speichern benötigt?')
+    volume_needed = ''
+    # Only 'y' and 'n' allowed
+    while volume_needed not in ['Y','N']:
+        volume_needed = input('(y/n): ').upper()
+    volume_needed = True if volume_needed == 'Y' else False
+
+    if volume_needed is True:
+        print('Wie soll das Volumen heißen?')
+        volume_name = str(input('Volume Name: '))
+        print('Bitte den Mounting Pfad im Container angeben')
+        print('z.b: /var/lib/mysql/data')
+        volume_mounting = str(input('Mounting point: '))
+        volume_string = ' -v ' + volume_name + ':' + volume_mounting
+
     # Get Ports that are needed for the container
     print('Welche Ports werden für den Container benötigt? Mehrere Ports durch ein Komma trennen!')
     ports = str(input('Ports: '))
@@ -67,6 +100,8 @@ def create_container_from_image():
     
     # Create docker run command
     run_command = 'docker run -d'
+    if volume_needed is True: 
+        run_command += volume_string
     run_command += port_string
     run_command += ' --name ' + container_name + ' '
     run_command += image_name
