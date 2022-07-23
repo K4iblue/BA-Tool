@@ -50,13 +50,18 @@ def config_netplan():
     interface_name = str(interface_name.stdout).replace('b','').replace('\\n','').strip("'")
 
     # 2. DHCP needed ?
-    print('Wird DHCP benötigt?')
-    dhcp_needed = ''
-    # Only 'y' and 'n' allowed
-    while dhcp_needed not in ['Y','N']:
-        dhcp_needed = input('(y/n): ').upper()
+    #print('Wird DHCP benötigt?')
+    #dhcp_needed = ''
+    ## Only 'y' and 'n' allowed
+    #while dhcp_needed not in ['Y','N']:
+    #    dhcp_needed = input('(y/n): ').upper()
 
-    dhcp_needed = 'true' if dhcp_needed == 'Y' else 'false'
+    #dhcp_needed = 'true' if dhcp_needed == 'Y' else 'false'
+
+    #if dhcp_needed = 'true':
+    #    # Create a empty list and fill it with the config values
+    #    config_list = []
+    #    config_list += [interface_name] # 1. Interface
 
     # 3. Static IP, with subnetprefix (IPv4: range 1-32)
     print('Wie lautet die Statische IP des Interfaces?')
@@ -88,7 +93,7 @@ def config_netplan():
     # Create a empty list and fill it with the config values
     config_list = []
     config_list += [interface_name] # 1. Interface
-    config_list += [dhcp_needed]    # 2. DHCP true/false
+    #config_list += [dhcp_needed]    # 2. DHCP true/false
     config_list += [static_ip]      # 3. Static IP for interface, with subnetprefix
     config_list += [dns_ips]        # 4. DNS
     config_list += [dgw_ips]        # 5. Default gateway

@@ -3,11 +3,11 @@ network:
   renderer: networkd
   ethernets:
     $1$:
-      dhcp4: $2$
-      addresses: [$3$]
+      dhcp4: false
+      addresses: [$2$]
       nameservers:
-          addresses: [$4$]
+          addresses: [$3$]
       routes:
       - to: default                     
-        via: $5$
+        via: $4$
         metric: 100

@@ -60,7 +60,7 @@ def network_submenu():
     print('----------- Netzwerkkonfiguration ----------- \n' +
             '0.\t Main Menu \n' +
             '1.\t Vollständige Netzwerk Konfiguration \n' +
-            '2.\t Netplan Konfiguration (DHCP, DNS, Default Gateway, Static IP) \n' +
+            '2.\t Netplan Konfiguration (DNS, Default Gateway, Static IP) \n' +
             '3.\t NTP Konfiguration \n' +
             '4.\t SNMPv3 Konfiguration \n' +
             '5.\t Syslog Konfiguration \n' +            
