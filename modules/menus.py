@@ -17,7 +17,7 @@ def main_menu():
           '3.\t Container Verwaltung \n' +
           '4.\t Systempflege \n' +
           #'5.\t DEBUG \n' +
-          '----- Please enter a number (0-5) -----')
+          '----- Please enter a number (0-4) -----')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,6)
