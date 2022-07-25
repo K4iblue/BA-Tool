@@ -1,4 +1,5 @@
 import os
+import re
 
 from modules.crontab.crontab import CronTab
 #from ./crontab import CronTab
@@ -7,27 +8,38 @@ from . import docker as doc
 
 # Start Automatic updates
 def start_updates():
-
+    # Load crontab of root user
     cron = CronTab(user='root')
+
     # Check if automtatic updates are activated at the moment
-    #job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    
-    # Get list of cronjobs
     find_job = cron.find_comment('automatic_updates')
+
+    # Get list of cronjobs
     for job in find_job:
         if job.is_enabled() is True:
-            print('Job is active')
-        else:
-            print('Job is disabled')
+            job.enable(False)
+            print('Automatische Updates deaktiviert')
+            return
+        elif job.is_enabled() is False:
+            job.enable()
+            print('Automatische Updates aktiviert')
+            return
 
-    ## Get user input
-    #print('In welchen Abständen sollen die Updates durchgeführt werden?')
-    #intervall = int(input('Intervall in Stunden (0-23): ')) 
-    ## Create new chronjob 
-    #job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    #job.hour.every(intervall)
-    ## Write to crontab
-    #cron.write()
+    # If no cronjob was found, we create one
+    print('Zur welcher Uhrzeit sollen die Täglichen Updates durchgeführt werden?')
+    print('Bitte eine Uhrzeit zwischen 00:00Uhr - 23:59Uhr auswählen')
+    intervall = str(input('Uhrzeit (HH:MM): '))
+
+    # String to list
+    intervall = intervall.split(':')
+
+    # Create new chronjob 
+    job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
+    job.hour(int(intervall[0]))
+    job.minute(int(intervall[1]))
+
+    # Write to crontab
+    cron.write()
 
 # Install default programs definied by K-Businesscom
 def install_default_programs():
