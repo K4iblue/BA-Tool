@@ -21,10 +21,9 @@ def start_updates():
                 print(job)
                 cron.remove(job)
             print('Automatische Updates deaktiviert')
+            # Write to crontab
+            cron.write()
             return
-
-    for job in cron:
-        print(job)
 
     # If no cronjob was found, we create one
     print('Zur welcher Uhrzeit sollen die Täglichen Updates durchgeführt werden?')
@@ -40,6 +39,7 @@ def start_updates():
     job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
     job.hour.every(job_hours)
     job.minute.also.on(job_minutes)
+    print('Automatische Updates aktiviert')
 
     # Write to crontab
     cron.write()
