@@ -11,14 +11,13 @@ def start_updates():
     # Load crontab of root user
     cron = CronTab(user='root')
 
-    # Check if automtatic updates are activated at the moment
+    # Check if automatic updates are activated at the moment
     find_job = cron.find_comment('automatic_updates')
 
-    # Get list of cronjobs
+    # Get list of cronjobs, with the comment 'automatic_updates'
     for job in find_job:
         if job.is_enabled() is True:
             for job in cron:
-                print(job)
                 cron.remove(job)
             print('Automatische Updates deaktiviert')
             # Write to crontab
@@ -34,6 +33,9 @@ def start_updates():
     intervall = intervall.split(':')
     job_hours = int(intervall[0])
     job_minutes = int(intervall[1])
+
+    print(job_hours)
+    print(job_minutes)
 
     # Create new chronjob 
     job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
