@@ -18,9 +18,12 @@ def start_updates():
 
     # Write to crontab
     cron.write()
-    
-    print(job.is_valid())
+    print('Cronjob erstellt')
+    print (job.enable())
 
+    print('Alle Jobs anzeigen')
+    for job in cron:
+        print(job)
 
 # Install default programs definied by K-Businesscom
 def install_default_programs():
