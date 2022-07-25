@@ -30,7 +30,7 @@ def start_updates():
     intervall = str(input('Uhrzeit (HH:MM): '))
     intervall = [int(n) for n in intervall.split(':')]
 
-    while intervall[0] > 23 or intervall[1] > 59:
+    while intervall[0] not in range (0,24) or intervall[1] in range (0,60):
         print('Bitte eine gültige Uhrzeit eingeben!')
         intervall = str(input('Uhrzeit (HH:MM): '))
         intervall = [int(n) for n in intervall.split(':')]
