@@ -17,13 +17,14 @@ def start_updates():
     # Get list of cronjobs
     for job in find_job:
         if job.is_enabled() is True:
-            job.enable(False)
+            for job in cron:
+                print(job)
+                cron.remove(job)
             print('Automatische Updates deaktiviert')
             return
-        elif job.is_enabled() is False:
-            job.enable()
-            print('Automatische Updates aktiviert')
-            return
+
+    for job in cron:
+        print(job)
 
     # If no cronjob was found, we create one
     print('Zur welcher Uhrzeit sollen die Täglichen Updates durchgeführt werden?')
