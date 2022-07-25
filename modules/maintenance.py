@@ -33,13 +33,16 @@ def start_updates():
     # String to list
     intervall = intervall.split(':')
 
-    # Create new chronjob 
-    job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    job.hour(int(intervall[0]))
-    job.minute(int(intervall[1]))
+    print(int(intervall[0]))
+    print(int(intervall[1]))
 
-    # Write to crontab
-    cron.write()
+    ## Create new chronjob 
+    #job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
+    #job.hour(int(intervall[0]))
+    #job.minute(int(intervall[1]))
+
+    ## Write to crontab
+    #cron.write()
 
 # Install default programs definied by K-Businesscom
 def install_default_programs():
