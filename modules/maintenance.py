@@ -33,7 +33,7 @@ def start_updates():
     while intervall[0] > 23 or intervall[1] > 59:
         print('Bitte eine gültige Uhrzeit eingeben!')
         intervall = str(input('Uhrzeit (HH:MM): '))
-        intervall = intervall.split(':')
+        intervall = [int(n) for n in intervall.split(':')]
 
     # variables for hours and minute
     job_hours = int(intervall[0])
