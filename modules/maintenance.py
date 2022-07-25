@@ -26,8 +26,12 @@ def start_updates():
 
     # If no cronjob was found, we create one
     print('Zur welcher Uhrzeit sollen die Täglichen Updates durchgeführt werden?')
+    print('Bitte eine Uhrzeit zwischen 00:00Uhr - 23:59Uhr auswählen')
+    intervall = str(input('Uhrzeit (HH:MM): '))
+    intervall = intervall.split(':')
+
     while intervall[0] > 23 or intervall[1] > 59:
-        print('Bitte eine Uhrzeit zwischen 00:00Uhr - 23:59Uhr auswählen')
+        print('Bitte eine gültige Uhrzeit eingeben!')
         intervall = str(input('Uhrzeit (HH:MM): '))
         intervall = intervall.split(':')
 
