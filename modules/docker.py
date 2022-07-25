@@ -118,7 +118,7 @@ def show_volumes_list():
 # Delete given container
 def delete_container(container_name=''):
     if container_name == '':
-        print('Welcher Container soll gelöscht werden?')
+        print('Welcher Container soll entfernt werden?')
         container_name = input('Container Name oder ID: ')
         os.system('sudo docker rm --force ' + str(container_name))
         # Print 2 empty Lines for better reading
@@ -132,7 +132,7 @@ def delete_container(container_name=''):
 # Delete given image
 def delete_image(image_name=''):
     if image_name == '':
-        print('Welches Image soll gelöscht werden?')
+        print('Welches Image soll entfernt werden?')
         image_name = input('Image Name oder ID: ')
         os.system('sudo docker image rm --force ' + str(image_name))
         # Print 2 empty Lines for better reading
@@ -146,7 +146,7 @@ def delete_image(image_name=''):
 # Delete given volume
 def delete_volume(volume_name=''):
     if volume_name == '':
-        print('Welches Volume soll gelöscht werden?')
+        print('Welches Volume soll entfernt werden?')
         volume_name = input('Volume Name oder ID: ')
         os.system('sudo docker volume rm --force ' + str(volume_name))
         # Print 2 empty Lines for better reading
