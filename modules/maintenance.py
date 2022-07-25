@@ -35,7 +35,7 @@ def start_updates():
     # Create new chronjob
     job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
     # intervall[0] = hours, intervall[1] = minutes
-    job.setall(intervall[1], intervall[0],'*','*','*')
+    job.setall(intervall[1], intervall[0])
     print('Automatische Updates aktiviert')
 
     # Write to crontab
