@@ -1,8 +1,5 @@
 import os
-import re
-
 from modules.crontab.crontab import CronTab
-#from ./crontab import CronTab
 from . import docker as doc
 
 
@@ -35,16 +32,10 @@ def start_updates():
         intervall = str(input('Uhrzeit (HH:MM): '))
         intervall = [int(n) for n in intervall.split(':')]
 
-    # variables for hours and minute
-    job_hours = int(intervall[0])
-    job_minutes = int(intervall[1])
-
-    print(job_hours)
-    print(job_minutes)
-
-    # Create new chronjob 
+    # Create new chronjob
     job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    job.setall(job_minutes, job_hours)
+    # intervall[0] = minutes, intervall[1] = hours
+    job.setall(intervall[0], intervall[1])
     print('Automatische Updates aktiviert')
 
     # Write to crontab
