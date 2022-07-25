@@ -1,10 +1,23 @@
 import os
+from crontab import CronTab
 from . import docker as doc
 
 
 # Start Automatic updates
 def start_updates():
-    print('')
+    # Get user input
+    print('In welchen Abständen sollen die Updates durchgeführt werden?')
+    intervall = int(input('Intervall in Stunden: ')) 
+    
+    # Create new chronjob 
+    cron = CronTab(user='root')
+    job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
+    job.hour.every(intervall)
+
+    # Write to crontab
+    cron.write()
+    
+    print(job.is_valid())
 
 
 # Install default programs definied by K-Businesscom
