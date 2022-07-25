@@ -30,19 +30,18 @@ def start_updates():
     print('Bitte eine Uhrzeit zwischen 00:00Uhr - 23:59Uhr auswählen')
     intervall = str(input('Uhrzeit (HH:MM): '))
 
-    # String to list
+    # String to list, and create variables for hours and minute
     intervall = intervall.split(':')
+    job_hours = int(intervall[0])
+    job_minutes = int(intervall[1])
 
-    print(int(intervall[0]))
-    print(int(intervall[1]))
+    # Create new chronjob 
+    job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
+    job.hour(job_hours)
+    job.minute(job_minutes)
 
-    ## Create new chronjob 
-    #job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    #job.hour(int(intervall[0]))
-    #job.minute(int(intervall[1]))
-
-    ## Write to crontab
-    #cron.write()
+    # Write to crontab
+    cron.write()
 
 # Install default programs definied by K-Businesscom
 def install_default_programs():
