@@ -1,7 +1,7 @@
-import os
+#import os
 from . import hardening
 from . import network as net
-from . import firewall as fw
+#from . import firewall as fw
 from . import docker as doc
 #from . import maintenance
 from . import debug as de
@@ -99,8 +99,8 @@ def container_submenu():
             '3.\t Liste aller Volumes anzeigen \n' +
             '4.\t Container starten \n' +
             '5.\t Container stoppen \n' +
-            '6.\t Container erstellen (Dockerfile) \n' +
-            '7.\t Container erstellen (Image) \n' +
+            '6.\t Container erstellen \n' +
+            '7.\t Image erstellen \n' +
             '8.\t Container löschen \n' +
             '9.\t Image löschen \n' +
             '10.\t Volume löschen \n' +
@@ -128,10 +128,10 @@ def container_submenu():
             doc.stop_container()
             container_submenu()
         case 6:
-            doc.create_container_from_file()
+            doc.create_container()
             container_submenu()
         case 7:
-            doc.create_container_from_image()
+            doc.create_image()
             container_submenu()
         case 8:
             doc.delete_container()
