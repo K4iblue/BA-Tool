@@ -4,7 +4,7 @@ from . import docker as doc
 
 
 # Start Automatic updates
-def start_updates():
+def toggle_automatic_updates():
     # Load crontab of root user
     cron = CronTab(user='root')
 

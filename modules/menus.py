@@ -158,10 +158,11 @@ def maintenance_submenu():
         case 0:
             main_menu()
         case 1:
-            main.start_updates()
+            main.toggle_automatic_updates()
             maintenance_submenu()
         case 2:
-            print('Case 2')
+            main.install_default_programs()
+            maintenance_submenu()
 
 # DEBUG Menu
 def debug_submenu():
