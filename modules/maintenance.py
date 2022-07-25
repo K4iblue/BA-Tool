@@ -7,23 +7,27 @@ from . import docker as doc
 
 # Start Automatic updates
 def start_updates():
-    # Get user input
-    print('In welchen Abständen sollen die Updates durchgeführt werden?')
-    intervall = int(input('Intervall in Stunden: ')) 
-    
-    # Create new chronjob 
+
     cron = CronTab(user='root')
-    job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    job.hour.every(intervall)
+    # Check if automtatic updates are activated at the moment
+    #job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
+    
+    # Get list of cronjobs
+    find_job = cron.find_comment('automatic_updates')
+    for job in find_job:
+        if job.is_enabled() is True:
+            print('Job is active')
+        else:
+            print('Job is disabled')
 
-    # Write to crontab
-    cron.write()
-    print('Cronjob erstellt')
-    print (job.enable())
-
-    print('Alle Jobs anzeigen')
-    for job in cron:
-        print(job)
+    ## Get user input
+    #print('In welchen Abständen sollen die Updates durchgeführt werden?')
+    #intervall = int(input('Intervall in Stunden (0-23): ')) 
+    ## Create new chronjob 
+    #job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
+    #job.hour.every(intervall)
+    ## Write to crontab
+    #cron.write()
 
 # Install default programs definied by K-Businesscom
 def install_default_programs():
