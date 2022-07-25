@@ -3,7 +3,7 @@ from . import hardening
 from . import network as net
 #from . import firewall as fw
 from . import docker as doc
-#from . import maintenance
+from . import maintenance as main
 from . import debug as de
 from . import helper_functions as hf
 
@@ -158,7 +158,8 @@ def maintenance_submenu():
         case 0:
             main_menu()
         case 1:
-            print('Case 1')
+            main.start_updates()
+            maintenance_submenu()
         case 2:
             print('Case 2')
 
