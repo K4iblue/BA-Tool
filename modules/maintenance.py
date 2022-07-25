@@ -37,8 +37,8 @@ def start_updates():
 
     # Create new chronjob 
     job = cron.new(command='sudo apt update && sudo apt upgrade -y', comment='automatic_updates')
-    job.hour(job_hours)
-    job.minute(job_minutes)
+    job.hour.every(job_hours)
+    job.minute.also.on(job_minutes)
 
     # Write to crontab
     cron.write()
