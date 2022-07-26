@@ -41,6 +41,7 @@ def toggle_automatic_updates():
     # Write to crontab
     cron.write()
 
+
 # Install default programs definied by K-Businesscom
 def install_default_programs():
     print('Default Programme installieren?')
@@ -57,7 +58,7 @@ def install_default_programs():
         # Install default programs
         os.system('sudo apt-get install locate vim screen dnsutils iptables fail2ban openssh-server rsyslog snmpd snmp acpi cron -y')
 
-        # Install Docker
+        # Install Docker, NOT SURE IF NEEDED
         doc.install_docker()
 
         # Clean up after everything is installed

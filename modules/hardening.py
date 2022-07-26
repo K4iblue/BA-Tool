@@ -4,6 +4,19 @@ import sys
 from . import helper_functions as hf
 
 
+# Install necessary packages for the hardening script
+def install_hardening_packages():
+    subprocess.run(['sudo', 'apt-get', '-y', 'install', 'git', 'net-tools', 'procps', '--no-install-recommend'], shell=True, check=True)
+
+
+
+# Start hardening script
+def start_hardening_script():
+    # Run Hardening Script
+    subprocess.run(['sudo', 'bash', 'scripts/hardening/ubuntu.sh'], shell=True, check=True)
+
+
+
 # Execute system hardening
 def system_hardening():
     print('Test')
@@ -37,12 +50,6 @@ def system_hardening():
 
     # Main Menu
     return
-
-
-# Hardening start
-def hardening_check_programs():
-    # Check ob Programme schon installiert sind, dann überspringe die komplette Funktion
-    print('')
 
 
 # Create configfile for hardening script
@@ -148,11 +155,3 @@ def create_configfile():
     with open (path, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
-
-# Start hardening script
-def start_hardening_script():
-    # Install necessary packages
-    subprocess.run(['sudo', 'apt-get', '-y', 'install', 'git', 'net-tools', 'procps', '--no-install-recommend'], shell=True, check=True)
-
-    # Run Hardening Script
-    subprocess.run(['sudo', 'bash', 'scripts/hardening/ubuntu.sh'], shell=True, check=True)
