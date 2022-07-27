@@ -5,9 +5,8 @@ def main():
 
     if maintenance.first_start_check() is True:
         maintenance.first_start_installer()
-        menus.main_menu()
-    else:
-        menus.main_menu()
+    
+    menus.main_menu()
 
 if __name__ == '__main__':
     main()

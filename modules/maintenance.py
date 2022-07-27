@@ -65,10 +65,6 @@ def install_default_programs():
         # Clean up after everything is installed
         os.system('sudo apt-get clean && sudo apt-get autoremove')
 
-    else:
-        print('Default Programme müssen zuerst installiert werden!')
-        quit()
-
 
 def install_all_needed_packages():
     print('Install all needed packages...')
@@ -94,7 +90,7 @@ def install_all_needed_packages():
     os.system('sudo apt-get update')
 
     # Install all programs
-    os.system('sudo apt-get install locate vim screen dnsutils iptables fail2ban openssh-server rsyslog snmpd snmp acpi cron bats lynis docker-ce -y')
+    os.system('sudo apt-get install openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
 
     # Update all other packages if needed
     os.system('sudo apt-get upgrade -y')
