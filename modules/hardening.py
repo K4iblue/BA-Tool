@@ -31,7 +31,7 @@ def install_hardening_packages():
 # Start hardening script
 def start_hardening_script():
     # Run Hardening Script
-    subprocess.run(['sudo', 'bash', 'scripts/hardening/ubuntu.sh'], shell=True, check=True)
+    os.system('sudo bash ./scripts/hardening/ubuntu.sh')
 
 
 # Create configfile for hardening script
