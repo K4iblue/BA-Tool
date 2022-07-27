@@ -19,7 +19,7 @@ def complete_configuration_dialog():
 
     if complete_config_needed is True:
         # Install UFW, rsyslog and snmp
-        #install_networking_packages()
+        install_networking_packages()
 
         # Reset Firewall, disable IPv6, set Default Settings
         fw.ufw_disable_ipv6()
