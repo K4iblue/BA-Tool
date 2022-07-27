@@ -156,6 +156,7 @@ def test_hardening():
 
         if lynis_needed is True:
             # Lynis testing
+            os.chmod('./scripts/lynis/lynis', 0o775)
             os.system('./scripts/lynis/lynis audit system')
     else:
         return
