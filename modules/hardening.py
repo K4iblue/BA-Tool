@@ -156,6 +156,6 @@ def test_hardening():
 
         if lynis_needed is True:
             # Lynis testing
-            os.system('./scripts/lynis audit system')
+            os.system('./scripts/lynis/lynis audit system')
     else:
         return
