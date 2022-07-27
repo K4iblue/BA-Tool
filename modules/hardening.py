@@ -1,9 +1,10 @@
-from gettext import install
 import subprocess
 import os
 import sys
 from . import helper_functions as hf
 
+
+# Complete hardening dialog
 def complete_hardening():
     print('Soll die Systemhärtung gestartet werden?')
     complete_config_needed = ''
@@ -17,8 +18,10 @@ def complete_hardening():
         install_hardening_packages()
         create_configfile()
         start_hardening_script()
+        test_hardening()
     else:
         return
+
 
 # Install necessary packages for the hardening script
 def install_hardening_packages():
@@ -132,8 +135,8 @@ def create_configfile():
 
 
 def test_hardening():
-    # Install Bats
-    os.system('sudo apt-get -y install bats')
+    # Install testing packages
+    install_testing_packages()
 
     print('Soll die Härtung des Systems überprüft werden?')
     testing_needed = ''
@@ -156,7 +159,18 @@ def test_hardening():
 
         if lynis_needed is True:
             # Lynis testing
-            os.chmod('./scripts/lynis/', 0o775)
-            os.system('./scripts/lynis/lynis audit system')
+            os.system('lynis audit system')
     else:
         return
+
+
+def install_testing_packages():
+    # Install bats
+    os.system('sudo apt-get -y install bats')
+
+    # Install lynis
+    os.system('sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 013baa07180c50a7101097ef9de922f1c2fde6c4')
+
+    os.system('echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list')
+
+    os.system('sudo apt update && sudo apt install lynis')
