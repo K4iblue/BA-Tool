@@ -171,6 +171,7 @@ def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
             '0. \t Main Menu\n' +
             '1. \t DEBUG\n' +
+            '2. \t add ssh\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -181,5 +182,7 @@ def debug_submenu():
         case 1:
             de.debug()
             debug_submenu()
+        case 2:
+            fw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
         case _:
             debug_submenu()
