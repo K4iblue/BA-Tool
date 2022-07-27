@@ -25,7 +25,7 @@ def complete_hardening():
 
 # Install necessary packages for the hardening script
 def install_hardening_packages():
-    os.system('sudo apt-get -y install git net-tools procps --no-install-recommend')
+    os.system('sudo apt-get install git net-tools procps -y')
 
 
 # Start hardening script
