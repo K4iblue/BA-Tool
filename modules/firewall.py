@@ -164,7 +164,7 @@ def ufw_allow_ping():
 # Get a list of all added "apt-get" Repositories
 def get_repo_list():
     # Get Repos
-    repo_list = subprocess.run("apt-cache policy |grep http |awk '{print $2}' |sort -u", capture_output=True, shell=True, check=True)
+    repo_list = subprocess.run("sudo apt-cache policy |grep http |awk '{print $2}' |sort -u", capture_output=True, shell=True, check=True)
     repo_list = str(repo_list.stdout).replace('b','',1).strip("'").split("\\n")
 
     # Remove empty entries
