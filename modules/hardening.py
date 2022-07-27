@@ -74,7 +74,11 @@ def create_configfile():
 
     # 8. NTP server pool // Default: '0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org pool.ntp.org'
     print('Sind NTP Server vorhanden? Mehrere IP Addressen durch ein Komma trennen!')
-    ntp_ips_list = hf.get_ips()
+    ntp_ips_list = input('NTP Server: ')
+    # Remove spaces
+    ntp_ips_list = ntp_ips_list.strip().replace(' ', '')
+    # Create list from string
+    ntp_ips_list = ntp_ips_list.split(',')
     # List to string, with spaces in between
     ntp_ips = ' '.join(ntp_ips_list)
 
