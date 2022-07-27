@@ -173,7 +173,7 @@ def debug_submenu():
             '1. \t DEBUG\n' +
             '2. \t add ssh\n' +
             '3. \t add Repos to Firewall\n' +
-            '4. \t install docker\n' +
+            '4. \t Install all packages\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -189,6 +189,6 @@ def debug_submenu():
         case 3:
             fw.ufw_rules_add_lists(port=80, ip_list=fw.get_repo_list(), protocol='tcp')
         case 4:
-            doc.install_docker()
+            main.install_all_needed_packages()
         case _:
             debug_submenu()

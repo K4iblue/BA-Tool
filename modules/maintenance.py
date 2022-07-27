@@ -67,3 +67,36 @@ def install_default_programs():
     else:
         print('Default Programme müssen zuerst installiert werden!')
         quit()
+
+
+def install_all_needed_packages():
+    print('Install all needed packages...')
+
+    os.system('sudo apt-get update')
+    os.system('sudo apt-get install ca-certificates curl gnupg lsb-release')
+
+    # Add Docker’s official GPG key:
+    os.system('sudo mkdir -p /etc/apt/keyrings')
+    os.system('curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg')
+
+    # Use the following command to set up the repository:
+    os.system('echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null')
+
+    # Install lynis
+    os.system('sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 013baa07180c50a7101097ef9de922f1c2fde6c4')
+
+    os.system('echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list')
+
+    # Update repos
+    os.system('sudo apt-get update')
+
+    # Install all programs
+    os.system('sudo apt-get install locate vim screen dnsutils iptables fail2ban openssh-server rsyslog snmpd snmp acpi cron bats lynis docker-ce -y')
+
+    # Update all other packages if needed
+    os.system('sudo apt-get upgrade -y')
+
+    # Start docker
+    os.system('sudo systemctl start docker')
