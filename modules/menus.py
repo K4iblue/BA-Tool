@@ -38,7 +38,7 @@ def main_menu():
 
 # Hardening Menu
 def hardening_submenu():
-    print('----------- Hardening Menu ----------- \n' +
+    print('----------- Härtung ----------- \n' +
             '0.\t Main Menu \n' +
             '1.\t Härtung durchführen \n' +
             '2.\t Härtung Überprüfen \n' +
@@ -57,7 +57,7 @@ def hardening_submenu():
 
 # Network Menu
 def network_submenu():
-    print('----------- Netzwerkkonfiguration ----------- \n' +
+    print('----------- Netzwerk Konfiguration ----------- \n' +
             '0.\t Main Menu \n' +
             '1.\t Vollständige Netzwerk Konfiguration \n' +
             '2.\t Netplan Konfiguration (DNS, Default Gateway, Static IP) \n' +
@@ -145,7 +145,7 @@ def container_submenu():
 
 # Maintenance Menu
 def maintenance_submenu():
-    print('----------- Maintenance Menu ----------- \n' +
+    print('----------- Systempflege Menu ----------- \n' +
             '0. Main Menu \n' +
             '1. Automatische Updates de-/aktivieren \n' +
             '2. Standardprogramme installieren \n' +
