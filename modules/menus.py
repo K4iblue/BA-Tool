@@ -84,10 +84,10 @@ def network_submenu():
             net.config_ntp()
             network_submenu()
         case 4:
-            net.config_syslog()
+            net.config_snmp()
             network_submenu()
         case 5:
-            net.config_snmp()
+            net.config_syslog()
             network_submenu()
         case _:
             network_submenu()

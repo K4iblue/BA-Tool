@@ -1,3 +1,4 @@
+from ipaddress import ip_address
 import subprocess
 import os
 import sys
@@ -283,7 +284,11 @@ def config_snmp():
 
     if snmp_needed is True:
         # Create a dict with user, password and encryption_key
-        config_dict = {'USER': '', 'PASSWORD': '', 'ENCRYPTION_KEY': ''}
+        config_dict = {'AGENT-IP':'','USER': '', 'PASSWORD': '', 'ENCRYPTION_KEY': ''}
+
+        # Get Agent IP Adresse
+        print('Wie lautet die IP des SNMP Managers?') 
+        config_dict['AGENT-IP']= hf.get_ips()
 
         # Get user and password
         print('Bitte einen Usernamen eingeben')        
@@ -327,8 +332,8 @@ def config_snmp():
         os.chmod(snmp_file, 0o644)
 
         # Generate Firewall Rules for SNMPv3
-        fw.ufw_rule_generator(port=161,protocol='udp')
-        fw.ufw_rule_generator(port=162,protocol='udp')
+        fw.ufw_rule_generator(port=161,target_ip=config_dict['AGENT-IP'],protocol='udp')
+        #fw.ufw_rule_generator(port=162,target_ip=config_dict['AGENT-IP'],protocol='udp')   # Traps needed?
 
         # Restart SNMP Service
         os.system('systemctl restart snmpd')
