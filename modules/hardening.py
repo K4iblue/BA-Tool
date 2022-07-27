@@ -87,7 +87,7 @@ def create_configfile():
     ntp_ips = ' '.join(ntp_ips_list)
 
     # 9. Add a specific time zone or use the system default by leaving it empty // Default: ''
-    timezone = ''
+    timezone = 'Europe/Berlin'
 
     # 10. If you want all the details or not // Default: 'N'
     verbose= 'Y'
@@ -144,7 +144,7 @@ def create_configfile():
 
 def test_hardening():
     # Install testing packages
-    install_testing_packages()
+    # install_testing_packages()
 
     print('Soll die Härtung des Systems überprüft werden?')
     testing_needed = ''

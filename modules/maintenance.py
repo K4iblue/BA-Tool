@@ -1,4 +1,5 @@
 import os
+import sys
 from modules.crontab.crontab import CronTab
 from . import docker as doc
 
@@ -100,3 +101,20 @@ def install_all_needed_packages():
 
     # Start docker
     os.system('sudo systemctl start docker')
+
+
+def first_start():
+    config_file = os.path.join(sys.path[0]) + '/config/tool_config.cfg'
+    # Read from config file
+    with open (config_file, 'r', encoding='UTF-8') as file:
+        filedata = file.read()
+
+    if 'first_start=yes' in filedata:
+        # Replace first start line
+        filedata = filedata.replace('first_start=yes', 'first_start=no')
+        # Write to file
+        with open (config_file, 'w+', encoding='UTF-8') as file:
+            file.write(filedata)
+        return True
+    else:
+        return False
