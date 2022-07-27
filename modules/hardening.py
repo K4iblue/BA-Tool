@@ -1,13 +1,28 @@
+from gettext import install
 import subprocess
 import os
 import sys
 from . import helper_functions as hf
 
+def complete_hardening():
+    print('Soll die Systemhärtung gestartet werden?')
+    complete_config_needed = ''
+    # Only 'y' and 'n' allowed
+    while complete_config_needed not in ['Y','N']:
+        complete_config_needed = input('(y/n): ').upper()
+    
+    complete_config_needed = True if complete_config_needed == 'Y' else False
+
+    if complete_config_needed is True:
+        install_hardening_packages()
+        create_configfile()
+        start_hardening_script()
+    else:
+        return
 
 # Install necessary packages for the hardening script
 def install_hardening_packages():
     subprocess.run(['sudo', 'apt-get', '-y', 'install', 'git', 'net-tools', 'procps', '--no-install-recommend'], shell=True, check=True)
-
 
 
 # Start hardening script
@@ -16,54 +31,16 @@ def start_hardening_script():
     subprocess.run(['sudo', 'bash', 'scripts/hardening/ubuntu.sh'], shell=True, check=True)
 
 
-
-# Execute system hardening
-def system_hardening():
-    print('Test')
-    # Grober Ablauf:
-    # Software installieren die gebraucht wird
-        # nslookup: apt-get install dnsutils
-        # ping: sudo apt install iputils-ping
-
-    # Abfragen:
-    # Default Gateway / Default Route
-    # DNS Server IP
-    # Statische IP fürs Interface
-    # DHCP benötigt + Server IP
-    #config_netplan()
-
-    # NTP Server: https://timetoolsltd.com/ntp/how-to-install-and-configure-ntp-on-linux/
-    #create_configfile()
-
-    # Syslog Server (UDP port 514)
-    #config_syslog()
-
-    # SNMP v3: https://www.thegeekdiary.com/centos-rhel-6-install-and-configure-snmpv3/
-    #config_snmp()
-
-    # Ports für Firewall
-    # Firewall anpassen
-    # Configfile erstellen (entsprechende Abfragen komm hier)
-    # Härtungsskript starten
-    # Härtung erfolgreich? (vielleicht Tests definieren)
-    # Automatische Updates aktivieren? (Ansonsten hinweis aus Punkt -> Systempflege)
-
-    # Main Menu
-    return
-
-
 # Create configfile for hardening script
 def create_configfile():
     # 1. The IP addresses that will be able to connect with SSH, separated by spaces // Default: '127.0.0.1'
     print('Welche IP Adressen sollen SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
-    print('Default: 127.0.0.1')
     ssh_ips_list = hf.get_ips()
     # List to string, with spaces in between
     ssh_ips = ' '.join(ssh_ips_list)
 
     # 2. Which group the users have to be member of in order to acess via SSH, separated by spaces // Default: 'sudo'
     print('Welche User Gruppen sollen Zugang via SSH bekommen? Mehrere Gruppen durch ein Komma trennen!')
-    print('Default: sudo')
     user_groups_list = input('Gruppe(n): ')
     # No empty input allowed
     while not user_groups_list:
@@ -75,7 +52,6 @@ def create_configfile():
 
     # 3. Configure SSH port // Default: 22
     print('Welcher Port soll für SSH benutzt werden?')
-    print('Default: 22')
     ssh_port = input('SSH Port: ')
     # No empty input allowed
     while not ssh_port:
@@ -95,7 +71,6 @@ def create_configfile():
 
     # 8. NTP server pool // Default: '0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org pool.ntp.org'
     print('Sind NTP Server vorhanden? Mehrere IP Addressen durch ein Komma trennen!')
-    print('Default: 0.ubuntu.pool.ntp.org, 1.ubuntu.pool.ntp.org, 2.ubuntu.pool.ntp.org, 3.ubuntu.pool.ntp.org, pool.ntp.org')
     ntp_ips_list = hf.get_ips()
     # List to string, with spaces in between
     ntp_ips = ' '.join(ntp_ips_list)
@@ -104,7 +79,7 @@ def create_configfile():
     timezone = ''
 
     # 10. If you want all the details or not // Default: 'N'
-    verbose= 'N'
+    verbose= 'Y'
 
     # 11. Let the script guess the FW_ADMIN and SSH_GRPS settings // Default: 'N'
     script_guessing = 'N'
@@ -155,3 +130,32 @@ def create_configfile():
     with open (path, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
+
+def test_hardening():
+    # Install Bats
+    os.system('sudo apt-get -y install bats')
+
+    print('Soll die Härtung des Systems überprüft werden?')
+    testing_needed = ''
+    lynis_needed = ''
+    # Only 'y' and 'n' allowed
+    while testing_needed not in ['Y','N']:
+        testing_needed = input('(y/n): ').upper()
+    
+    testing_needed = True if testing_needed == 'Y' else False
+
+    if testing_needed is True:
+        # Bats tests
+        os.system('sudo bats ./scripts/hardening/tests/.')
+        print('Bats Test durchgeführt')
+        print('Fortfahren?')
+        
+        while lynis_needed not in ['Y','N']:
+            lynis_needed = input('(y/n): ').upper()
+        lynis_needed = True if lynis_needed == 'Y' else False
+
+        if lynis_needed is True:
+            # Lynis testing
+            os.system('./scripts/lynis audit system')
+    else:
+        return

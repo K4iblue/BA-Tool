@@ -1,7 +1,7 @@
 #import os
-from . import hardening
+from . import hardening as hard
 from . import network as net
-#from . import firewall as fw
+from . import firewall as fw
 from . import docker as doc
 from . import maintenance as main
 from . import debug as de
@@ -51,9 +51,11 @@ def hardening_submenu():
         case 0:
             main_menu()
         case 1:
-            hardening.create_configfile()
+            hard.complete_hardening()
+            hardening_submenu()
         case 2:
-            print('Case 2')
+            hard.test_hardening()
+            hardening_submenu()
 
 # Network Menu
 def network_submenu():
