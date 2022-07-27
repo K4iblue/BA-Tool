@@ -14,28 +14,11 @@ def complete_hardening():
     complete_config_needed = True if complete_config_needed == 'Y' else False
 
     if complete_config_needed is True:
-        install_hardening_packages()
         create_configfile()
         start_hardening_script()
         test_hardening()
     else:
         return
-
-
-# Install necessary packages for the hardening script
-def install_hardening_packages():
-    os.system('sudo apt-get install git net-tools procps -y')
-
-
-# Start hardening script
-def start_hardening_script():
-    # Change folder, otherwise its not working?
-    current_dir = os.getcwd()
-    os.chdir(str(current_dir) + '/scripts/hardening/')
-    # Run hardening script
-    os.system('sudo bash ubuntu.sh')
-    # Go back to tool folder
-    os.chdir(current_dir)
 
 
 # Create configfile for hardening script
@@ -142,10 +125,19 @@ def create_configfile():
         file.write(filedata)
 
 
-def test_hardening():
-    # Install testing packages
-    # install_testing_packages()
+# Start hardening script
+def start_hardening_script():
+    # Change folder, otherwise its not working?
+    current_dir = os.getcwd()
+    os.chdir(str(current_dir) + '/scripts/hardening/')
+    # Run hardening script
+    os.system('sudo bash ubuntu.sh')
+    # Go back to tool folder
+    os.chdir(current_dir)
 
+
+# Start bats and lynis tests
+def test_hardening():
     print('Soll die Härtung des Systems überprüft werden?')
     testing_needed = ''
     lynis_needed = ''
@@ -175,15 +167,3 @@ def test_hardening():
             os.system('lynis audit system')
     else:
         return
-
-
-def install_testing_packages():
-    # Install bats
-    os.system('sudo apt-get -y install bats')
-
-    # Install lynis
-    os.system('sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 013baa07180c50a7101097ef9de922f1c2fde6c4')
-
-    os.system('echo "deb https://packages.cisofy.com/community/lynis/deb/ stable main" | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list')
-
-    os.system('sudo apt update && sudo apt install lynis')

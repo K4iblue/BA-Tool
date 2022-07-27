@@ -1,7 +1,6 @@
 import os
 import sys
 from modules.crontab.crontab import CronTab
-from . import docker as doc
 
 
 # Start Automatic updates
@@ -57,21 +56,20 @@ def install_default_programs():
         os.system('sudo apt-get update && sudo apt-get upgrade -y')
 
         # Install default programs
-        os.system('sudo apt-get install locate vim screen dnsutils iptables fail2ban openssh-server rsyslog snmpd snmp acpi cron -y')
-
-        # Install Docker, NOT SURE IF NEEDED
-        doc.install_docker()
+        os.system('sudo apt-get install locate vim screen fail2ban acpi -y')
 
         # Clean up after everything is installed
         os.system('sudo apt-get clean && sudo apt-get autoremove')
 
 
+# Install all needed packages
 def install_all_needed_packages():
     print('Install all needed packages...')
 
     os.system('sudo apt-get update')
     os.system('sudo apt-get install ca-certificates curl gnupg lsb-release')
 
+    # Installation according to https://docs.docker.com/engine/install/ubuntu/
     # Add Docker’s official GPG key:
     os.system('sudo mkdir -p /etc/apt/keyrings')
     os.system('curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg')
@@ -90,15 +88,16 @@ def install_all_needed_packages():
     os.system('sudo apt-get update')
 
     # Install all programs
-    os.system('sudo apt-get install openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
+    os.system('sudo apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
 
     # Update all other packages if needed
     os.system('sudo apt-get upgrade -y')
 
-    # Start docker
+    # Start docker deamon
     os.system('sudo systemctl start docker')
 
 
+# Check for first program start
 def first_start_check():
     # Read from config file
     config_file = os.path.join(sys.path[0]) + '/config/tool_config.cfg'
@@ -111,6 +110,7 @@ def first_start_check():
         return False
 
 
+# Install packages on first start
 def first_start_installer():
     print('Erster Programm Start. Es werden nun alle benötigten Packages installiert \n Fortfahren?')
 

@@ -47,14 +47,15 @@ def get_int(x,y):
     return number
 
 
+# Restart System
 def restart_system():
-    print('Das System muss neugestartet werden, Neustart durchführen?')
+    print('Das System sollte neugestartet werden, Neustart durchführen?')
     restart_needed = ''
     # Only 'y' and 'n' allowed
     while restart_needed not in ['Y','N']:
         restart_needed = input('(y/n): ').upper()
     restart_needed = True if restart_needed == 'Y' else False
     if restart_needed is True:
-        os.system('sudo reboot')
+        os.system('sudo reboot now')
     else:
         return False

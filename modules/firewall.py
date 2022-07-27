@@ -11,10 +11,8 @@ from . import helper_functions as hf
 def ufw_set_default_settings():
     # Disable UFW
     os.system('sudo ufw --force disable')
-    #subprocess.run('sudo ufw --force enable', capture_output=True, shell=True, check=True)
     
     # Set Default settings
-    #print('DEBUG: Deny all incoming and outgoing traffic, set logging to medium')
     subprocess.run('sudo ufw default deny incoming', capture_output=True, shell=True, check=True)
     subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
     subprocess.run('sudo ufw logging medium', capture_output=True, shell=True, check=True)
@@ -23,7 +21,6 @@ def ufw_set_default_settings():
     print('Welche IPs soll SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
     ufw_ssh_ip_list = hf.get_ips()
     ufw_rules_add_lists(port=22, ip_list=ufw_ssh_ip_list)
-    #ufw_rule_generator(port=22, target_ip='192.168.231.1')
 
     # Enable UFW
     os.system('sudo ufw --force enable')
@@ -103,7 +100,6 @@ def ufw_delete_rules():
     # Delete rules individually
     for n in all_rules:
         subprocess.run(('sudo ufw delete ' + all_rules.get(n)), capture_output=True, shell=True, check=True)
-        #print('DEBUG: || Delete rule = ' + all_rules.get(n))
 
 
 # UFW disable IPv6
@@ -158,7 +154,7 @@ def ufw_allow_ping():
     subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
 
     # Reload UFW rules to allow the ICMP changes
-    #subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
+    subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
 
 
 # Get a list of all added "apt-get" Repositories

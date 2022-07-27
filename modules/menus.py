@@ -35,6 +35,7 @@ def main_menu():
         case 5:
             debug_submenu()
 
+
 # Hardening Menu
 def hardening_submenu():
     print('----------- Härtung ----------- \n' +
@@ -55,6 +56,7 @@ def hardening_submenu():
         case 2:
             hard.test_hardening()
             hardening_submenu()
+
 
 # Network Menu
 def network_submenu():
@@ -90,6 +92,7 @@ def network_submenu():
             network_submenu()
         case _:
             network_submenu()
+
 
 # Container Menu
 def container_submenu():
@@ -144,6 +147,7 @@ def container_submenu():
             doc.delete_volume()
             container_submenu()
 
+
 # Maintenance Menu
 def maintenance_submenu():
     print('----------- Systempflege Menu ----------- \n' +
@@ -165,6 +169,7 @@ def maintenance_submenu():
             main.install_default_programs()
             maintenance_submenu()
 
+
 # DEBUG Menu
 def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
@@ -172,7 +177,6 @@ def debug_submenu():
             '1. \t DEBUG\n' +
             '2. \t add ssh\n' +
             '3. \t add Repos to Firewall\n' +
-            '4. \t Install all packages\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -185,9 +189,9 @@ def debug_submenu():
             debug_submenu()
         case 2:
             fw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
+            debug_submenu()
         case 3:
             fw.ufw_rules_add_lists(port=80, ip_list=fw.get_repo_list(), protocol='tcp')
-        case 4:
-            main.install_all_needed_packages()
+            debug_submenu()
         case _:
             debug_submenu()
