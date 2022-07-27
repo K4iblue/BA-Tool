@@ -31,7 +31,7 @@ def install_hardening_packages():
 # Start hardening script
 def start_hardening_script():
     # Run Hardening Script
-    os.system('sudo bash ./scripts/hardening/ubuntu.sh')
+    os.system('sudo bash /scripts/hardening/ubuntu.sh')
 
 
 # Create configfile for hardening script
@@ -153,7 +153,7 @@ def test_hardening():
 
     if testing_needed is True:
         # Bats tests
-        os.system('sudo bats ./scripts/hardening/tests/')
+        os.system('sudo bats /scripts/hardening/tests/')
         print('Bats Test durchgeführt')
         print('Fortfahren?')
         
