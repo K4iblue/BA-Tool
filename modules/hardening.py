@@ -146,7 +146,7 @@ def test_hardening():
 
     if testing_needed is True:
         # Bats tests
-        os.system('sudo bats ./scripts/hardening/tests/.')
+        os.system('sudo bats ./scripts/hardening/tests/')
         print('Bats Test durchgeführt')
         print('Fortfahren?')
         
@@ -156,7 +156,7 @@ def test_hardening():
 
         if lynis_needed is True:
             # Lynis testing
-            os.chmod('./scripts/lynis/lynis', 0o775)
+            os.chmod('./scripts/lynis/', 0o775)
             os.system('./scripts/lynis/lynis audit system')
     else:
         return
