@@ -30,11 +30,12 @@ def install_hardening_packages():
 # Start hardening script
 def start_hardening_script():
     # Change folder, otherwise its not working?
-    os.system('cd ./scripts/hardening/')
+    current_dir = os.getcwd()
+    os.chdir(str(current_dir) + '/scripts/hardening/')
     # Run hardening script
     os.system('sudo bash ubuntu.sh')
     # Go back to tool folder
-    os.system('cd ../../')
+    os.chdir(current_dir)
 
 
 # Create configfile for hardening script
