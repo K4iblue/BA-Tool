@@ -1,4 +1,3 @@
-import subprocess
 import os
 import sys
 from . import helper_functions as hf
@@ -30,8 +29,12 @@ def install_hardening_packages():
 
 # Start hardening script
 def start_hardening_script():
-    # Run Hardening Script
-    os.system('sudo bash /scripts/hardening/ubuntu.sh')
+    # Change folder, otherwise its not working?
+    os.system('cd ./scripts/hardening/')
+    # Run hardening script
+    os.system('sudo bash ubuntu.sh')
+    # Go back to tool folder
+    os.system('cd ../../')
 
 
 # Create configfile for hardening script
@@ -152,8 +155,13 @@ def test_hardening():
     testing_needed = True if testing_needed == 'Y' else False
 
     if testing_needed is True:
-        # Bats tests
-        os.system('sudo bats /scripts/hardening/tests/')
+        # Change folder, otherwise its not working?
+        os.system('cd ./scripts/hardening/tests/')
+        # Run bats tests
+        os.system('sudo sudo bats .')
+        # Go back to tool folder
+        os.system('cd ../../../')
+
         print('Bats Test durchgeführt')
         print('Fortfahren?')
         
