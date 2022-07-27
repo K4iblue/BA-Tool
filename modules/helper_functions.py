@@ -58,7 +58,3 @@ def restart_system():
         os.system('sudo reboot')
     else:
         return False
-
-
-def clear_console():
-    os.system('clear')

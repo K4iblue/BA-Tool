@@ -9,7 +9,6 @@ from . import helper_functions as hf
 
 # Main Menu
 def main_menu():
-    hf.clear_console()
     print('----------- Hauptmenü ----------- \n' +
           '0.\t Exit Programm \n' +
           '1.\t Härtung \n' +
