@@ -140,7 +140,6 @@ def start_hardening_script():
 def test_hardening():
     print('Soll die Härtung des Systems überprüft werden?')
     testing_needed = ''
-    lynis_needed = ''
     # Only 'y' and 'n' allowed
     while testing_needed not in ['Y','N']:
         testing_needed = input('(y/n): ').upper()
@@ -148,16 +147,18 @@ def test_hardening():
     testing_needed = True if testing_needed == 'Y' else False
 
     if testing_needed is True:
-        # Change folder, otherwise its not working?
-        os.system('cd ./scripts/hardening/tests/')
+        # Get path to current and test folder
+        current_dir = os.path.join(sys.path[0])
+        test_dir = os.path.join(sys.path[0]) + '/scripts/hardening/tests/'
+        # Change to test folder, otherwise its not working?
+        os.chdir(test_dir)
         # Run bats tests
-        os.system('sudo sudo bats .')
+        os.system('sudo bats .')
         # Go back to tool folder
-        os.system('cd ../../../')
-
-        print('Bats Test durchgeführt')
-        print('Fortfahren?')
+        os.chdir(current_dir)
+        print('Bats Test durchgeführt \nFortfahren?')
         
+        lynis_needed = ''
         while lynis_needed not in ['Y','N']:
             lynis_needed = input('(y/n): ').upper()
         lynis_needed = True if lynis_needed == 'Y' else False
@@ -167,3 +168,4 @@ def test_hardening():
             os.system('lynis audit system')
     else:
         return
+ 

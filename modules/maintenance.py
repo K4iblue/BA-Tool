@@ -112,7 +112,7 @@ def first_start_check():
 
 # Install packages on first start
 def first_start_installer():
-    print('Erster Programm Start. Es werden nun alle benötigten Packages installiert \n Fortfahren?')
+    print('Erster Programm Start. Es werden nun alle benötigten Packages installiert \nFortfahren?')
 
     start_download = ''
     while start_download not in ['Y','N']:
