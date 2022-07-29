@@ -67,7 +67,7 @@ def install_all_needed_packages():
     print('Install all needed packages...')
 
     os.system('sudo apt-get update')
-    os.system('sudo apt-get install needrestart ca-certificates curl gnupg lsb-release')
+    os.system('sudo apt-get install ca-certificates curl gnupg lsb-release')
 
     # Installation according to https://docs.docker.com/engine/install/ubuntu/
     # Add Docker’s official GPG key:
@@ -88,7 +88,7 @@ def install_all_needed_packages():
     os.system('sudo apt-get update')
 
     # Install all programs
-    os.system('sudo DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
+    os.system('sudo NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y --force-yes')
     
     # Update all other packages if needed
     os.system('sudo apt-get upgrade -y')
@@ -96,8 +96,8 @@ def install_all_needed_packages():
     # Start docker deamon
     os.system('sudo systemctl start docker')
 
-    # Restart all services
-    os.system('sudo needrestart -u NeedRestart::UI::stdio -r a')
+    # Restart all services, not sure if working
+    os.system('sudo needrestart -r a')
 
 
 # Check for first program start
