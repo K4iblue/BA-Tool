@@ -27,7 +27,7 @@ def ufw_set_default_settings():
 
 
 # UFW Rule Generator 
-def ufw_rule_generator (port='', target_ip='', protocol='', comment=''):
+def ufw_rule_generator (port='', target_ip='', protocol='', comment='""'):
     # Get interface name
     interface = subprocess.run("ip -o -4 route show to default | awk '{print $5}'", capture_output=True, shell=True, check=True)
     interface = str(interface.stdout).replace('b','').split('\\n', 1)[0].strip("'") # Get only the first Interface entry
@@ -87,7 +87,7 @@ def ufw_rule_generator (port='', target_ip='', protocol='', comment=''):
 
 
 # UFW Rule Generator (for lists of IPs)
-def ufw_rules_add_lists(port='', ip_list='', protocol='', comment=''):
+def ufw_rules_add_lists(port='', ip_list='', protocol='', comment='""'):
     for n in ip_list:
         ufw_rule_generator(port, n, protocol, comment)
 
