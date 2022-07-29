@@ -88,7 +88,7 @@ def install_all_needed_packages():
     os.system('sudo apt-get update')
 
     # Install all programs
-    os.system('sudo apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
+    os.system('sudo DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
     
     # Update all other packages if needed
     os.system('sudo apt-get upgrade -y')
@@ -97,7 +97,7 @@ def install_all_needed_packages():
     os.system('sudo systemctl start docker')
 
     # Restart all services
-    os.system('sudo needrestart -u NeedRestart::UI::stdio -r l')
+    os.system('sudo needrestart -u NeedRestart::UI::stdio -r a')
 
 
 # Check for first program start
