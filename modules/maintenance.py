@@ -125,7 +125,7 @@ def first_start_installer():
     if start_download is True:
         # Install Packages and clear terminal afterwards
         install_all_needed_packages()
-        os.system('clear')
+        #os.system('clear')
 
         # Edit config file
         config_file = os.path.join(sys.path[0]) + '/config/tool_config.cfg'
