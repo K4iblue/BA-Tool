@@ -23,73 +23,38 @@ def complete_hardening():
 
 # Create configfile for hardening script
 def create_configfile():
-    # 1. The IP addresses that will be able to connect with SSH, separated by spaces // Default: '127.0.0.1'
-    print('Welche IP Adressen sollen SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
+    print('Welche IP Adresse(n) sollen SSH Zugang bekommen?')
     ssh_ips_list = hf.get_ips()
-    # List to string, with spaces in between
     ssh_ips = ' '.join(ssh_ips_list)
 
-    # 2. Which group the users have to be member of in order to acess via SSH, separated by spaces // Default: 'sudo'
-    print('Welche User Gruppen sollen Zugang via SSH bekommen? Mehrere Gruppen durch ein Komma trennen!')
+    print('Welche User Gruppen sollen Zugang via SSH bekommen?')
     user_groups_list = input('Gruppe(n): ')
-    # No empty input allowed
     while not user_groups_list:
         user_groups_list = input('Gruppe(n): ')
-    # Create list from string
+    # Create list from string -> List to string, with spaces in between
     user_groups_list = user_groups_list.split(',')
-    # List to string, with spaces in between
     user_groups = ' '.join(user_groups_list)
 
-    # 3. Configure SSH port // Default: 22
-    print('Welcher Port soll für SSH benutzt werden?')
+    print('Welcher Port soll fuer SSH benutzt werden?')
     ssh_port = input('SSH Port: ')
-    # No empty input allowed
     while not ssh_port:
         ssh_port = input('SSH Port: ')
 
-    # 4. Stricter sysctl settings // Default: './misc/sysctl.conf'
-    strict_sysctl = './misc/sysctl.conf'
-
-    # 5. Auditd failure mode 0=silent 1=printk 2=panic // Default: '1'
-    auditd_mode = '1'
-
-    # 6. Auditd rules // Default: './misc/audit-base.rules ./misc/audit-aggressive.rules ./misc/audit-docker.rules'
-    auditd_rules = './misc/audit-base.rules ./misc/audit-aggressive.rules ./misc/audit-docker.rules'
-
-    # 7. Logrotate settings // Default: './misc/logrotate.conf'
-    logrotate_settings = './misc/logrotate.conf'
-
-    # 8. NTP server pool // Default: '0.ubuntu.pool.ntp.org 1.ubuntu.pool.ntp.org 2.ubuntu.pool.ntp.org 3.ubuntu.pool.ntp.org pool.ntp.org'
-    print('Sind NTP Server vorhanden? Mehrere IP Addressen durch ein Komma trennen!')
-    ntp_ips_list = input('NTP Server: ')
-    # Remove spaces
-    ntp_ips_list = ntp_ips_list.strip().replace(' ', '')
-    # Create list from string
-    ntp_ips_list = ntp_ips_list.split(',')
-    # List to string, with spaces in between
-    ntp_ips = ' '.join(ntp_ips_list)
-
-    # 9. Add a specific time zone or use the system default by leaving it empty // Default: ''
-    timezone = 'Europe/Berlin'
-
-    # 10. If you want all the details or not // Default: 'N'
-    verbose= 'Y'
-
-    # 11. Let the script guess the FW_ADMIN and SSH_GRPS settings // Default: 'N'
-    script_guessing = 'N'
-
-    # 12. Add a valid email address, so PSAD can send notifications // Default: 'root@localhost'
-    psad_email = 'root@localhost'
-
-    # 13. If 'Y' then the snapd package will be held to prevent removal // Default: 'Y'
-    print('Wird snapd benötigt?')
+    print('Wird snapd benoetigt?')
     snapd_removal = ''
-    # Only 'y' and 'n' allowed
     while snapd_removal not in ['Y','N']:
         snapd_removal = input('(y/n): ').upper()
 
-    # 14. Add something just to verify that you actually glanced the code // Default: ''
-    change_me = 'OK'
+	# Static Config
+    strict_sysctl = './misc/sysctl.conf'
+    auditd_mode = '1'
+    auditd_rules = './misc/audit-base.rules ./misc/audit-aggressive.rules ./misc/audit-docker.rules'
+    logrotate_settings = './misc/logrotate.conf'
+    ntp_ips = ''
+    timezone = 'Europe/Berlin'
+    verbose= 'Y'
+    script_guessing = 'N'
+    psad_email = 'root@localhost'
 
     # Create a empty list and fill it with the config values
     config_list = []
@@ -106,13 +71,12 @@ def create_configfile():
     config_list += [script_guessing]
     config_list += [psad_email]
     config_list += [snapd_removal]
-    config_list += [change_me]
 
+	# Read from file
     path = os.path.join(sys.path[0]) + '/scripts/hardening/ubuntu.cfg'
-    # Read from file
     with open (path, 'r', encoding='UTF-8') as file:
         filedata = file.read()
-    
+
     # Replace variable with config value from config_list
     count = 1
     for n in config_list:
@@ -123,7 +87,6 @@ def create_configfile():
     # Write back to file
     with open (path, 'w', encoding='UTF-8') as file:
         file.write(filedata)
-
 
 # Start hardening script
 def start_hardening_script():
