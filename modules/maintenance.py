@@ -88,7 +88,7 @@ def install_all_needed_packages():
     os.system('sudo apt-get update')
 
     # Install all programs
-    os.system('sudo NEEDRESTART_MODE=a DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y --force-yes')
+    os.system('sudo DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
     
     # Update all other packages if needed
     os.system('sudo apt-get upgrade -y')
