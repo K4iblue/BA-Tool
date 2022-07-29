@@ -124,7 +124,7 @@ function main {
   f_resolvedconf
   f_logindconf
   f_journalctl
-  f_timesyncd
+  #f_timesyncd        # NTP Server werden über das Netzwerkmenü gesteuert
   f_fstab
   f_prelink
   f_aptget_configure
