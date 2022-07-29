@@ -67,7 +67,7 @@ def install_all_needed_packages():
     print('Install all needed packages...')
 
     os.system('sudo apt-get update')
-    os.system('sudo apt-get install ca-certificates curl gnupg lsb-release')
+    os.system('sudo apt-get install needrestart ca-certificates curl gnupg lsb-release')
 
     # Installation according to https://docs.docker.com/engine/install/ubuntu/
     # Add Docker’s official GPG key:

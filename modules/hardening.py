@@ -88,6 +88,7 @@ def create_configfile():
     with open (path, 'w', encoding='UTF-8') as file:
         file.write(filedata)
 
+
 # Start hardening script
 def start_hardening_script():
     # Change folder, otherwise its not working?
