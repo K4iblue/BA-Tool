@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import uuid
+from . import firewall as fw
 
 # Create Image
 def create_image():
@@ -81,6 +82,7 @@ def start_container(container_name=''):
         print('Welcher Container soll gestartet werden?')
         container_name = input('Container Name oder ID: ')
         os.system('sudo docker start ' + str(container_name))
+        container_firewall(container_name)
         # Print 2 empty Lines for better reading
         print('\n\n')
     else:
@@ -205,3 +207,26 @@ def remove_container_port_mapping(container_name=''):
     # Write back to file
     with open(docker_json, 'w', encoding='UTF-8') as f:
         json.dump(data, f, indent=4)
+
+
+def container_firewall(container_name):
+    # Get container ip
+    container_ip = os.popen("sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' " + str(container_name)).read()
+
+    # Read from json file
+    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
+    with open(docker_json, encoding='UTF-8') as fp:
+        data = json.load(fp)
+
+    # Get container port
+    for key, val in data.items():
+        get_key = (data.get(key))
+        if container_name in get_key.values():
+            container_port = get_key.get('port')
+            #container_port = get_key[port]
+
+    print('IP   : ' + container_ip)
+    print('Port : ' + container_port)
+
+    #fw.ufw_rule_generator(p)
+    
