@@ -230,5 +230,5 @@ def container_firewall(container_name):
     # print('IP   : ' + container_ip)
     # print('Port : ' + container_port)
 
-    fw.ufw_rule_generator(port=container_port, target_ip=container_ip)
+    fw.ufw_rule_generator(port=container_port, target_ip=container_ip, comment=str(container_name))
     
