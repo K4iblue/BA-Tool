@@ -55,7 +55,7 @@ def create_container():
     # Create port string
     port_string = (' -p ' + str(port_list[0])+ ':' + str(port_list[1]))
     
-    container_port_mapping(port=str(port_list[0]), container_name=str(container_name))
+    add_container_port_mapping(port=str(port_list[0]), container_name=str(container_name))
 
     # Create docker run command
     run_command = 'docker run -d'
@@ -123,6 +123,10 @@ def delete_container(container_name=''):
     if container_name == '':
         print('Welcher Container soll entfernt werden?')
         container_name = input('Container Name oder ID: ')
+
+        # Remove from port-mapping json file
+        remove_container_port_mapping(str(container_name))
+
         os.system('sudo docker rm --force ' + str(container_name))
         # Print 2 empty Lines for better reading
         print('\n\n')
@@ -161,12 +165,12 @@ def delete_volume(volume_name=''):
 
 
 # Save container port-mapping to a json file
-def container_port_mapping(port='', ip ='', container_name=''):
+def add_container_port_mapping(port='', container_name=''):
     port_mapping_dict = {}
     # Create dict with random ID, add dict with parameters to it
-    port_mapping_dict[str(uuid.uuid4())] = {'container_name':container_name, 'ip':ip, 'host-port':port}
+    port_mapping_dict[str(uuid.uuid4())] = {'name':container_name, 'port':port}
     
-    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
+    docker_json = os.path.join(sys.path[0]) + '\container-port-mapping.json'
     with open(docker_json, encoding='UTF-8') as fp:
         data = json.load(fp)
 
@@ -176,5 +180,22 @@ def container_port_mapping(port='', ip ='', container_name=''):
         json.dump(data, f, indent=4)
 
 
-# IP Adresse von Container herausfinden:
-# docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' name_or_id
+# Remove container port-mapping to a json file
+def remove_container_port_mapping(container_name=''):
+    # Read json file
+    docker_json = os.path.join(sys.path[0]) + '\container-port-mapping.json'
+    with open(docker_json, encoding='UTF-8') as fp:
+        data = json.load(fp)
+    
+    # Iterate over dict
+    for key, val in data.items():
+        get_key = (data.get(key))
+        if container_name in get_key.values():
+            remove_key = key
+    
+    # Remove entry
+    data.pop(remove_key)
+
+    # Write back to file
+    with open(docker_json, 'w', encoding='UTF-8') as f:
+        json.dump(data, f, indent=4)
