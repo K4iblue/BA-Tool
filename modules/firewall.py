@@ -73,17 +73,17 @@ def ufw_rule_generator (port='', target_ip='', protocol='', comment=' '):
         # Protocol given
         else:
             # Allow out to anywhere to given port + protocol
-            os.system(('sudo ufw allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port) + ' comment ' + str(comment))
+            os.system('sudo ufw allow out on ' + str(interface) + ' to any proto ' + str(protocol) + ' port ' + str(port) + ' comment ' + str(comment))
     # IP-address given
     else:
         # No protocol given
         if protocol == '':
             # Allow out to given IP to given port
-            os.system(('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port) + ' comment ' + str(comment))
+            os.system('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' port ' + str(port) + ' comment ' + str(comment))
         # Protocol given
         else:
             # Allow out to given IP to given port + protocol
-            os.system(('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port) + ' comment ' + str(comment))
+            os.system('sudo ufw allow out on ' + str(interface) + ' to ' + str(target_ip) + ' proto ' + str(protocol) + ' port ' + str(port) + ' comment ' + str(comment))
 
 
 # UFW Rule Generator (for lists of IPs)
