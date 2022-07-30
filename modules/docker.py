@@ -48,11 +48,10 @@ def create_container():
     print('Welche Ports werden für den Container benötigt?')
     print('Syntax: Extern:Intern ')
     print('Bsp.: 8080:80 (Map 80 in the container to port 8080 on the Docker host)')
-    ports = str(input('Ports: '))
 
+    # Force to two ports
     port_list = []
     while len(port_list) != 2:
-        print('Syntax Fehler! Bitte erneut eingeben')
         ports = str(input('Ports: '))
         # Remove Spaces
         ports = ports.replace(' ', '')
