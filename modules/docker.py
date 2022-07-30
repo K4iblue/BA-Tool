@@ -1,5 +1,7 @@
 import os
-
+import sys
+import json
+import uuid
 
 # Create Image
 def create_image():
@@ -15,7 +17,7 @@ def create_image():
         os.system('sudo docker build -t ' + str(image_name) + ' ' + str(path))
 
 
-# Create Container
+# Create Container, Host Port variante
 def create_container():
     # Get image name
     print('Aus welchen Image soll der Container erstellt werden?')
@@ -42,17 +44,16 @@ def create_container():
         volume_string = ' -v ' + volume_name + ':' + volume_mounting
 
     # Get Ports that are needed for the container
-    print('Welche Ports werden für den Container benötigt? Mehrere Ports durch ein Komma trennen!')
+    print('Welche Ports werden für den Container benötigt?')
+    print('Syntax: Extern:Intern ')
+    print('Bsp.: 8080:80 (Map 80 in the container to port 8080 on the Docker host)')
     ports = str(input('Ports: '))
-
     # Remove Spaces
     ports = ports.replace(' ', '')
     # Create list from string
-    port_list = ports.split(',')
-    # Append ports for the run command if multiple are needed
-    port_string = ''
-    for n in port_list:
-        port_string += ' -p ' + str(n)+ ':' + str(n)
+    port_list = ports.split(':')
+    # Create port string
+    port_string = (' -p ' + str(port_list[0])+ ':' + str(port_list[1]))
     
     # Create docker run command
     run_command = 'docker run -d'
@@ -155,3 +156,23 @@ def delete_volume(volume_name=''):
         os.system('sudo docker volume rm --force ' + str(volume_name))
         # Print 2 empty Lines for better reading
         print('\n\n')
+
+
+# Save container port-mapping to a json file
+def container_port_mapping(port='', ip ='', container_name=''):
+    port_mapping_dict = {}
+    # Create dict with random ID, add dict with parameters to it
+    port_mapping_dict[str(uuid.uuid4())] = {'container_name':container_name, 'ip':ip, 'port':port}
+    
+    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
+    with open(docker_json, encoding='UTF-8') as fp:
+        data = json.load(fp)
+
+    data.update(port_mapping_dict)
+
+    with open(docker_json, 'w', encoding='UTF-8') as f:
+        json.dump(data, f, indent=4)
+
+
+# IP Adresse von Container herausfinden:
+# docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' name_or_id
