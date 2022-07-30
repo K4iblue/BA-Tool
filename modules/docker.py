@@ -50,13 +50,14 @@ def create_container():
     ports = str(input('Ports: '))
 
     port_list = []
-    while not len(port_list) != 2:
+    while len(port_list) != 2:
         print('Syntax Fehler! Bitte erneut eingeben')
         ports = str(input('Ports: '))
         # Remove Spaces
         ports = ports.replace(' ', '')
         # Create list from string
         port_list = ports.split(':')
+
     # Create port string
     port_string = (' -p ' + str(port_list[0])+ ':' + str(port_list[1]))
     
