@@ -164,7 +164,7 @@ def delete_volume(volume_name=''):
 def container_port_mapping(port='', ip ='', container_name=''):
     port_mapping_dict = {}
     # Create dict with random ID, add dict with parameters to it
-    port_mapping_dict[str(uuid.uuid4())] = {'container_name':container_name, 'ip':ip, 'port':port}
+    port_mapping_dict[str(uuid.uuid4())] = {'container_name':container_name, 'ip':ip, 'host-port':port}
     
     docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
     with open(docker_json, encoding='UTF-8') as fp:
