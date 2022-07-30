@@ -64,7 +64,7 @@ def create_container():
     add_container_port_mapping(port=str(port_list[0]), container_name=str(container_name))
 
     # Create docker run command
-    run_command = 'docker create -d'
+    run_command = 'docker run -d'
     if volume_needed is True: 
         run_command += volume_string
     run_command += port_string
