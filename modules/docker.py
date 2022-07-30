@@ -49,7 +49,7 @@ def create_container():
     print('Bsp.: 8080:80 (Map 80 in the container to port 8080 on the Docker host)')
     ports = str(input('Ports: '))
 
-    port_list = 0
+    port_list = []
     while len(port_list) != 2:
         print('Syntax Fehler! Bitte erneut eingeben')
         # Remove Spaces
