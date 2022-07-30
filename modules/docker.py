@@ -225,10 +225,10 @@ def container_firewall(container_name):
         get_key = (data.get(key))
         if container_name in get_key.values():
             container_port = get_key.get('port')
-            #container_port = get_key[port]
 
-    print('IP   : ' + container_ip)
-    print('Port : ' + container_port)
+    # DEBUG
+    # print('IP   : ' + container_ip)
+    # print('Port : ' + container_port)
 
-    #fw.ufw_rule_generator(p)
+    fw.ufw_rule_generator(port=container_port, target_ip=container_ip)
     
