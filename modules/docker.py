@@ -251,4 +251,4 @@ def remove_container_firewall_rule(port='', container_ip='', container_name=''):
             rule_index = key
 
     # Delete rule
-    os.system('sudo ufw delete ' + str(rule_index))
+    os.system("echo 'y' | sudo ufw delete " + str(rule_index))
