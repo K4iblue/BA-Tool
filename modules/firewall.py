@@ -217,3 +217,20 @@ def get_ntp_list():
 def fqdn_to_ip_translator(hostname):
     hostname_ip = socket.gethostbyname(str(hostname))
     return str(hostname_ip)
+
+
+# Removes dockers integrated iptables management
+# /etc/ufw/after.rules 
+def ufw_allow_docker():
+    # Back up /etc/ufw/after.rules 
+    os.system('sudo cp /etc/ufw/after.rules /etc/ufw/after.backup.rules')
+
+    # Set paths
+    default_after_rules = '/etc/ufw/after.rules '
+    after_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_after_rules.template'
+
+    # Overwrite /etc/ufw/after.rules with template file
+    os.system('sudo cat ' + str(after_rules_template) + ' > ' + str(default_after_rules))
+
+    # Restart UFW service
+    os.system('sudo systemctl restart ufw')

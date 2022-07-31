@@ -3,7 +3,6 @@ import sys
 import json
 import uuid
 from .pyufw import pyufw
-from . import firewall as fw
 
 # Create Image
 def create_image():
@@ -61,8 +60,6 @@ def create_container():
 
     # Create port string
     port_string = (' -p ' + str(port_list[0])+ ':' + str(port_list[1]))
-    
-    add_container_port_mapping(port=str(port_list[0]), container_name=str(container_name))
 
     # Create docker run command
     run_command = 'docker run -d'
@@ -75,8 +72,9 @@ def create_container():
     # Run the docker command
     os.system('sudo ' + str(run_command))
 
-    # Create firewall rule
-    container_firewall(container_name)
+    # Add firewall rule for container and add port-mapping to json file
+    add_container_port_mapping(port=str(port_list[0]),container_name=str(container_name))
+    add_container_firewall_rule(port=str(port_list[0]),container_name=str(container_name))
 
 
 # Start given container
@@ -85,11 +83,18 @@ def start_container(container_name=''):
         print('Welcher Container soll gestartet werden?')
         container_name = input('Container Name oder ID: ')
         os.system('sudo docker start ' + str(container_name))
-        container_firewall(container_name)
+        
+        # Add firewall rule for container
+        add_container_firewall_rule(port=str(get_container_port(container_name)),container_name=container_name)
+        
         # Print 2 empty Lines for better reading
         print('\n\n')
     else:
-        os.system('sudo docker stop ' + str(container_name))
+        os.system('sudo docker start ' + str(container_name))
+
+        # Add firewall rule for container
+        add_container_firewall_rule(port=str(get_container_port(container_name)),container_name=container_name)
+
         # Print 2 empty Lines for better reading
         print('\n\n')
 
@@ -100,10 +105,18 @@ def stop_container(container_name=''):
         print('Welcher Container soll gestoppt werden?')
         container_name = input('Container Name oder ID: ')
         os.system('sudo docker stop ' + str(container_name))
+        
+        # Remove firewall rule for container
+        remove_container_firewall_rule(container_name=container_name)
+        
         # Print 2 empty Lines for better reading
         print('\n\n')
     else:
         os.system('sudo docker stop ' + str(container_name))
+        
+        # Remove firewall rule for container
+        remove_container_firewall_rule(container_name=container_name)
+
         # Print 2 empty Lines for better reading
         print('\n\n')
 
@@ -134,15 +147,19 @@ def delete_container(container_name=''):
     if container_name == '':
         print('Welcher Container soll entfernt werden?')
         container_name = input('Container Name oder ID: ')
-
-        # Remove from port-mapping json file
-        remove_container_port_mapping(str(container_name))
-
         os.system('sudo docker rm --force ' + str(container_name))
+        
+        # Remove firewall rule for container
+        remove_container_firewall_rule(container_name=container_name)
+
         # Print 2 empty Lines for better reading
         print('\n\n')
     else:
         os.system('sudo docker rm --force ' + str(container_name))
+        
+        # Remove firewall rule for container
+        remove_container_firewall_rule(container_name=container_name)
+
         # Print 2 empty Lines for better reading
         print('\n\n')
 
@@ -191,7 +208,7 @@ def add_container_port_mapping(port='', container_name=''):
         json.dump(data, f, indent=4)
 
 
-# Remove container port-mapping to a json file
+# Remove container port-mapping from json file
 def remove_container_port_mapping(container_name=''):
     # Read json file
     docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
@@ -211,36 +228,18 @@ def remove_container_port_mapping(container_name=''):
     with open(docker_json, 'w', encoding='UTF-8') as f:
         json.dump(data, f, indent=4)
 
-
-def container_firewall(container_name):
+    
+# Add Firewall rule for given container
+def add_container_firewall_rule(port='', container_name=''):
     # Get container ip
     container_ip = os.popen("sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' " + str(container_name)).read()
 
-    # Read from json file
-    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
-    with open(docker_json, encoding='UTF-8') as fp:
-        data = json.load(fp)
-
-    # Get container port
-    for key, val in data.items():
-        get_key = (data.get(key))
-        if container_name in get_key.values():
-            container_port = get_key.get('port')
-
-    # DEBUG
-    # print('IP   : ' + container_ip)
-    # print('Port : ' + container_port)
-
-    fw.ufw_rule_generator(port=container_port, target_ip=container_ip, comment=str(container_name))
-    
-
-def add_container_firewall_rule(port='', container_ip='', container_name=''):
-
-    # Add forwarding rule for container to firewall
+    # Add forwarding rule for container to firewall, set container name as a comment
     os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment ' + str(container_name))
 
 
-def remove_container_firewall_rule(port='', container_ip='', container_name=''):
+# Remove Firewall rule for given container
+def remove_container_firewall_rule(container_name=''):
     # Get all rules
     all_rules = pyufw.get_rules()
 
@@ -252,3 +251,19 @@ def remove_container_firewall_rule(port='', container_ip='', container_name=''):
 
     # Delete rule
     os.system("echo 'y' | sudo ufw delete " + str(rule_index))
+
+
+def get_container_port(container_name):
+    # Read from json file
+    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
+    with open(docker_json, encoding='UTF-8') as fp:
+        data = json.load(fp)
+
+    # Get container port
+    for key, val in data.items():
+        get_key = (data.get(key))
+        if container_name in get_key.values():
+            container_port = get_key.get('port')
+    
+    return container_port
+
