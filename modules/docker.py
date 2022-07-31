@@ -248,14 +248,15 @@ def remove_container_firewall_rule(port='', container_ip='', container_name=''):
     for key, val in all_rules.items():
         print('key: ' + str(key))
         print('val: ' + str(val))
-        if container_name in all_rules.values():
-            print(key)
+        get_key = (all_rules.get(key))
+        if container_name in get_key.values():
+            print(get_key)
+        #if container_name in all_rules.values():
+        #    print(key)
             #rule_index = all_rules.get(key)
         #print(str(key) + ' || ' + val)
-        #get_key = (all_rules.get(key))
-        #print(get_key)
-        #if container_name in get_key.values():
-        #    print(get_key)
+        
+        
 
     ## Delete rules individually
     #for n in all_rules:
