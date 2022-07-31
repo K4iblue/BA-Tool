@@ -233,4 +233,5 @@ def ufw_allow_docker():
     os.system('sudo cat ' + str(after_rules_template) + ' > ' + str(default_after_rules))
 
     # Restart UFW service
-    os.system('sudo systemctl restart ufw')
+    os.system('sudo ufw reload')
+    #os.system('sudo systemctl restart ufw')
