@@ -178,6 +178,7 @@ def debug_submenu():
             '2. \t add ssh\n' +
             '3. \t add Repos to Firewall\n' +
             '4. \t UFW Debug Rule adding\n' +
+            '5. \t UFW get all rules\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -198,5 +199,7 @@ def debug_submenu():
             fw.ufw_rule_generator(port=22, target_ip='192.168.231.1')
             fw.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
             fw.ufw_rule_generator (port=443, target_ip='', protocol='')
+        case 5:
+            doc.remove_container_firewall_rule()
         case _:
             debug_submenu()

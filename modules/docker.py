@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import uuid
+from .pyufw import pyufw
 from . import firewall as fw
 
 # Create Image
@@ -232,3 +233,20 @@ def container_firewall(container_name):
 
     fw.ufw_rule_generator(port=container_port, target_ip=container_ip, comment=str(container_name))
     
+
+def add_container_firewall_rule(port='', container_ip='', container_name=''):
+
+    # Add forwarding rule for container to firewall
+    os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment ' + str(container_name))
+
+
+def remove_container_firewall_rule(port='', container_ip='', container_name=''):
+    # Get all rules
+    all_rules = pyufw.get_rules()
+    
+    print(all_rules)
+
+    ## Delete rules individually
+    #for n in all_rules:
+    #    if 
+    #    os.system('sudo ufw delete ' + all_rules.get(n))
