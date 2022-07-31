@@ -66,11 +66,13 @@ def network_submenu():
             '2.\t Netplan Konfiguration (DNS, Default Gateway, Static IP) \n' +
             '3.\t NTP Konfiguration \n' +
             '4.\t SNMPv3 Konfiguration \n' +
-            '5.\t Syslog Konfiguration \n' +            
-            '----- Please enter a number (0-5) -----')
+            '5.\t Syslog Konfiguration \n' +
+            '6.\t Firewall aktivieren \n' +
+            '7.\t Firewall deaktivieren \n' +
+            '----- Please enter a number (0-7) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,6)
+    case_number = hf.get_int(0,8)
     
     match case_number:
         case 0:
@@ -89,6 +91,12 @@ def network_submenu():
             network_submenu()
         case 5:
             net.config_syslog()
+            network_submenu()
+        case 6:
+            fw.ufw_enable_firewall()
+            network_submenu()
+        case 7:
+            fw.ufw_disable_firewall()
             network_submenu()
         case _:
             network_submenu()

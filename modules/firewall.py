@@ -220,23 +220,6 @@ def fqdn_to_ip_translator(hostname):
 
 
 # Removes dockers integrated iptables management
-# /etc/ufw/after.rules 
-#def ufw_allow_docker():
-#    # Back up /etc/ufw/after.rules 
-#    os.system('sudo cp /etc/ufw/after.rules /etc/ufw/after.backup.rules')
-#
-#    # Set paths
-#    default_after_rules = '/etc/ufw/after.rules '
-#    after_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_after_rules.template'
-#
-#    # Overwrite /etc/ufw/after.rules with template file
-#    os.system('sudo cat ' + str(after_rules_template) + ' > ' + str(default_after_rules))
-#
-#    # Restart UFW service
-#    os.system('sudo ufw reload')
-#    #os.system('sudo systemctl restart ufw')
-
-# Removes dockers integrated iptables management
 # /etc/ufw/after.rules
 def ufw_allow_docker():
     # Back up /etc/ufw/after.rules 
@@ -252,4 +235,35 @@ def ufw_allow_docker():
 
     f1.write(f2.read())
     os.system('sudo ufw reload')
-    #os.system('sudo systemctl restart ufw')
+
+
+# Enable UFW Firewall
+def ufw_enable_firewall():
+    print('Soll die Firewall aktiviert werden?')
+    ufw_toggle = ''
+    # Only 'y' and 'n' allowed
+    while ufw_toggle not in ['Y','N']:
+        ufw_toggle = input('(y/n): ').upper()
+    
+    ufw_toggle = True if ufw_toggle == 'Y' else False
+    if ufw_toggle is True:
+        # Enable UFW
+        os.system('sudo ufw --force enable')
+    else:
+        return
+
+
+# Disable UFW Firewall
+def ufw_disable_firewall():   
+    print('Soll die Firewall deaktiviert werden?')
+    ufw_toggle = ''
+    # Only 'y' and 'n' allowed
+    while ufw_toggle not in ['Y','N']:
+        ufw_toggle = input('(y/n): ').upper()
+    
+    ufw_toggle = True if ufw_toggle == 'Y' else False
+    if ufw_toggle is True:
+        # Enable UFW
+        os.system('sudo ufw --force disable')
+    else:
+        return
