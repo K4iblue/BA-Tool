@@ -245,9 +245,9 @@ def remove_container_firewall_rule(port='', container_ip='', container_name=''):
     all_rules = pyufw.get_rules()
 
     # Get rule index
-    for n in all_rules.values():
-        if container_name in all_rules.values():
-            print(n)
+    for key, val in all_rules.items():
+        if container_name in key.values():
+            print(key)
             #rule_index = all_rules.get(key)
         #print(str(key) + ' || ' + val)
         #get_key = (all_rules.get(key))
