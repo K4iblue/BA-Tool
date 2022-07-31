@@ -226,7 +226,7 @@ def ufw_allow_docker():
     os.system('sudo cp /etc/ufw/after.rules /etc/ufw/after.backup.rules')
 
     # Set paths
-    default_after_rules = '/etc/ufw/after.rules '
+    default_after_rules = '/etc/ufw/after.rules'
     after_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_after_rules.template'
 
     # open in append mode
