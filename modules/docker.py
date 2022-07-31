@@ -246,7 +246,9 @@ def remove_container_firewall_rule(port='', container_ip='', container_name=''):
 
     # Get rule index
     for key,val in all_rules.items():
-        print(all_rules.get(key))
+        get_values = all_rules.get(key)
+        if container_name in get_values:
+            print(key)
 
     # Delete rule
     #os.system('sudo ufw delete ' + str(rule_index))
