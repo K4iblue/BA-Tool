@@ -26,6 +26,7 @@ def complete_configuration_dialog():
         fw.ufw_disable_ipv6()
         fw.ufw_delete_rules()
         fw.ufw_set_default_settings()
+        fw.ufw_allow_docker()
 
         # Configure Network
         config_netplan()

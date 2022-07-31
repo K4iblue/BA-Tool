@@ -179,6 +179,7 @@ def debug_submenu():
             '3. \t add Repos to Firewall\n' +
             '4. \t UFW Debug Rule adding\n' +
             '5. \t UFW get all rules\n' +
+            '6. \t UFW all docker\n' +
             '----- Please enter a number (0-99) -----')
 
     # Get a Number from the user in given range
@@ -201,5 +202,7 @@ def debug_submenu():
             fw.ufw_rule_generator (port=443, target_ip='', protocol='')
         case 5:
             doc.remove_container_firewall_rule(container_name='test')
+        case 6:
+            fw.ufw_allow_docker()
         case _:
             debug_submenu()
