@@ -221,6 +221,23 @@ def fqdn_to_ip_translator(hostname):
 
 # Removes dockers integrated iptables management
 # /etc/ufw/after.rules 
+#def ufw_allow_docker():
+#    # Back up /etc/ufw/after.rules 
+#    os.system('sudo cp /etc/ufw/after.rules /etc/ufw/after.backup.rules')
+#
+#    # Set paths
+#    default_after_rules = '/etc/ufw/after.rules '
+#    after_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_after_rules.template'
+#
+#    # Overwrite /etc/ufw/after.rules with template file
+#    os.system('sudo cat ' + str(after_rules_template) + ' > ' + str(default_after_rules))
+#
+#    # Restart UFW service
+#    os.system('sudo ufw reload')
+#    #os.system('sudo systemctl restart ufw')
+
+# Removes dockers integrated iptables management
+# /etc/ufw/after.rules
 def ufw_allow_docker():
     # Back up /etc/ufw/after.rules 
     os.system('sudo cp /etc/ufw/after.rules /etc/ufw/after.backup.rules')
@@ -229,9 +246,10 @@ def ufw_allow_docker():
     default_after_rules = '/etc/ufw/after.rules '
     after_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_after_rules.template'
 
-    # Overwrite /etc/ufw/after.rules with template file
-    os.system('sudo cat ' + str(after_rules_template) + ' > ' + str(default_after_rules))
+    # open in append mode
+    f1 = open(default_after_rules, 'a+', )
+    f2 = open(after_rules_template, 'r')
 
-    # Restart UFW service
+    f1.write(f2.read())
     os.system('sudo ufw reload')
     #os.system('sudo systemctl restart ufw')

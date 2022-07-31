@@ -149,8 +149,8 @@ def config_netplan():
     # os.system('sudo netplan --debug try')     # For debugging use only 
     os.system('sudo netplan apply')
     os.system('sudo systemctl restart systemd-resolved.service')
-    # Sleep so DNS Server can get up
-    time.sleep(5)
+    # Sleep 3 seconds so DNS Server can get up
+    time.sleep(3)
 
 
 # NTP configuration
