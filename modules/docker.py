@@ -246,8 +246,9 @@ def remove_container_firewall_rule(port='', container_ip='', container_name=''):
 
     # Get rule index
     for key,val in all_rules.items():
-        get_key = (all_rules.get(key))
-        print(get_key)
+        print(key + ' || ' + val)
+        #get_key = (all_rules.get(key))
+        #print(get_key)
         #if container_name in get_key.values():
         #    print(get_key)
 
