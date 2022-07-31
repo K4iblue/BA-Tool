@@ -99,6 +99,9 @@ def install_all_needed_packages():
     # Restart all services, not sure if working
     os.system('sudo needrestart -r a')
 
+    # Clear console
+    os.system('clear')
+
 
 # Check for first program start
 def first_start_check():
