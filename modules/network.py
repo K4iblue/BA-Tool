@@ -3,6 +3,7 @@ import subprocess
 import os
 import sys
 import random
+import time
 from string import ascii_letters, punctuation, digits
 from . import firewall as fw
 from . import helper_functions as hf
@@ -33,6 +34,8 @@ def complete_configuration_dialog():
         config_ntp()
         config_syslog()
         config_snmp()
+
+
 
         # Add UFW rules, if not already added
         # UFW add APT repos
@@ -145,6 +148,9 @@ def config_netplan():
     # Apply new netplan config
     # os.system('sudo netplan --debug try')     # For debugging use only 
     os.system('sudo netplan apply')
+    os.system('sudo systemctl restart systemd-resolved.service')
+    # Sleep so DNS Server can get up
+    time.sleep(5)
 
 
 # NTP configuration
