@@ -200,6 +200,6 @@ def debug_submenu():
             fw.ufw_rule_generator (port=53, target_ip='8.8.8.8', protocol='')
             fw.ufw_rule_generator (port=443, target_ip='', protocol='')
         case 5:
-            doc.remove_container_firewall_rule()
+            doc.remove_container_firewall_rule(container_name='test')
         case _:
             debug_submenu()
