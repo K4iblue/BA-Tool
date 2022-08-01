@@ -1,7 +1,6 @@
 import os
 import sys
 import json
-from turtle import circle
 import uuid
 from .pyufw import pyufw
 
