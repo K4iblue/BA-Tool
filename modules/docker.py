@@ -216,18 +216,22 @@ def add_container_port_mapping(port='', container_name=''):
 # Remove container port-mapping from json file
 def remove_container_port_mapping(container_name=''):
     # Read json file
-    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
+    docker_json = os.path.join(sys.path[0]) + '\container-port-mapping.json'
     with open(docker_json, encoding='UTF-8') as fp:
         data = json.load(fp)
-    
+
     # Iterate over dict
     for key, val in data.items():
         get_key = (data.get(key))
         if container_name in get_key.values():
             remove_key = key
-    
-    # Remove entry
-    data.pop(remove_key)
+
+    try:
+        # Remove entry
+        data.pop(remove_key)
+    except:
+        print('Container wurde nicht in der Port-Mapping Datei gefunden')
+        return
 
     # Write back to file
     with open(docker_json, 'w', encoding='UTF-8') as f:
