@@ -152,7 +152,8 @@ def delete_container(container_name=''):
         container_name = input('Container Name oder ID: ')
         os.system('sudo docker rm --force ' + str(container_name))
         
-        # Remove firewall rule for container
+        # Remove firewall rule for container and port-mapping from json file
+        remove_container_port_mapping(container_name=container_name)
         remove_container_firewall_rule(container_name=container_name)
 
         # Print 2 empty Lines for better reading
@@ -160,7 +161,8 @@ def delete_container(container_name=''):
     else:
         os.system('sudo docker rm --force ' + str(container_name))
         
-        # Remove firewall rule for container
+        # Remove firewall rule for container and port-mapping from json file
+        remove_container_port_mapping(container_name=container_name)
         remove_container_firewall_rule(container_name=container_name)
 
         # Print 2 empty Lines for better reading
