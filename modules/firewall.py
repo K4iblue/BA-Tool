@@ -17,7 +17,7 @@ def ufw_set_default_settings():
     subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
     subprocess.run('sudo ufw logging medium', capture_output=True, shell=True, check=True)
 
-    # Add SSH IP
+    # Add SSH IP, so connection will not be closed!
     print('Welche IPs soll SSH Zugang bekommen? Mehrere IP Addressen durch ein Komma trennen!')
     ufw_ssh_ip_list = hf.get_ips()
     ufw_rules_add_lists(port=22, ip_list=ufw_ssh_ip_list)
@@ -137,26 +137,6 @@ def ufw_disable_ipv6():
         return
 
 
-#### WIP ####
-# UFW Allow outgoing Ping
-# /etc/default/ufw/before.rules
-def ufw_allow_ping():
-    # Backup before.rules file to a backup folder
-    os.system('sudo mkdir -p "/etc/ufw/backups/" && sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
-
-    # Get path to template file
-    before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
-
-    # Path to original "before.rule" file
-    before_rules_file = '/etc/ufw/before.rules'
-
-    # Overwrite original "before.rule" file with template
-    subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
-
-    # Reload UFW rules to allow the ICMP changes
-    subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
-
-
 # Get a list of all added "apt-get" Repositories
 def get_repo_list():
     # Get Repos
@@ -267,3 +247,23 @@ def ufw_disable_firewall():
         os.system('sudo ufw --force disable')
     else:
         return
+
+
+#### WIP ####
+# UFW Allow outgoing Ping
+# /etc/default/ufw/before.rules
+#def ufw_allow_ping():
+#    # Backup before.rules file to a backup folder
+#    os.system('sudo mkdir -p "/etc/ufw/backups/" && sudo cp -n /etc/ufw/before.rules /etc/ufw/backups/before.rules.backup')
+#
+#    # Get path to template file
+#    before_rules_template = os.path.join(sys.path[0]) + '/config/templates/ufw_before_rules.template'
+#
+#    # Path to original "before.rule" file
+#    before_rules_file = '/etc/ufw/before.rules'
+#
+#    # Overwrite original "before.rule" file with template
+#    subprocess.run(('sudo cat ' + before_rules_template + ' > ' + before_rules_file), capture_output=True, shell=True, check=True)
+#
+#    # Reload UFW rules to allow the ICMP changes
+#    subprocess.run('sudo ufw reload', capture_output=True, shell=True, check=True)
