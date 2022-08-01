@@ -21,22 +21,19 @@ def complete_configuration_dialog():
 
     if complete_config_needed is True:
         # Reset Firewall, disable IPv6, set Default Settings
+        print('Starte UFW Konfiguration...')
         fw.ufw_disable_ipv6()
         fw.ufw_delete_rules()
         fw.ufw_set_default_settings()
         fw.ufw_allow_docker()
 
-        print('UFW in Default Zustand versetzt')
-        print('-------------------------------')
-        print(' Starte Netzwerk Konfiguration ')
-        
         # Configure Network
+        print('Starte Netzwerk Konfiguration...')        
         config_netplan()
         config_ntp()
         config_syslog()
         config_snmp()
 
-        # Add UFW rules, if not already added
         # UFW add APT repos
         fw.ufw_rules_add_lists(port=80, ip_list=fw.get_repo_list(), protocol='tcp')
         # UFW add NTP server if missing
