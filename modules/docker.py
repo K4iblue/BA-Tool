@@ -216,7 +216,7 @@ def add_container_port_mapping(port='', container_name=''):
 # Remove container port-mapping from json file
 def remove_container_port_mapping(container_name=''):
     # Read json file
-    docker_json = os.path.join(sys.path[0]) + '\container-port-mapping.json'
+    docker_json = os.path.join(sys.path[0]) + '/config/docker/container-port-mapping.json'
     with open(docker_json, encoding='UTF-8') as fp:
         data = json.load(fp)
 
