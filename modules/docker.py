@@ -61,6 +61,9 @@ def create_container():
     # Create port string
     port_string = (' -p ' + str(port_list[0])+ ':' + str(port_list[1]))
 
+    print('debug port: ' + str(port_list[0]))
+    print('debug container: ' + str(container_name))
+    
     # Create docker run command
     run_command = 'docker run -d'
     if volume_needed is True: 
@@ -235,8 +238,7 @@ def add_container_firewall_rule(port='', container_name=''):
     container_ip = os.popen("sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' " + str(container_name)).read()
 
     # Add forwarding rule for container to firewall, set container name as a comment
-    os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment ' + str(container_name))
-
+    os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment "' + str(container_name) + '"')
 
 # Remove Firewall rule for given container
 def remove_container_firewall_rule(container_name=''):
@@ -266,4 +268,3 @@ def get_container_port(container_name):
             container_port = get_key.get('port')
     
     return container_port
-
