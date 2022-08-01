@@ -241,6 +241,7 @@ def add_container_firewall_rule(port='', container_name=''):
 
     # Add forwarding rule for container to firewall, set container name as a comment
     #os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment "' + str(container_name) + '"')
+    os.system('sudo ufw route allow from any to ' + str(container_ip) + ' comment "' + str(container_name) + '"')
 
 # Remove Firewall rule for given container
 def remove_container_firewall_rule(container_name=''):
