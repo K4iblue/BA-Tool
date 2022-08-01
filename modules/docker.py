@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+from turtle import circle
 import uuid
 from .pyufw import pyufw
 
@@ -234,14 +235,15 @@ def remove_container_port_mapping(container_name=''):
     
 # Add Firewall rule for given container
 def add_container_firewall_rule(port='', container_name=''):
-    # Get container ip
+    # Get container ip and remove newline
     container_ip = os.popen("sudo docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' " + str(container_name)).read()
+    container_ip = container_ip.rstrip('\n')
 
     print('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment "' + str(container_name) + '"')
 
     # Add forwarding rule for container to firewall, set container name as a comment
-    #os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment "' + str(container_name) + '"')
-    os.system('sudo ufw route allow from any to ' + str(container_ip) + ' comment "' + str(container_name) + '"')
+    os.system('sudo ufw route allow from any to ' + str(container_ip) + ' port ' + str(port) + ' comment "' + str(container_name) + '"')
+    #os.system('sudo ufw route allow from any to ' + str(container_ip) + ' comment "' + str(container_name) + '"')
 
 # Remove Firewall rule for given container
 def remove_container_firewall_rule(container_name=''):
