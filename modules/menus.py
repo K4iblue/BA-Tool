@@ -15,7 +15,7 @@ def main_menu():
           '2.\t Netzwerkkonfiguration \n' +
           '3.\t Container Verwaltung \n' +
           '4.\t Systempflege \n' +
-          '5.\t DEBUG \n' +
+          #'5.\t DEBUG \n' +
           '----- Please enter a number (0-5) -----')
 
     # Get a Number from the user in given range
