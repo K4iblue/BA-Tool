@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!-- Note:  A "Server" is not itself a "Container", so you may not
+     define subcomponents such as "Valves" at this level.
+     Documentation at /docs/config/server.html
+ -->
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <!-- Security listener. Documentation at /docs/config/listeners.html
+  <Listener className="org.apache.catalina.security.SecurityListener" />
+  -->
+  <!--APR library loader. Documentation at /docs/apr.html -->
+  <!--
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  -->
+  <!-- Prevent memory leaks due to use of particular java/javax APIs-->
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <!-- Global JNDI resources
+       Documentation at /docs/jndi-resources-howto.html
+  -->
+  <GlobalNamingResources>
+    <!-- Editable user database that can also be used by
+         UserDatabaseRealm to authenticate users
+    -->
+      <Resource name="UserDatabase" auth="Container"
+             	type="org.apache.catalina.UserDatabase"
+             	description="User database that can be updated and saved"
+             	factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+             	pathname="conf/tomcat-users.xml" />
+
+      <!-- database containing all data and files for GRS configuration -->  
+    <Resource name="jdbc/config" auth="Container" 
+              type="javax.sql.DataSource"
+              maxActive="100" 
+              maxIdle="30"
+              minIdle="10"
+              maxWait="10000"
+              timeBetweenEvictionRunsMillis="30000"
+              minEvictableIdleTimeMillis="120000"
+              validationQuery="SELECT 1"
+              validationInterval="6000"
+              testOnBorrow="true"
+              username="garderos" 
+              password="garderos"
+              removeAbandoned="true"
+              removeAbondonedTimeout="60"
+              logAbandoned="true"
+              driverClassName="com.mysql.jdbc.Driver"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              url="jdbc:mysql://localhost:3306/config?autoReconnect=true&amp;socketTimeout=10000&amp;connectTimeout=10000&amp;useSSL=false">
+    </Resource>
+
+      <!-- optional database storing log data sent from GRS devices -->  
+    <Resource name="jdbc/logdata" auth="Container" 
+              type="javax.sql.DataSource"
+              maxActive="100" 
+              maxIdle="30"
+              minIdle="10"
+              maxWait="10000"
+              timeBetweenEvictionRunsMillis="30000"
+              minEvictableIdleTimeMillis="120000"
+              validationQuery="SELECT 1"
+              validationInterval="6000"
+              testOnBorrow="true"
+              username="garderos" 
+              password="garderos"
+              removeAbandoned="true"
+              removeAbondonedTimeout="30"
+              logAbandoned="true"       
+              driverClassName="com.mysql.jdbc.Driver"
+              factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+              url="jdbc:mysql://localhost:3306/logdata?autoReconnect=true&amp;socketTimeout=60000&amp;connectTimeout=60000&amp;useSSL=false" >
+    </Resource>
+
+  </GlobalNamingResources>
+
+  <!-- A "Service" is a collection of one or more "Connectors" that share
+       a single "Container" Note:  A "Service" is not itself a "Container",
+       so you may not define subcomponents such as "Valves" at this level.
+       Documentation at /docs/config/service.html
+   -->
+  <Service name="Catalina">
+
+    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+    <!--
+    <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
+        maxThreads="150" minSpareThreads="4"/>
+    -->
+
+
+    <!-- A "Connector" represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html (blocking & non-blocking)
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
+    -->
+    <Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" URIEncoding="UTF-8" />
+    <!-- A "Connector" using the shared thread pool-->
+    <!--
+    <Connector executor="tomcatThreadPool"
+               port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+    -->
+    <!-- Define a SSL/TLS HTTP/1.1 Connector on port 8443
+         This connector uses the NIO implementation that requires the JSSE
+         style configuration. When using the APR/native implementation, the
+         OpenSSL style configuration is required as described in the APR/native
+    	 documentation -->
+    <!--
+	The following example configuration uses a pre-created SSL certificate, which can be
+        found in the installation directory under './examples/etc/'.
+        Don't use for a production environment.
+        Create your own certificat files and check the path to the certificates.
+    -->
+<Connector  port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"
+               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+               sslProtocol="TLS"
+               sslEnabledProtocols="TLSv1.2+TLSv1.3" useServerCipherSuitesOrder="true"
+               ciphers="TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+                       TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
+                       TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                       TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,
+                       TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,
+                       TLS_DHE_RSA_WITH_AES_256_CBC_SHA,
+                       TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                       TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,
+                       TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                       TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                       TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,
+                       TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                       TLS_AES_256_GCM_SHA384,
+                       TLS_AES_128_GCM_SHA256"
+               URIEncoding="UTF-8"
+               keystoreFile="/etc/tomcat9/config.keystore"
+               keystorePass="garderos"
+               keystoreType="JKS"
+           />
+
+    <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <!--
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+    -->
+
+
+    <!-- An Engine represents the entry point (within Catalina) that processes
+         every request.  The Engine implementation for Tomcat stand alone
+         analyzes the HTTP headers included with the request, and passes them
+         on to the appropriate Host (virtual host).
+         Documentation at /docs/config/engine.html -->
+
+    <!-- You should set jvmRoute to support load-balancing via AJP ie :
+    <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
+    -->
+    <Engine name="Catalina" defaultHost="localhost">
+
+      <!--For clustering, please take a look at documentation at:
+          /docs/cluster-howto.html  (simple how to)
+          /docs/config/cluster.html (reference documentation) -->
+      <!--
+      <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+      -->
+
+      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
+           via a brute-force attack -->
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <!-- This Realm uses the UserDatabase configured in the global JNDI
+             resources under the key "UserDatabase".  Any edits
+             that are performed against this UserDatabase are immediately
+             available for use by the Realm.  -->
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+        <!-- SingleSignOn valve, share authentication between web applications
+             Documentation at: /docs/config/valve.html -->
+        <!--
+        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+        -->
+
+        <!-- Access log processes all example.
+             Documentation at: /docs/config/valve.html
+             Note: The pattern used is equivalent to using pattern="common" -->
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+        <Context path="/configserver" docBase="configserver" >
+                <ResourceLink name="jdbc/config" global="jdbc/config" auth="Container" type="javax.sql.DataSource" />
+        </Context>
+
+        <Context path="/grsadmin" docBase="grsadmin" >
+                <ResourceLink name="jdbc/config" global="jdbc/config" auth="Container" type="javax.sql.DataSource" />
+          <!--      <ResourceLink name="jdbc/logdata" global="jdbc/logdata" auth="Container" type="javax.sql.DataSource" /> -->
+        </Context>
+
+	<Context path="/logging" docBase="logging" >
+               <ResourceLink name="jdbc/logdata" global="jdbc/logdata" auth="Container" type="javax.sql.DataSource" />
+        </Context>
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
