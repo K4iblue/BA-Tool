@@ -3,6 +3,7 @@ import sys
 import json
 import uuid
 from .pyufw import pyufw
+from . import firewall as fw
 
 # Create Image
 def create_image():
@@ -72,8 +73,10 @@ def create_container():
     run_command += ' --name ' + container_name + ' '
     run_command += image_name
 
-    # Run the docker command
+    # Allow outgoing temporarily and run the docker command
+    fw.ufw_allow_outgoing()
     os.system('sudo ' + str(run_command))
+    fw.ufw_deny_outgoing()
 
     # Add firewall rule for container and add port-mapping to json file
     add_container_port_mapping(port=str(port_list[0]),container_name=str(container_name))

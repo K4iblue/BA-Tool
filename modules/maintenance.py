@@ -1,6 +1,7 @@
 import os
 import sys
 from modules.crontab.crontab import CronTab
+from . import firewall as fw
 
 
 # Start Automatic updates
@@ -140,3 +141,12 @@ def first_start_installer():
             file.write(filedata)
     else:
         quit()
+
+
+# Update the script
+def update_script():
+    print('Updating the tool via git...')
+    fw.ufw_allow_outgoing()
+    os.system('sudo git pull')
+    fw.ufw_deny_outgoing()
+    print('Quitting Tool...')

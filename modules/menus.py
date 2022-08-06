@@ -97,8 +97,6 @@ def network_submenu():
         case 7:
             fw.ufw_disable_firewall()
             network_submenu()
-        case _:
-            network_submenu()
 
 
 # Container Menu
@@ -161,7 +159,8 @@ def maintenance_submenu():
             '0. Main Menu \n' +
             '1. Automatische Updates de-/aktivieren \n' +
             '2. Standardprogramme installieren \n' +
-            '----- Please enter a number (0-2) -----')
+            '3. Update Tool \n' +
+            '----- Please enter a number (0-3) -----')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,3)
@@ -175,6 +174,9 @@ def maintenance_submenu():
         case 2:
             main.install_default_programs()
             maintenance_submenu()
+        case 3:
+            main.update_script()
+            quit()
 
 
 # DEBUG Menu

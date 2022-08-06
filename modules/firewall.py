@@ -249,6 +249,16 @@ def ufw_disable_firewall():
         return
 
 
+# Allow outgoing traffic
+def ufw_allow_outgoing():
+    subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
+
+
+# Deny outgoing traffic
+def ufw_deny_outgoing():
+    subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
+
+
 #### WIP ####
 # UFW Allow outgoing Ping
 # /etc/default/ufw/before.rules
