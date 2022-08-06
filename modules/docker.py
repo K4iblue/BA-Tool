@@ -256,6 +256,7 @@ def add_container_firewall_rule(port='', container_name=''):
 def remove_container_firewall_rule(container_name=''):
     # Get all rules
     all_rules = pyufw.get_rules()
+    rule_index = ''
 
     # Get rule index
     for key, val in all_rules.items():
@@ -270,9 +271,13 @@ def remove_container_firewall_rule(container_name=''):
         delete_rule = input('(y/n): ').upper()
     delete_rule = True if delete_rule == 'Y' else False
 
-    if delete_rule is True:
-        # Delete rule
-        os.system("echo 'y' | sudo ufw delete " + str(rule_index))
+    if rule_index == '':
+        if delete_rule is True:
+            # Delete rule
+            os.system("echo 'y' | sudo ufw delete " + str(rule_index))
+    else:
+        print('Keine zugehörige Firewall Regel gefunden!')
+        return
 
 
 def get_container_port(container_name):
