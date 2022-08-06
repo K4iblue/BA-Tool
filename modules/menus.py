@@ -163,7 +163,7 @@ def maintenance_submenu():
             '----- Please enter a number (0-3) -----')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,3)
+    case_number = hf.get_int(0,4)
 
     match case_number:
         case 0:
