@@ -147,6 +147,7 @@ def first_start_installer():
 def update_script():
     print('Updating the tool via git...')
     fw.ufw_allow_outgoing()
+    os.system('git config --global --add safe.directory "*"')
     os.system('sudo git pull')
     fw.ufw_deny_outgoing()
     print('Quitting Tool...')
