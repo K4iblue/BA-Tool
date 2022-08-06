@@ -9,6 +9,7 @@ from . import firewall as fw
 def create_image():
     # Get dockerfile path from user
     print('Wie lautet der Pfad der Dockerfile?')
+    print('Bitte den absoluten Pfad angeben!')
     path = input('Pfad: ')
 
     # Check if path exists
