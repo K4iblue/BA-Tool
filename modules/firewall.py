@@ -251,7 +251,7 @@ def ufw_disable_firewall():
 
 # Allow outgoing traffic
 def ufw_allow_outgoing():
-    subprocess.run('sudo ufw default deny outgoing', capture_output=True, shell=True, check=True)
+    subprocess.run('sudo ufw default allow outgoing', capture_output=True, shell=True, check=True)
 
 
 # Deny outgoing traffic
