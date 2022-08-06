@@ -150,4 +150,4 @@ def update_script():
     os.system('git config --global --add safe.directory "*"')
     os.system('sudo git pull')
     fw.ufw_deny_outgoing()
-    print('Quitting Tool...')
+    print('Tool muss neugestartet werden um die neue Version zu benutzen')
