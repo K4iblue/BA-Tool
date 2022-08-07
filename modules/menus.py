@@ -66,8 +66,6 @@ def network_submenu():
             '3.\t NTP Konfiguration \n' +
             '4.\t SNMPv3 Konfiguration \n' +
             '5.\t Syslog Konfiguration \n' +
-            '6.\t Firewall aktivieren \n' +
-            '7.\t Firewall deaktivieren \n' +
             '----- Please enter a number (0-7) -----')
 
     # Get a Number from the user in given range
@@ -90,12 +88,6 @@ def network_submenu():
             network_submenu()
         case 5:
             net.config_syslog()
-            network_submenu()
-        case 6:
-            fw.ufw_enable_firewall()
-            network_submenu()
-        case 7:
-            fw.ufw_disable_firewall()
             network_submenu()
 
 
@@ -179,7 +171,7 @@ def maintenance_submenu():
             quit()
 
 
-# DEBUG Menu
+# Debug Menu
 def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
             '0. \t Main Menu\n' +
