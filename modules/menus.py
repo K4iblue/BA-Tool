@@ -15,7 +15,7 @@ def main_menu():
           '2.\t Netzwerkkonfiguration \n' +
           '3.\t Container Verwaltung \n' +
           '4.\t Systempflege \n' +
-          '----- Please enter a number (0-4) -----')
+          '-- Please enter a number (0-4) --')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,6)
@@ -38,10 +38,10 @@ def main_menu():
 # Hardening Menu
 def hardening_submenu():
     print('----------- Härtung ----------- \n' +
-            '0.\t Main Menu \n' +
-            '1.\t Härtung durchführen \n' +
-            '2.\t Härtung Überprüfen \n' +
-            '----- Please enter a number (0-2) -----')
+          '0.\t Main Menu \n' +
+          '1.\t Härtung durchführen \n' +
+          '2.\t Härtung Überprüfen \n' +
+          '-- Please enter a number (0-2) --')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,3)
@@ -60,13 +60,13 @@ def hardening_submenu():
 # Network Menu
 def network_submenu():
     print('----------- Netzwerk Konfiguration ----------- \n' +
-            '0.\t Main Menu \n' +
-            '1.\t Vollständige Netzwerk Konfiguration \n' +
-            '2.\t Netplan Konfiguration (DNS, Default Gateway, Static IP) \n' +
-            '3.\t NTP Konfiguration \n' +
-            '4.\t SNMPv3 Konfiguration \n' +
-            '5.\t Syslog Konfiguration \n' +
-            '----- Please enter a number (0-7) -----')
+          '0.\t Main Menu \n' +
+          '1.\t Vollständige Netzwerk Konfiguration \n' +
+          '2.\t Netplan Konfiguration (DNS, Default Gateway, Static IP) \n' +
+          '3.\t NTP Konfiguration \n' +
+          '4.\t SNMPv3 Konfiguration \n' +
+          '5.\t Syslog Konfiguration \n' +
+          '-- Please enter a number (0-7) --')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,8)
@@ -94,18 +94,18 @@ def network_submenu():
 # Container Menu
 def container_submenu():
     print('----------- Container Verwaltung ----------- \n' +
-            '0.\t Main Menu \n' +
-            '1.\t Liste aller Container anzeigen \n' +
-            '2.\t Liste aller Images anzeigen \n' +
-            '3.\t Liste aller Volumes anzeigen \n' +
-            '4.\t Container starten \n' +
-            '5.\t Container stoppen \n' +
-            '6.\t Container erstellen \n' +
-            '7.\t Image erstellen \n' +
-            '8.\t Container löschen \n' +
-            '9.\t Image löschen \n' +
-            '10.\t Volume löschen \n' +
-            '----- Please enter a number (0-10) -----')
+          '0.\t Main Menu \n' +
+          '1.\t Liste aller Container anzeigen \n' +
+          '2.\t Liste aller Images anzeigen \n' +
+          '3.\t Liste aller Volumes anzeigen \n' +
+          '4.\t Container starten \n' +
+          '5.\t Container stoppen \n' +
+          '6.\t Container erstellen \n' +
+          '7.\t Image erstellen \n' +
+          '8.\t Container löschen \n' +
+          '9.\t Image löschen \n' +
+          '10.\t Volume löschen \n' +
+          '-- Please enter a number (0-10) --')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,11)
@@ -148,11 +148,11 @@ def container_submenu():
 # Maintenance Menu
 def maintenance_submenu():
     print('----------- Systempflege Menu ----------- \n' +
-            '0. Main Menu \n' +
-            '1. Automatische Updates de-/aktivieren \n' +
-            '2. Standardprogramme installieren \n' +
-            '3. Update Tool \n' +
-            '----- Please enter a number (0-3) -----')
+          '0. Main Menu \n' +
+          '1. Automatische Updates de-/aktivieren \n' +
+          '2. Standardprogramme installieren \n' +
+          '3. Update Tool \n' +
+          '-- Please enter a number (0-3) --')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,4)
@@ -174,14 +174,14 @@ def maintenance_submenu():
 # Debug Menu
 def debug_submenu():
     print('----------- Debug Menu ----------- \n' +
-            '0. \t Main Menu\n' +
-            '1. \t DEBUG\n' +
-            '2. \t add ssh\n' +
-            '3. \t add Repos to Firewall\n' +
-            '4. \t UFW Debug Rule adding\n' +
-            '5. \t UFW get all rules\n' +
-            '6. \t UFW all docker\n' +
-            '----- Please enter a number (0-99) -----')
+          '0. \t Main Menu\n' +
+          '1. \t DEBUG\n' +
+          '2. \t add ssh\n' +
+          '3. \t add Repos to Firewall\n' +
+          '4. \t UFW Debug Rule adding\n' +
+          '5. \t UFW get all rules\n' +
+          '6. \t UFW all docker\n' +
+          '-- Please enter a number (0-99) --')
 
     # Get a Number from the user in given range
     case_number = hf.get_int(0,99)
