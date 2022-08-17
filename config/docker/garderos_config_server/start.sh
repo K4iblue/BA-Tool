@@ -1,8 +1,10 @@
-#!/bin/sh
-sh -c "/etc/init.d/mysql restart"
-sh -c "/opt/tomcat/bin/catalina.sh run"
+#!/bin/sh -x
 
-#
-#sh -c "mysql -u root < /home/garderosinstall/db_setup.sql"
-#sh -c "mysql -u root < /home/garderosinstall/examples/database/schema.sql"
-#sh -c "mysql -u root -p < /home/garderosinstall/examples/database/example_content.sql
+# Mysql Server starten und setup
+sh -c "/etc/init.d/mysql restart"
+sh -c "mysql -u root -Be 'SOURCE /home/garderosinstall/db_setup.sql'"
+sh -c "mysql -u root -Be 'SOURCE /home/garderosinstall/examples/database/schema.sql'"
+# sh -c "mysql -u root -Be 'SOURCE /home/garderosinstall/examples/database/example_content.sql'"	# Klappt nicht, wird aber eigentlich auch nicht gebraucht
+
+# Tomcat starten
+sh -c "/etc/tomcat/bin/catalina.sh run"
