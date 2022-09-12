@@ -1,9 +1,13 @@
+from multiprocessing.sharedctypes import Value
 import os
 import sys
 import json
+from typing import List
 import uuid
 from .pyufw import pyufw
 from . import firewall as fw
+
+from yaml import load, Loader
 
 # Create Image
 def create_image():
@@ -82,6 +86,41 @@ def create_container():
     # Add firewall rule for container and add port-mapping to json file
     add_container_port_mapping(port=str(port_list[0]),container_name=str(container_name))
     add_container_firewall_rule(port=str(port_list[0]),container_name=str(container_name))
+
+# Adds a containers from a given docker compose file.
+def add_docker_compose_file():
+    # Obtain the Container name from the compose file. If there
+    # is no name provided, error out for now. 
+    #
+    # We currently need to provide a static name for the container as otherwhise, docker compose
+    # would dynamically generate a name. The name is needed to obtain the IP - Address of the container
+    # and to add a firewall rule. 
+    compose_file_path = str(input("Pfad zur Docker Compose File: "))
+    compose_file_content = ''
+
+    try:
+        compose_file_content = open_docker_composefile(compose_file_path)
+    except ValueError:
+        print('Der angegebene Pfad scheint nicht zu existieren')
+        return
+    except Exception as ex:
+        print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
+        return
+
+    # Start the containers using docker compose
+    compose_command = f'docker-compose -f {compose_file_path} up -d'
+    fw.ufw_allow_outgoing()
+    os.system(compose_command)
+    fw.ufw_deny_outgoing()
+
+    # Parse out the container names from the compose file and add the port mappings and firewall rules
+    container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
+    print(container_names_ports)
+
+    for name, ports in container_names_ports.items():
+        for port in ports:
+            add_container_port_mapping(port, name)
+            add_container_firewall_rule(port, name)
 
 
 # Start given container
@@ -294,3 +333,36 @@ def get_container_port(container_name):
             container_port = get_key.get('port')
     
     return container_port
+
+def open_docker_composefile(path: str) -> dict:
+     # Error out if the path does not exists
+    if not os.path.exists(path):
+        print(path)
+        raise ValueError()
+
+    docker_compose_content = ''
+    with open(path) as file:
+        # Note: Currently, I do not want to do the hassle to recompile this module with the libyaml C Bindings just
+        # to load the docker-compose file. If we experience any performance issues here, we should consider it. 
+        docker_compose_content = load(file, Loader)
+
+    return docker_compose_content
+
+def get_container_names_ports_from_composefile(composefile: dict) -> List[dict]:
+    """
+    Returns a dictionary which maps the container name to a list of all published
+    ports of this container, as specified in the passed docker composefile. 
+    """
+    container_port_dict = {}
+    for service in composefile['services'].values():
+        try: 
+            container_name = service['container_name']
+        except KeyError:
+            print(f'Für Service {service} wurde kein Container Name gefunden.' +
+                ' Dieser Service wird somit in der Firewall Konfiguration ignoriert und ist von aussen nicht erreichbar.')
+            continue
+    
+        container_ports = tuple(port.split(':')[0] for port in service.get('ports', []))
+        container_port_dict[container_name] = container_ports
+
+    return container_port_dict

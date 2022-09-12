@@ -105,10 +105,11 @@ def container_submenu():
           '8.\t Container löschen \n' +
           '9.\t Image löschen \n' +
           '10.\t Volume löschen \n' +
+          '11. \t Docker Compose File hinzufügen' +
           '-- Please enter a number (0-10) --')
 
     # Get a Number from the user in given range
-    case_number = hf.get_int(0,11)
+    case_number = hf.get_int(0,12)
     
     match case_number:
         case 0:
@@ -142,6 +143,9 @@ def container_submenu():
             container_submenu()
         case 10:
             doc.delete_volume()
+            container_submenu()
+        case 11:
+            doc.add_docker_compose_file()
             container_submenu()
 
 
