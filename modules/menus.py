@@ -105,8 +105,8 @@ def container_submenu():
           '8.\t Container löschen \n' +
           '9.\t Image löschen \n' +
           '10.\t Volume löschen \n' +
-          '11. \t Container von Compose File starten' +
-          '12. \t Container von Compose File stoppen'
+          '11. \t Container von Compose File starten\n' +
+          '12. \t Container von Compose File stoppen\n'
           '-- Please enter a number (0-12) --')
 
     # Get a Number from the user in given range
@@ -147,6 +147,9 @@ def container_submenu():
             container_submenu()
         case 11:
             doc.start_container_from_compose_file()
+            container_submenu()
+        case 12:
+            doc.stop_container_from_compose_file()
             container_submenu()
 
 

@@ -218,13 +218,28 @@ def start_container_from_compose_file():
 
     # Parse out the container names from the compose file and add the port mappings and firewall rules
     container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
-    print(container_names_ports)
 
     for name, ports in container_names_ports.items():
         for port in ports:
             add_container_port_mapping(port, name)
             add_container_firewall_rule(port, name)
 
+def stop_container_from_compose_file():
+    compose_file_path, compose_file_content = get_composefile_path_content()
+
+    if not compose_file_path:
+        return
+
+    # Stop the container using docker compose
+    compose_command = f'docker-compose -f {compose_file_path} down'
+    os.system(compose_command)
+
+    # Parse out the container names from the compose file and add the port mappings and firewall rules
+    container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
+
+    for name in container_names_ports.keys():
+        remove_container_port_mapping(name)
+        remove_container_firewall_rule(name)
 
 # Save container port-mapping to a json file
 def add_container_port_mapping(port='', container_name=''):
