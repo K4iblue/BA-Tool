@@ -87,42 +87,6 @@ def create_container():
     add_container_port_mapping(port=str(port_list[0]),container_name=str(container_name))
     add_container_firewall_rule(port=str(port_list[0]),container_name=str(container_name))
 
-# Adds a containers from a given docker compose file.
-def add_docker_compose_file():
-    # Obtain the Container name from the compose file. If there
-    # is no name provided, error out for now. 
-    #
-    # We currently need to provide a static name for the container as otherwhise, docker compose
-    # would dynamically generate a name. The name is needed to obtain the IP - Address of the container
-    # and to add a firewall rule. 
-    compose_file_path = str(input("Pfad zur Docker Compose File: "))
-    compose_file_content = ''
-
-    try:
-        compose_file_content = open_docker_composefile(compose_file_path)
-    except ValueError:
-        print('Der angegebene Pfad scheint nicht zu existieren')
-        return
-    except Exception as ex:
-        print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
-        return
-
-    # Start the containers using docker compose
-    compose_command = f'docker-compose -f {compose_file_path} up -d'
-    fw.ufw_allow_outgoing()
-    os.system(compose_command)
-    fw.ufw_deny_outgoing()
-
-    # Parse out the container names from the compose file and add the port mappings and firewall rules
-    container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
-    print(container_names_ports)
-
-    for name, ports in container_names_ports.items():
-        for port in ports:
-            add_container_port_mapping(port, name)
-            add_container_firewall_rule(port, name)
-
-
 # Start given container
 def start_container(container_name=''):
     if container_name == '':
@@ -238,6 +202,41 @@ def delete_volume(volume_name=''):
         os.system('sudo docker volume rm --force ' + str(volume_name))
         # Print 2 empty Lines for better reading
         print('\n\n')
+
+# Adds a containers from a given docker compose file.
+def start_container_from_compose_file():
+    # Obtain the Container name from the compose file. If there
+    # is no name provided, error out for now. 
+    #
+    # We currently need to provide a static name for the container as otherwhise, docker compose
+    # would dynamically generate a name. The name is needed to obtain the IP - Address of the container
+    # and to add a firewall rule. 
+    compose_file_path = str(input("Pfad zur Docker Compose File: "))
+    compose_file_content = ''
+
+    try:
+        compose_file_content = open_docker_composefile(compose_file_path)
+    except ValueError:
+        print('Der angegebene Pfad scheint nicht zu existieren')
+        return
+    except Exception as ex:
+        print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
+        return
+
+    # Start the containers using docker compose
+    compose_command = f'docker-compose -f {compose_file_path} up -d'
+    fw.ufw_allow_outgoing()
+    os.system(compose_command)
+    fw.ufw_deny_outgoing()
+
+    # Parse out the container names from the compose file and add the port mappings and firewall rules
+    container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
+    print(container_names_ports)
+
+    for name, ports in container_names_ports.items():
+        for port in ports:
+            add_container_port_mapping(port, name)
+            add_container_firewall_rule(port, name)
 
 
 # Save container port-mapping to a json file
