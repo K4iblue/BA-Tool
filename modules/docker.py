@@ -2,7 +2,7 @@ from multiprocessing.sharedctypes import Value
 import os
 import sys
 import json
-from typing import List
+from typing import List, Tuple
 import uuid
 from .pyufw import pyufw
 from . import firewall as fw
@@ -205,22 +205,9 @@ def delete_volume(volume_name=''):
 
 # Adds a containers from a given docker compose file.
 def start_container_from_compose_file():
-    # Obtain the Container name from the compose file. If there
-    # is no name provided, error out for now. 
-    #
-    # We currently need to provide a static name for the container as otherwhise, docker compose
-    # would dynamically generate a name. The name is needed to obtain the IP - Address of the container
-    # and to add a firewall rule. 
-    compose_file_path = str(input("Pfad zur Docker Compose File: "))
-    compose_file_content = ''
+    compose_file_path, compose_file_content = get_composefile_path_content()
 
-    try:
-        compose_file_content = open_docker_composefile(compose_file_path)
-    except ValueError:
-        print('Der angegebene Pfad scheint nicht zu existieren')
-        return
-    except Exception as ex:
-        print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
+    if not compose_file_path:
         return
 
     # Start the containers using docker compose
@@ -332,6 +319,27 @@ def get_container_port(container_name):
             container_port = get_key.get('port')
     
     return container_port
+
+def get_composefile_path_content() -> Tuple[str, dict]:
+    # Obtain the Container name from the compose file. If there
+    # is no name provided, error out for now. 
+    #
+    # We currently need to provide a static name for the container as otherwhise, docker compose
+    # would dynamically generate a name. The name is needed to obtain the IP - Address of the container
+    # and to add a firewall rule. 
+    compose_file_path = str(input("Pfad zur Docker Compose File: "))
+    compose_file_content = ''
+
+    try:
+        compose_file_content = open_docker_composefile(compose_file_path)
+    except ValueError:
+        print('Der angegebene Pfad scheint nicht zu existieren')
+        return
+    except Exception as ex:
+        print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
+        return
+
+    return compose_file_path, compose_file_content
 
 def open_docker_composefile(path: str) -> dict:
      # Error out if the path does not exists
