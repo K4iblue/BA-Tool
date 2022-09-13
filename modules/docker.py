@@ -237,9 +237,10 @@ def stop_container_from_compose_file():
     # Parse out the container names from the compose file and add the port mappings and firewall rules
     container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
 
-    for name in container_names_ports.keys():
-        remove_container_port_mapping(name)
-        remove_container_firewall_rule(name)
+    for name, ports in container_names_ports.items():
+        if ports:
+            remove_container_port_mapping(name)
+            remove_container_firewall_rule(name)
 
 # Save container port-mapping to a json file
 def add_container_port_mapping(port='', container_name=''):
@@ -264,15 +265,19 @@ def remove_container_port_mapping(container_name=''):
     with open(docker_json, encoding='UTF-8') as fp:
         data = json.load(fp)
 
+    # Add a list for the keys, which should be removed
+    keys_to_remove = []
+
     # Iterate over dict
-    for key, val in data.items():
+    for key in data:
         get_key = (data.get(key))
         if container_name in get_key.values():
-            remove_key = key
-
+            keys_to_remove.append(key)
+            
     try:
         # Remove entry
-        data.pop(remove_key)
+        for key in keys_to_remove:
+            data.pop(key)
     except:
         print('Container wurde nicht in der Port-Mapping Datei gefunden')
         return
@@ -280,6 +285,7 @@ def remove_container_port_mapping(container_name=''):
     # Write back to file
     with open(docker_json, 'w', encoding='UTF-8') as f:
         json.dump(data, f, indent=4)
+
 
     
 # Add Firewall rule for given container
@@ -312,7 +318,7 @@ def remove_container_firewall_rule(container_name=''):
         delete_rule = input('(y/n): ').upper()
     delete_rule = True if delete_rule == 'Y' else False
 
-    if rule_index == '':
+    if rule_index:
         if delete_rule is True:
             # Delete rule
             os.system("echo 'y' | sudo ufw delete " + str(rule_index))
