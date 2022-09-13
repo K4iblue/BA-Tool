@@ -342,12 +342,6 @@ def get_container_port(container_name):
     return container_port
 
 def get_composefile_path_content() -> Tuple[str, dict]:
-    # Obtain the Container name from the compose file. If there
-    # is no name provided, error out for now. 
-    #
-    # We currently need to provide a static name for the container as otherwhise, docker compose
-    # would dynamically generate a name. The name is needed to obtain the IP - Address of the container
-    # and to add a firewall rule. 
     compose_file_path = str(input("Pfad zur Docker Compose File: "))
     compose_file_content = ''
 
@@ -355,10 +349,10 @@ def get_composefile_path_content() -> Tuple[str, dict]:
         compose_file_content = open_docker_composefile(compose_file_path)
     except ValueError:
         print('Der angegebene Pfad scheint nicht zu existieren')
-        return
+        return None, None
     except Exception as ex:
         print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
-        return
+        return None, None
 
     return compose_file_path, compose_file_content
 
