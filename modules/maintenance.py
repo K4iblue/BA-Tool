@@ -89,7 +89,7 @@ def install_all_needed_packages():
     os.system('sudo apt-get update')
 
     # Install all programs
-    os.system('sudo DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables iputils-ping dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce -y')
+    os.system('sudo DEBIAN_FRONTEND=noninteractive apt-get install net-tools procps openssh-server iptables iputils-ping dnsutils openssh-server rsyslog snmpd snmp cron bats lynis docker-ce docker-ce-cli containerd.io docker-compose-plugin -y')
     
     # Update all other packages if needed
     os.system('sudo apt-get upgrade -y')
