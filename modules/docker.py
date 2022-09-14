@@ -1,9 +1,13 @@
+from multiprocessing.sharedctypes import Value
 import os
 import sys
 import json
+from typing import List, Tuple
 import uuid
 from .pyufw import pyufw
 from . import firewall as fw
+
+from yaml import load, Loader
 
 # Create Image
 def create_image():
@@ -82,7 +86,6 @@ def create_container():
     # Add firewall rule for container and add port-mapping to json file
     add_container_port_mapping(port=str(port_list[0]),container_name=str(container_name))
     add_container_firewall_rule(port=str(port_list[0]),container_name=str(container_name))
-
 
 # Start given container
 def start_container(container_name=''):
@@ -200,6 +203,44 @@ def delete_volume(volume_name=''):
         # Print 2 empty Lines for better reading
         print('\n\n')
 
+# Adds a containers from a given docker compose file.
+def start_container_from_compose_file():
+    compose_file_path, compose_file_content = get_composefile_path_content()
+
+    if not compose_file_path:
+        return
+
+    # Start the containers using docker compose
+    compose_command = f'docker-compose -f {compose_file_path} up -d'
+    fw.ufw_allow_outgoing()
+    os.system(compose_command)
+    fw.ufw_deny_outgoing()
+
+    # Parse out the container names from the compose file and add the port mappings and firewall rules
+    container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
+
+    for name, ports in container_names_ports.items():
+        for port in ports:
+            add_container_port_mapping(port, name)
+            add_container_firewall_rule(port, name)
+
+def stop_container_from_compose_file():
+    compose_file_path, compose_file_content = get_composefile_path_content()
+
+    if not compose_file_path:
+        return
+
+    # Stop the container using docker compose
+    compose_command = f'docker-compose -f {compose_file_path} down'
+    os.system(compose_command)
+
+    # Parse out the container names from the compose file and add the port mappings and firewall rules
+    container_names_ports = get_container_names_ports_from_composefile(compose_file_content)
+
+    for name, ports in container_names_ports.items():
+        if ports:
+            remove_container_port_mapping(name)
+            remove_container_firewall_rule(name)
 
 # Save container port-mapping to a json file
 def add_container_port_mapping(port='', container_name=''):
@@ -224,15 +265,19 @@ def remove_container_port_mapping(container_name=''):
     with open(docker_json, encoding='UTF-8') as fp:
         data = json.load(fp)
 
+    # Add a list for the keys, which should be removed
+    keys_to_remove = []
+
     # Iterate over dict
-    for key, val in data.items():
+    for key in data:
         get_key = (data.get(key))
         if container_name in get_key.values():
-            remove_key = key
-
+            keys_to_remove.append(key)
+            
     try:
         # Remove entry
-        data.pop(remove_key)
+        for key in keys_to_remove:
+            data.pop(key)
     except:
         print('Container wurde nicht in der Port-Mapping Datei gefunden')
         return
@@ -240,6 +285,7 @@ def remove_container_port_mapping(container_name=''):
     # Write back to file
     with open(docker_json, 'w', encoding='UTF-8') as f:
         json.dump(data, f, indent=4)
+
 
     
 # Add Firewall rule for given container
@@ -272,7 +318,7 @@ def remove_container_firewall_rule(container_name=''):
         delete_rule = input('(y/n): ').upper()
     delete_rule = True if delete_rule == 'Y' else False
 
-    if rule_index == '':
+    if rule_index:
         if delete_rule is True:
             # Delete rule
             os.system("echo 'y' | sudo ufw delete " + str(rule_index))
@@ -294,3 +340,51 @@ def get_container_port(container_name):
             container_port = get_key.get('port')
     
     return container_port
+
+def get_composefile_path_content() -> Tuple[str, dict]:
+    compose_file_path = str(input("Pfad zur Docker Compose File: "))
+    compose_file_content = ''
+
+    try:
+        compose_file_content = open_docker_composefile(compose_file_path)
+    except ValueError:
+        print('Der angegebene Pfad scheint nicht zu existieren')
+        return None, None
+    except Exception as ex:
+        print(f'Die Docker Compose File konnte nicht geöffnet werden. {ex}')
+        return None, None
+
+    return compose_file_path, compose_file_content
+
+def open_docker_composefile(path: str) -> dict:
+     # Error out if the path does not exists
+    if not os.path.exists(path):
+        print(path)
+        raise ValueError()
+
+    docker_compose_content = ''
+    with open(path) as file:
+        # Note: Currently, I do not want to do the hassle to recompile this module with the libyaml C Bindings just
+        # to load the docker-compose file. If we experience any performance issues here, we should consider it. 
+        docker_compose_content = load(file, Loader)
+
+    return docker_compose_content
+
+def get_container_names_ports_from_composefile(composefile: dict) -> List[dict]:
+    """
+    Returns a dictionary which maps the container name to a list of all published
+    ports of this container, as specified in the passed docker composefile. 
+    """
+    container_port_dict = {}
+    for service in composefile['services'].values():
+        try: 
+            container_name = service['container_name']
+        except KeyError:
+            print(f'Für Service {service} wurde kein Container Name gefunden.' +
+                ' Dieser Service wird somit in der Firewall Konfiguration ignoriert und ist von aussen nicht erreichbar.')
+            continue
+    
+        container_ports = tuple(port.split(':')[0] for port in service.get('ports', []))
+        container_port_dict[container_name] = container_ports
+
+    return container_port_dict
