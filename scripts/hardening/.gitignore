@@ -1,8 +1,0 @@
-*.html
-*.log
-*.vagrant
-*.vdi
-.scannerwork
-.sonar
-TESTRESULTS.adoc
-tests/*.adoc

@@ -19,7 +19,7 @@ fi
 function main {
   clear
 
-  REQUIREDPROGS='arp w'
+  REQUIREDPROGS='arp dig ping w'
   REQFAILED=0
   for p in $REQUIREDPROGS; do
     if ! command -v "$p" >/dev/null 2>&1; then
@@ -29,14 +29,26 @@ function main {
   done
 
   if [ $REQFAILED = 1 ]; then
-    echo 'net-tools and procps packages has to be installed.'
-    exit 1
+    apt-get -qq update
+    apt-get -qq install bind9-dnsutils iputils-ping net-tools procps --no-install-recommends
   fi
 
   ARPBIN="$(command -v arp)"
+  DIGBIN="$(command -v dig)"
+  PINGBIN="$(command -v ping)"
   WBIN="$(command -v w)"
   LXC="0"
-  SERVERIP="$(ip route | grep '^default' | awk '{print $9}')"
+
+  if resolvectl status >/dev/null 2>&1; then
+    SERVERIP="$(ip route get "$(resolvectl status |\
+      grep -E 'DNS (Server:|Servers:)' | tail -n1 |\
+      awk '{print $NF}')" | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' |\
+      tail -n1)"
+  else
+    SERVERIP="$(ip route get "$(grep '^nameserver' /etc/resolv.conf |\
+      tail -n1 | awk '{print $NF}')" |\
+      grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | tail -n1)"
+  fi
 
   if grep -qE 'container=lxc|container=lxd' /proc/1/environ; then
     LXC="1"
@@ -60,6 +72,7 @@ function main {
   source ./ubuntu.cfg
 
   readonly ADDUSER
+  readonly ADMINEMAIL
   readonly ARPBIN
   readonly AUDITDCONF
   readonly AUDITD_MODE
@@ -75,6 +88,7 @@ function main {
   readonly DISABLEFS
   readonly DISABLEMOD
   readonly DISABLENET
+  readonly FAILLOCKCONF
   readonly FW_ADMIN
   readonly JOURNALDCONF
   readonly KEEP_SNAPD
@@ -84,13 +98,13 @@ function main {
   readonly LOGROTATE
   readonly LOGROTATE_CONF
   readonly LXC
-  readonly ADMINEMAIL
   readonly NTPSERVERPOOL
   readonly PAMLOGIN
   readonly PSADCONF
   readonly PSADDL
   readonly RESOLVEDCONF
   readonly RKHUNTERCONF
+  readonly RSYSLOGCONF
   readonly SECURITYACCESS
   readonly SERVERIP
   readonly SSHDFILE
@@ -124,7 +138,7 @@ function main {
   f_resolvedconf
   f_logindconf
   f_journalctl
-  #f_timesyncd        # NTP Server werden über das Netzwerkmenü gesteuert
+  f_timesyncd
   f_fstab
   f_prelink
   f_aptget_configure
