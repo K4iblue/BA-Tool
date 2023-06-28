@@ -3,12 +3,10 @@
 set -u
 set -o pipefail
 
-CONTENT="0.1.68"
+CONTENT="0.1.65"
 
 function download_content {
-  if ! [ -f "scap-security-guide-${CONTENT}.zip" ]; then
-    wget -nc "https://github.com/ComplianceAsCode/content/releases/download/v${CONTENT}/scap-security-guide-${CONTENT}.zip"
-  fi
+  wget -nc "https://github.com/ComplianceAsCode/content/releases/download/v${CONTENT}/scap-security-guide-${CONTENT}.zip"
   unzip -n "scap-security-guide-${CONTENT}.zip"
 }
 

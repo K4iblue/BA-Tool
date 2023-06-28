@@ -8,8 +8,8 @@
 # Buffer Size
 -b 8192
 
-# Report errors
--c
+# Ignore errors
+-i
 
 # Failure Mode
 -f 2

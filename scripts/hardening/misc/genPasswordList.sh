@@ -10,17 +10,16 @@ curl -sSL https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passw
 curl -sSL https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Leaked-Databases/Lizard-Squad.txt >> leaked.list
 curl -sSL https://raw.githubusercontent.com/danielmiessler/SecLists/master/Passwords/Leaked-Databases/NordVPN.txt >> leaked.list
 curl -sSL https://raw.githubusercontent.com/konstruktoid/honeypot-passwords/main/cowrie.list > cowrie.list
-curl -sSL https://raw.githubusercontent.com/konstruktoid/hardening/master/misc/passwords.list >> "${TMPFILE}"
 
-{
-  grep -v '^$' cowrie.list >> "${TMPFILE}"
-  grep -hvE '^$' ./*.list | grep -Ei '^[a-z]|^[0-9]'
-} >> "${TMPFILE}"
+grep -v '^$' cowrie.list >> "${TMPFILE}"
 
-grep -v '^$' "${TMPFILE}" | strings | sort | uniq > passwords.list
+grep -vE '^$|^#' ./leaked.list ./ncschabp.list ./zxcvbn.list | sed 's/.*://g' |\
+  grep -Ei '^[a-z]|^[0-9]' >> "${TMPFILE}"
 
 if [ -x "$(which dos2unix)" ]; then
-  dos2unix ./*.list
+  dos2unix ./*.list "${TMPFILE}"
 fi
+
+grep -v '^$' "${TMPFILE}" | sort | uniq | strings > passwords.list
 
 rm "${TMPFILE}"
