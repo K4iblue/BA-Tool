@@ -54,7 +54,6 @@ def create_configfile():
     auditd_mode = '1'
     auditd_rules = './misc/audit-base.rules ./misc/audit-aggressive.rules ./misc/audit-docker.rules'
     logrotate_settings = './misc/logrotate.conf'
-    ntp_ips = ''
     timezone = 'Europe/Berlin'
     verbose= 'Y'
     script_guessing = 'N'
