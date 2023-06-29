@@ -1,9 +1,12 @@
 # https://gtfobins.github.io/#+suid
 # https://raw.githubusercontent.com/konstruktoid/hardening/master/misc/suid.list
 
+7z
 ab
 agetty
+alpine
 ansible-playbook
+aoss
 apt
 apt-get
 ar
@@ -18,13 +21,20 @@ aspell
 at
 atobm
 awk
+aws
 base32
+base58
 base64
 basenc
+basez
 bash
+batcat
+bc
+bconsole
 bpftrace
 bridge
 bsd-write
+bundle
 bundler
 busctl
 busybox
@@ -32,9 +42,11 @@ byebug
 bzip2
 c89
 c99
+cabal
 cancel
 capsh
 cat
+cdist
 certbot
 chage
 check_by_ssh
@@ -72,6 +84,7 @@ cut
 dash
 date
 dd
+debugfs
 dialog
 diff
 dig
@@ -90,6 +103,7 @@ efax
 emacs
 env
 eqn
+espeak
 ex
 exiftool
 expand
@@ -107,6 +121,7 @@ ftp
 fusermount
 gawk
 gcc
+gcloud
 gcore
 gdb
 gem
@@ -138,10 +153,14 @@ join
 journalctl
 jq
 jrunscript
+jtag
 knife
 ksh
 ksshell
+ksu
+kubectl
 latex
+latexmk
 ld.so
 ldconfig
 less
@@ -166,6 +185,7 @@ more
 mosquitto
 mount
 mount.nfs
+msfconsole
 msgattrib
 msgcat
 msgconv
@@ -173,6 +193,7 @@ msgfilter
 msgmerge
 msguniq
 mtr
+multitime
 mv
 mysql
 nano
@@ -182,6 +203,7 @@ nc
 neofetch
 netfilter-persistent
 newgrp
+nft
 nice
 nl
 nm
@@ -198,6 +220,7 @@ openssl
 openvpn
 openvt
 opkg
+pandoc
 paste
 pax
 pdb
@@ -205,6 +228,7 @@ pdflatex
 pdftex
 perf
 perl
+perlbug
 pg
 php
 pic
@@ -215,6 +239,7 @@ ping6
 pip
 pkexec
 pkg
+posh
 pppd
 pr
 pry
@@ -234,20 +259,27 @@ rev
 rlogin
 rlwrap
 rpm
+rpmdb
 rpmquery
+rpmverify
 rsync
+rtorrent
 ruby
 run-mailcap
 run-parts
 rview
 rvim
 sash
+scanmem
 scp
 screen
 script
+scrot
 sed
 service
 setarch
+setfacl
+setlock
 sftp
 sg
 sh
@@ -256,7 +288,9 @@ slsh
 smbclient
 snap
 socat
+socket
 soelim
+softlimit
 sort
 split
 sqlite3
@@ -278,6 +312,7 @@ tail
 tar
 task
 taskset
+tasksh
 tbl
 tclsh
 tcpdump
@@ -290,8 +325,11 @@ tic
 time
 timedatectl
 timeout
+tmate
 tmux
 top
+torify
+torsocks
 traceroute6.iputils
 troff
 tshark
@@ -300,6 +338,7 @@ umount
 unexpand
 uniq
 unshare
+unzip
 update-alternatives
 uudecode
 uuencode
@@ -312,6 +351,7 @@ vimdiff
 vipw
 virsh
 volatility
+w3m
 wall
 watch
 wc
@@ -322,6 +362,7 @@ wireshark
 wish
 write
 xargs
+xdotool
 xelatex
 xetex
 xmodmap
@@ -330,6 +371,7 @@ xpad
 xxd
 xz
 yarn
+yash
 yelp
 yum
 zathura
