@@ -40,6 +40,10 @@ def create_configfile():
     while not ssh_port:
         ssh_port = input('SSH Port: ')
 
+    print('Welche NTP Server sollen verwendet werden?')
+    ntp_ips_list = hf.get_ips()
+    ntp_ips = ' '.join(ntp_ips_list)
+
     print('Wird snapd benoetigt?')
     snapd_removal = ''
     while snapd_removal not in ['Y','N']:
